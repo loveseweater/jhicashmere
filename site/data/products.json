@@ -1,0 +1,38 @@
+[
+  {
+    "id": "cashmere-crewneck",
+    "name": "Cashmere Crewneck",
+    "category": "Pullover Sweaters",
+    "colors": "Ivory / Taupe / Charcoal",
+    "description": "Minimal daily sweater with a smooth hand feel and versatile fit.",
+    "price": "$129.00",
+    "status": "Coming Soon",
+    "amazonUrl": "",
+    "amazonLabel": "View on Amazon",
+    "tone": "ivory"
+  },
+  {
+    "id": "fine-knit-cardigan",
+    "name": "Fine Knit Cardigan",
+    "category": "Cardigans",
+    "colors": "Soft Sage / Heather Grey",
+    "description": "Lightweight layer for office, travel, and transitional weather.",
+    "price": "$118.00",
+    "status": "Coming Soon",
+    "amazonUrl": "",
+    "amazonLabel": "View on Amazon",
+    "tone": "sage"
+  },
+  {
+    "id": "ribbed-turtleneck",
+    "name": "Ribbed Turtleneck",
+    "category": "Turtlenecks",
+    "colors": "Black / Camel / Cream",
+    "description": "Structured rib texture with a slim, warm, under-coat silhouette.",
+    "price": "$109.00",
+    "status": "Coming Soon",
+    "amazonUrl": "",
+    "amazonLabel": "View on Amazon",
+    "tone": "charcoal"
+  }
+]

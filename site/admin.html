@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>JHI Cashmere Admin</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body class="admin-body">
+    <main class="admin-shell">
+      <section class="admin-login" data-login-panel>
+        <div>
+          <p class="eyebrow">Website Admin</p>
+          <h1>JHI Cashmere</h1>
+          <p>Manage products and blog posts for the independent site.</p>
+        </div>
+        <form class="login-form" data-login-form>
+          <label>
+            Password
+            <input type="password" name="password" autocomplete="current-password" required />
+          </label>
+          <button class="button primary" type="submit">Login</button>
+          <p class="admin-note">Default local password: jhi2026</p>
+        </form>
+      </section>
+
+      <section class="admin-workspace" data-admin-workspace hidden>
+        <header class="admin-topbar">
+          <div>
+            <p class="eyebrow">JHI Cashmere Admin</p>
+            <h2>Content Manager</h2>
+          </div>
+          <a class="button secondary" href="/">View Site</a>
+        </header>
+
+        <div class="admin-tabs" role="tablist" aria-label="Admin sections">
+          <button class="tab active" type="button" data-tab="products">Products</button>
+          <button class="tab" type="button" data-tab="posts">Blog Posts</button>
+        </div>
+
+        <section class="admin-panel active" data-panel="products">
+          <div class="panel-heading">
+            <h3>Products</h3>
+            <button class="button primary" type="button" data-add-product>Add Product</button>
+          </div>
+          <div class="editor-list" data-product-list></div>
+          <button class="button primary save-button" type="button" data-save-products>Save Products</button>
+        </section>
+
+        <section class="admin-panel" data-panel="posts">
+          <div class="panel-heading">
+            <h3>Blog Posts</h3>
+            <button class="button primary" type="button" data-add-post>Add Post</button>
+          </div>
+          <div class="editor-list" data-post-list></div>
+          <button class="button primary save-button" type="button" data-save-posts>Save Posts</button>
+        </section>
+
+        <p class="admin-status" data-status></p>
+      </section>
+    </main>
+    <script src="admin.js"></script>
+  </body>
+</html>
