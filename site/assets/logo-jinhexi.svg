@@ -1,8 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 84" role="img" aria-labelledby="title desc">
   <title id="title">JINHEXI Logo</title>
   <desc id="desc">JINHEXI cashmere brand logo.</desc>
-  <rect x="1" y="1" width="82" height="82" fill="none" stroke="#242321" stroke-width="2"/>
-  <text x="42" y="53" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" fill="#242321">JIN</text>
-  <text x="102" y="45" font-family="Georgia, 'Times New Roman', serif" font-size="28" font-weight="400" fill="#242321">JINHEXI</text>
-  <text x="102" y="67" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="4" fill="#7f7265">CASHMERE KNITWEAR</text>
+  <text x="2" y="45" font-family="Georgia, 'Times New Roman', serif" font-size="32" font-weight="400" fill="#242321">JINHEXI</text>
+  <text x="2" y="67" font-family="Arial, Helvetica, sans-serif" font-size="10" font-weight="700" letter-spacing="4" fill="#7f7265">CASHMERE KNITWEAR</text>
 </svg>
