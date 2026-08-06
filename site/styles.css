@@ -330,6 +330,22 @@ h3 {
   background: var(--paper);
 }
 
+.product-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  border-top: 1px solid var(--line);
+  background: var(--line);
+}
+
+.product-thumbs img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  background: var(--paper);
+}
+
 .product-info {
   padding: 24px;
 }
@@ -640,6 +656,13 @@ textarea {
   gap: 16px;
 }
 
+.analytics-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
 .analytics-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -821,6 +844,11 @@ textarea {
   .admin-login,
   .editor-grid {
     grid-template-columns: 1fr;
+  }
+
+  .product-thumbs,
+  .analytics-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .intro-band div {

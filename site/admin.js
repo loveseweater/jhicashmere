@@ -38,10 +38,10 @@ async function loadStats() {
   document.querySelector('[data-metric="analytics-posts"]').textContent = String(stats.postCount || 0);
   document.querySelector("[data-analytics-list]").innerHTML = `
     <article class="editor-item">
-      <div class="editor-title"><strong>Top pages</strong></div>
+      <div class="editor-title"><strong>热门页面</strong></div>
       <table class="analytics-table">
         <thead>
-          <tr><th>Path</th><th>Views</th></tr>
+          <tr><th>路径</th><th>浏览量</th></tr>
         </thead>
         <tbody>
           ${(stats.topPages || [])
@@ -71,6 +71,11 @@ function textarea(label, value, key) {
   `;
 }
 
+function galleryTextarea(value) {
+  const gallery = Array.isArray(value) ? value.join("\n") : String(value || "");
+  return textarea("图片图册（每行一个URL）", gallery, "gallery");
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -88,7 +93,7 @@ function renderProducts() {
   document.querySelector("[data-product-list]").innerHTML = products
     .map(
       (product, index) => `
-        <article class="editor-item" data-index="${index}">
+    <article class="editor-item" data-index="${index}">
           <div class="editor-title">
             <strong>${escapeHtml(product.name || "New Product")}</strong>
             <button type="button" data-remove-product="${index}">Remove</button>
@@ -96,13 +101,15 @@ function renderProducts() {
           <div class="editor-grid">
             ${field("Name", product.name, "name")}
             ${field("Category", product.category, "category")}
+            ${field("Channel", product.channel, "channel")}
             ${field("Colors", product.colors, "colors")}
             ${field("Price", product.price, "price")}
             ${field("Status", product.status, "status")}
             ${field("Color Tone", product.tone, "tone")}
             ${field("Amazon URL", product.amazonUrl, "amazonUrl")}
             ${field("Amazon Button Text", product.amazonLabel, "amazonLabel")}
-            ${field("Image URL", product.image, "image")}
+            ${field("主图URL", product.image, "image")}
+            ${galleryTextarea(product.gallery)}
             ${textarea("Description", product.description, "description")}
           </div>
         </article>
@@ -171,7 +178,7 @@ document.querySelector("[data-login-form]").addEventListener("submit", async (ev
     localStorage.setItem("jhiAdminToken", token);
     showWorkspace();
     await loadAdminData();
-    setStatus("Logged in. Changes save to local JSON files.");
+    setStatus("登录成功。修改后点击保存即可同步到站点数据。");
   } catch (error) {
     setStatus(error.message);
   }
@@ -191,6 +198,7 @@ document.querySelector("[data-add-product]").addEventListener("click", () => {
   products.push({
     name: "New Knitwear Product",
     category: "Women's Sweaters",
+    channel: "both",
     colors: "Ivory / Taupe",
     description: "Describe the product fabric, fit, and occasion.",
     price: "$0.00",
@@ -198,7 +206,12 @@ document.querySelector("[data-add-product]").addEventListener("click", () => {
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "ivory",
-    image: "assets/products/cashmere-ivory.svg"
+    image: "assets/products/cashmere-ivory.svg",
+    gallery: [
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-charcoal.svg"
+    ]
   });
   renderProducts();
 });
@@ -238,7 +251,7 @@ document.querySelector("[data-save-products]").addEventListener("click", async (
       body: JSON.stringify(products)
     });
     renderProducts();
-    setStatus("Products saved.");
+    setStatus("产品已保存。");
   } catch (error) {
     setStatus(error.message);
   }
@@ -252,7 +265,7 @@ document.querySelector("[data-save-posts]").addEventListener("click", async () =
       body: JSON.stringify(posts)
     });
     renderPosts();
-    setStatus("Blog posts saved.");
+    setStatus("博文已保存。");
   } catch (error) {
     setStatus(error.message);
   }

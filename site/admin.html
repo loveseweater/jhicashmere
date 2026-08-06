@@ -3,98 +3,98 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JINHEXI Admin</title>
+    <title>JINHEXI 后台</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body class="admin-body">
     <main class="admin-shell">
       <section class="admin-login" data-login-panel>
         <div>
-          <p class="eyebrow">Website Admin</p>
+          <p class="eyebrow">网站后台</p>
           <h1>JINHEXI</h1>
-          <p>Manage products, blog posts, and browsing data for the JINHEXI cashmere site.</p>
+          <p>管理产品、博文和浏览数据。这里可以维护独立站内容，也能同步 Amazon 相关信息。</p>
         </div>
         <form class="login-form" data-login-form>
           <label>
-            Password
+            密码
             <input type="password" name="password" autocomplete="current-password" required />
           </label>
-          <button class="button primary" type="submit">Login</button>
-          <p class="admin-note">Default local password: <strong>jinhexi2026</strong></p>
+          <button class="button primary" type="submit">登录</button>
+          <p class="admin-note">默认后台密码：<strong>jinhexi2026</strong></p>
         </form>
       </section>
 
       <section class="admin-workspace" data-admin-workspace hidden>
         <header class="admin-topbar">
           <div>
-            <p class="eyebrow">JINHEXI Admin</p>
-            <h2>Content Manager</h2>
+            <p class="eyebrow">JINHEXI 后台</p>
+            <h2>内容管理</h2>
           </div>
-          <a class="button secondary" href="/">View Site</a>
+          <a class="button secondary" href="/">查看网站</a>
         </header>
 
         <div class="admin-tabs" role="tablist" aria-label="Admin sections">
-          <button class="tab active" type="button" data-tab="products">Products</button>
-          <button class="tab" type="button" data-tab="posts">Blog Posts</button>
-          <button class="tab" type="button" data-tab="analytics">Analytics</button>
+          <button class="tab active" type="button" data-tab="products">产品</button>
+          <button class="tab" type="button" data-tab="posts">博文</button>
+          <button class="tab" type="button" data-tab="analytics">数据</button>
         </div>
 
         <section class="admin-overview" aria-label="Site metrics">
           <div class="metric">
-            <strong>Total views</strong>
+            <strong>总浏览</strong>
             <span data-metric="views">0</span>
           </div>
           <div class="metric">
-            <strong>Today</strong>
+            <strong>今日浏览</strong>
             <span data-metric="today">0</span>
           </div>
           <div class="metric">
-            <strong>Products</strong>
+            <strong>产品数</strong>
             <span data-metric="products">0</span>
           </div>
           <div class="metric">
-            <strong>Posts</strong>
+            <strong>博文数</strong>
             <span data-metric="posts">0</span>
           </div>
         </section>
 
         <section class="admin-panel active" data-panel="products">
           <div class="panel-heading">
-            <h3>Products</h3>
-            <button class="button primary" type="button" data-add-product>Add Product</button>
+            <h3>产品管理</h3>
+            <button class="button primary" type="button" data-add-product>新增产品</button>
           </div>
           <div class="editor-list" data-product-list></div>
-          <button class="button primary save-button" type="button" data-save-products>Save Products</button>
+          <button class="button primary save-button" type="button" data-save-products>保存产品</button>
         </section>
 
         <section class="admin-panel" data-panel="posts">
           <div class="panel-heading">
-            <h3>Blog Posts</h3>
-            <button class="button primary" type="button" data-add-post>Add Post</button>
+            <h3>博文管理</h3>
+            <button class="button primary" type="button" data-add-post>新增博文</button>
           </div>
           <div class="editor-list" data-post-list></div>
-          <button class="button primary save-button" type="button" data-save-posts>Save Posts</button>
+          <button class="button primary save-button" type="button" data-save-posts>保存博文</button>
         </section>
 
         <section class="admin-panel" data-panel="analytics">
           <div class="panel-heading">
-            <h3>Analytics</h3>
+            <h3>浏览数据</h3>
           </div>
           <div class="analytics-grid">
             <div class="metric">
-              <strong>Total views</strong>
+              <strong>总浏览</strong>
               <span data-metric="analytics-views">0</span>
             </div>
             <div class="metric">
-              <strong>Today</strong>
+              <strong>今日浏览</strong>
               <span data-metric="analytics-today">0</span>
             </div>
             <div class="metric">
-              <strong>Products</strong>
+              <strong>产品数</strong>
               <span data-metric="analytics-products">0</span>
             </div>
             <div class="metric">
-              <strong>Posts</strong>
+              <strong>博文数</strong>
               <span data-metric="analytics-posts">0</span>
             </div>
           </div>

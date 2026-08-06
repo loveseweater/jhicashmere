@@ -85,6 +85,7 @@ function rowToProduct(row) {
     id: row.id,
     name: row.name,
     category: row.category,
+    channel: row.channel || "both",
     colors: row.colors,
     description: row.description,
     price: row.price,
@@ -92,8 +93,36 @@ function rowToProduct(row) {
     amazonUrl: row.amazonUrl || "",
     amazonLabel: row.amazonLabel || "View on Amazon",
     tone: row.tone || "ivory",
-    image: row.image || "assets/products/cashmere-ivory.svg"
+    image: row.image || "assets/products/cashmere-ivory.svg",
+    gallery: normalizeGallery(row.gallery, row.image || "assets/products/cashmere-ivory.svg")
   };
+}
+
+function normalizeGallery(value, fallbackImage) {
+  if (Array.isArray(value) && value.length) return value;
+  if (typeof value === "string" && value.trim().startsWith("[")) {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed) && parsed.length) return parsed;
+    } catch {
+      // fall through to newline parsing
+    }
+  }
+  if (typeof value === "string" && value.trim()) {
+    return value
+      .split("\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [fallbackImage];
+}
+
+async function ensureColumn(env, table, column, definition) {
+  const info = await env.DB.prepare(`PRAGMA table_info(${table})`).all();
+  const exists = (info.results || []).some((item) => item.name === column);
+  if (!exists) {
+    await env.DB.exec(`ALTER TABLE ${table} ADD COLUMN ${column} ${definition}`);
+  }
 }
 
 function rowToPost(row) {
@@ -116,6 +145,7 @@ export async function ensureSchema(env) {
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
       category TEXT NOT NULL,
+      channel TEXT NOT NULL DEFAULT 'both',
       colors TEXT NOT NULL,
       description TEXT NOT NULL,
       price TEXT NOT NULL,
@@ -123,7 +153,8 @@ export async function ensureSchema(env) {
       amazonUrl TEXT NOT NULL DEFAULT '',
       amazonLabel TEXT NOT NULL DEFAULT 'View on Amazon',
       tone TEXT NOT NULL DEFAULT 'ivory',
-      image TEXT NOT NULL DEFAULT 'assets/products/cashmere-ivory.svg'
+      image TEXT NOT NULL DEFAULT 'assets/products/cashmere-ivory.svg',
+      gallery TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS posts (
       id TEXT PRIMARY KEY,
@@ -141,6 +172,11 @@ export async function ensureSchema(env) {
       createdAt TEXT NOT NULL
     );
   `);
+  await ensureColumn(env, "products", "channel", "TEXT NOT NULL DEFAULT 'both'");
+  await ensureColumn(env, "products", "gallery", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "posts", "slug", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "posts", "seoTitle", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "posts", "seoDescription", "TEXT NOT NULL DEFAULT ''");
   schemaReady = true;
 }
 
@@ -152,12 +188,13 @@ export async function seedIfNeeded(env) {
     for (const product of defaultProducts) {
       await env.DB.prepare(`
         INSERT OR REPLACE INTO products
-        (id, name, category, colors, description, price, status, amazonUrl, amazonLabel, tone, image)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, name, category, channel, colors, description, price, status, amazonUrl, amazonLabel, tone, image, gallery)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         product.id,
         product.name,
         product.category,
+        product.channel || "both",
         product.colors,
         product.description,
         product.price,
@@ -165,7 +202,8 @@ export async function seedIfNeeded(env) {
         product.amazonUrl || "",
         product.amazonLabel || "View on Amazon",
         product.tone || "ivory",
-        product.image || "assets/products/cashmere-ivory.svg"
+        product.image || "assets/products/cashmere-ivory.svg",
+        JSON.stringify(normalizeGallery(product.gallery, product.image || "assets/products/cashmere-ivory.svg"))
       ).run();
     }
   }
@@ -220,18 +258,20 @@ export async function saveProducts(env, payload) {
   await ensureSchema(env);
   const normalized = payload.map((item) => ({
     ...item,
-    id: slugify(item.id || item.name)
+    id: slugify(item.id || item.name),
+    gallery: normalizeGallery(item.gallery, item.image || "assets/products/cashmere-ivory.svg")
   }));
   await env.DB.batch(
     normalized.map((item) =>
       env.DB.prepare(`
         INSERT OR REPLACE INTO products
-        (id, name, category, colors, description, price, status, amazonUrl, amazonLabel, tone, image)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, name, category, channel, colors, description, price, status, amazonUrl, amazonLabel, tone, image, gallery)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         item.id,
         item.name || "Untitled Product",
         item.category || "Knitwear",
+        item.channel || "both",
         item.colors || "",
         item.description || "",
         item.price || "",
@@ -239,7 +279,8 @@ export async function saveProducts(env, payload) {
         item.amazonUrl || "",
         item.amazonLabel || "View on Amazon",
         item.tone || "ivory",
-        item.image || "assets/products/cashmere-ivory.svg"
+        item.image || "assets/products/cashmere-ivory.svg",
+        JSON.stringify(item.gallery || [])
       )
     )
   );

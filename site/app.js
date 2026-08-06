@@ -31,19 +31,25 @@ function escapeHtml(value) {
 
 function productTemplate(product) {
   const tone = ["ivory", "sage", "charcoal"].includes(product.tone) ? product.tone : "ivory";
-  const image = product.image || `assets/products/cashmere-${tone}.svg`;
+  const gallery = Array.isArray(product.gallery) && product.gallery.length
+    ? product.gallery
+    : [product.image || `assets/products/cashmere-${tone}.svg`];
+  const image = gallery[0];
   const amazonButton = product.amazonUrl
     ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || "View on Amazon")}</a>`
     : `<span class="amazon-link disabled">Amazon Coming Soon</span>`;
+  const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />`).join("");
   return `
     <article class="product-card">
       <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />
+      <div class="product-thumbs">${thumbs}</div>
       <div class="product-info">
         <div class="product-meta">
           <span>${escapeHtml(product.category || "Knitwear")}</span>
           <span>${escapeHtml(product.status || "Coming Soon")}</span>
         </div>
         <h3>${escapeHtml(product.name)}</h3>
+        <p class="product-channel">${escapeHtml(product.channel === "site" ? "Exclusive to JINHEXI" : product.channel === "amazon" ? "Amazon Collection" : "Amazon + Site")}</p>
         <p>${escapeHtml(product.description)}</p>
         <div class="product-line">
           <span>${escapeHtml(product.colors)}</span>
