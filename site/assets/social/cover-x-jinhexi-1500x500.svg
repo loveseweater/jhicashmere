@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1500 500" role="img" aria-labelledby="title desc">
+  <title id="title">JINHEXI X Cover</title>
+  <desc id="desc">X header for JINHEXI cashmere.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fbf8f3"/>
+      <stop offset="100%" stop-color="#e9dece"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cbb9a6"/>
+      <stop offset="100%" stop-color="#8f7f70"/>
+    </linearGradient>
+  </defs>
+  <rect width="1500" height="500" fill="url(#bg)"/>
+  <rect x="18" y="18" width="1464" height="464" rx="28" fill="#fffdf9" stroke="url(#line)" stroke-width="2"/>
+
+  <text x="84" y="102" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="10" fill="#8d7e6f">JINHEXI</text>
+  <text x="84" y="198" font-family="Georgia, 'Times New Roman', serif" font-size="72" font-weight="400" fill="#2f2d2a">Cashmere for modern wardrobes</text>
+  <text x="84" y="248" font-family="Arial, Helvetica, sans-serif" font-size="24" fill="#7b6d5f">Soft textures. Clean silhouettes. Everyday elegance.</text>
+
+  <rect x="84" y="308" width="252" height="42" rx="21" fill="#5a544c"/>
+  <text x="210" y="335" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#f8f4ee">100% CASHMERE</text>
+
+  <g transform="translate(1040 80)">
+    <rect width="356" height="340" rx="28" fill="#f8f4ed" stroke="#d7c8b6"/>
+    <path d="M106 210c20-60 46-94 70-94s50 34 70 94" fill="none" stroke="#3a3734" stroke-width="12" stroke-linecap="round"/>
+    <path d="M122 190v-76c0-24 18-42 42-42h0c24 0 42 18 42 42v76" fill="none" stroke="#3a3734" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M176 92v150" stroke="#c7b49f" stroke-width="7" opacity="0.55"/>
+    <text x="178" y="292" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="22" font-weight="700" letter-spacing="7" fill="#6f6254">JINHEXI CASHMERE</text>
+  </g>
+</svg>

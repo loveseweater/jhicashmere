@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1128" height="191" viewBox="0 0 1128 191">
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f4f1eb" stop-opacity="0.10"/>
+      <stop offset="58%" stop-color="#f7f4ef" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#f8f6f1" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f8f6f1" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f8f6f1" stop-opacity="0.92"/>
+    </linearGradient>
+  </defs>
+  <rect width="1128" height="191" fill="url(#wash)"/>
+  <rect x="636" y="0" width="492" height="191" fill="url(#fade)"/>
+  <rect x="72" y="30" width="125" height="2" fill="#2b2722" opacity="0.16"/>
+  <text x="707" y="54" fill="#2b2722" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700" letter-spacing="2.2">JINHEXI</text>
+  <text x="707" y="105" fill="#1f1d1a" font-family="Georgia, 'Times New Roman', serif" font-size="48" font-weight="400">Cashmere</text>
+  <text x="707" y="124" fill="#5e5a54" font-family="Arial, Helvetica, sans-serif" font-size="14" font-weight="700" letter-spacing="1.8">PREMIUM WOMEN'S KNITWEAR</text>
+  <text x="707" y="150" fill="#7a756d" font-family="Arial, Helvetica, sans-serif" font-size="11" letter-spacing="1.6">jhicashmere.com</text>
+</svg>

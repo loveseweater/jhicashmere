@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1640" height="624" viewBox="0 0 1640 624">
+  <defs>
+    <linearGradient id="wash" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f4f1eb" stop-opacity="0.08"/>
+      <stop offset="55%" stop-color="#f7f4ef" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#f8f6f1" stop-opacity="0.96"/>
+    </linearGradient>
+    <linearGradient id="fade" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#f8f6f1" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#f8f6f1" stop-opacity="0.88"/>
+    </linearGradient>
+  </defs>
+  <rect width="1640" height="624" fill="url(#wash)"/>
+  <rect x="921" y="0" width="719" height="624" fill="url(#fade)"/>
+  <rect x="98" y="74" width="197" height="3" fill="#2b2722" opacity="0.16"/>
+  <text x="1018" y="143" fill="#2b2722" font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="700" letter-spacing="3.6">JINHEXI</text>
+  <text x="1018" y="237" fill="#1f1d1a" font-family="Georgia, 'Times New Roman', serif" font-size="106" font-weight="400">Cashmere</text>
+  <text x="1018" y="275" fill="#5e5a54" font-family="Arial, Helvetica, sans-serif" font-size="32" font-weight="700" letter-spacing="3.6">PREMIUM WOMEN'S KNITWEAR</text>
+  <text x="1018" y="334" fill="#7a756d" font-family="Arial, Helvetica, sans-serif" font-size="24" letter-spacing="2.2">jhicashmere.com</text>
+  <text x="1018" y="381" fill="#7a756d" font-family="Arial, Helvetica, sans-serif" font-size="22" letter-spacing="1.8">Amazon • DTC • Wholesale</text>
+</svg>

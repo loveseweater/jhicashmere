@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">JINHEXI Square Cover</title>
+  <desc id="desc">Square social promo tile for JINHEXI cashmere.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdfaf5"/>
+      <stop offset="100%" stop-color="#eadfce"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cbb9a6"/>
+      <stop offset="100%" stop-color="#8f8072"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <rect x="34" y="34" width="1012" height="1012" rx="40" fill="#fffdf9" stroke="url(#line)" stroke-width="3"/>
+
+  <text x="82" y="140" font-family="Arial, Helvetica, sans-serif" font-size="30" font-weight="700" letter-spacing="10" fill="#8d7e6f">JINHEXI</text>
+  <text x="82" y="280" font-family="Georgia, 'Times New Roman', serif" font-size="94" font-weight="400" fill="#2f2d2a">100% Cashmere</text>
+  <text x="82" y="346" font-family="Arial, Helvetica, sans-serif" font-size="28" fill="#7b6d5f">Soft textures. Refined fit. Everyday elegance.</text>
+  <rect x="82" y="406" width="256" height="48" rx="24" fill="#5a544c"/>
+  <text x="210" y="438" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="18" font-weight="700" letter-spacing="4" fill="#f8f4ee">CASHMERE BRAND</text>
+
+  <g transform="translate(620 242)">
+    <rect width="340" height="420" rx="28" fill="#f8f4ed" stroke="#d7c8b6"/>
+    <path d="M96 260c22-72 50-112 76-112s54 40 76 112" fill="none" stroke="#3a3734" stroke-width="12" stroke-linecap="round"/>
+    <path d="M118 240v-90c0-30 24-54 54-54h0c30 0 54 24 54 54v90" fill="none" stroke="#3a3734" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M172 116v160" stroke="#c7b49f" stroke-width="7" opacity="0.55"/>
+  </g>
+</svg>

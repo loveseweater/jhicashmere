@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1080" viewBox="0 0 1080 1080">
+  <rect width="1080" height="1080" fill="#f5f0e8"/>
+  <circle cx="540" cy="540" r="450" fill="#ffffff" stroke="#ddd5c8" stroke-width="10"/>
+  <circle cx="540" cy="540" r="452" fill="none" stroke="#1f1d1a" stroke-opacity="0.06" stroke-width="2"/>
+  <text x="540" y="520" text-anchor="middle" fill="#111111" font-family="Georgia, 'Times New Roman', serif" font-size="145" letter-spacing="10">JINHEXI</text>
+  <text x="540" y="590" text-anchor="middle" fill="#8a847b" font-family="Arial, Helvetica, sans-serif" font-size="48" font-weight="700" letter-spacing="18">CASHMERE</text>
+</svg>

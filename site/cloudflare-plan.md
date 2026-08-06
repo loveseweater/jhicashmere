@@ -1,10 +1,10 @@
-# JHI Cashmere Cloudflare Deployment Plan
+# JINHEXI Cloudflare Deployment Plan
 
 ## Direction
 
 Use `jhicashmere.com` as the brand site. The site should not replace Amazon checkout in the early stage. It should:
 
-- Present the JHI Cashmere brand.
+- Present the JINHEXI brand.
 - Show products and product education.
 - Publish care guides and knitwear blog content.
 - Send retail buyers to Amazon product pages.

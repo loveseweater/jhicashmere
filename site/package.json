@@ -2,7 +2,7 @@
   "name": "jhi-cashmere-site",
   "version": "1.0.0",
   "private": true,
-  "description": "JHI Cashmere independent website with a local admin panel.",
+  "description": "JINHEXI independent website with a local admin panel.",
   "scripts": {
     "start": "node server.js"
   }

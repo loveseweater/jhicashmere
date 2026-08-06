@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2560 1440" role="img" aria-labelledby="title desc">
+  <title id="title">JINHEXI YouTube Cover</title>
+  <desc id="desc">YouTube channel art for JINHEXI cashmere knitwear.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fdfaf5"/>
+      <stop offset="100%" stop-color="#e9decf"/>
+    </linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cbb9a6"/>
+      <stop offset="100%" stop-color="#8f8072"/>
+    </linearGradient>
+  </defs>
+  <rect width="2560" height="1440" fill="url(#bg)"/>
+  <rect x="110" y="110" width="2340" height="1220" rx="52" fill="#fffdf9" stroke="url(#line)" stroke-width="3"/>
+
+  <text x="190" y="320" font-family="Arial, Helvetica, sans-serif" font-size="34" font-weight="700" letter-spacing="12" fill="#8d7e6f">JINHEXI</text>
+  <text x="190" y="478" font-family="Georgia, 'Times New Roman', serif" font-size="118" font-weight="400" fill="#2f2d2a">Premium cashmere knitwear</text>
+  <text x="190" y="560" font-family="Arial, Helvetica, sans-serif" font-size="36" fill="#7a6d5f">Soft textures. Refined fit. Everyday elegance.</text>
+  <rect x="190" y="650" width="316" height="54" rx="27" fill="#5a544c"/>
+  <text x="348" y="686" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="20" font-weight="700" letter-spacing="5" fill="#f8f4ee">100% CASHMERE</text>
+
+  <g transform="translate(1780 240)">
+    <rect width="520" height="620" rx="40" fill="#f8f4ed" stroke="#d7c8b6"/>
+    <path d="M152 402c30-96 66-150 108-150s78 54 108 150" fill="none" stroke="#3a3734" stroke-width="18" stroke-linecap="round"/>
+    <path d="M176 372V238c0-44 34-78 78-78h0c44 0 78 34 78 78v134" fill="none" stroke="#3a3734" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M260 160v248" stroke="#c7b49f" stroke-width="8" opacity="0.55"/>
+    <text x="260" y="526" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="26" font-weight="700" letter-spacing="8" fill="#6f6254">JINHEXI CASHMERE</text>
+  </g>
+</svg>

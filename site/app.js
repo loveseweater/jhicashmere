@@ -19,12 +19,13 @@ function escapeHtml(value) {
 
 function productTemplate(product) {
   const tone = ["ivory", "sage", "charcoal"].includes(product.tone) ? product.tone : "ivory";
+  const image = product.image || `assets/products/cashmere-${tone}.svg`;
   const amazonButton = product.amazonUrl
     ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || "View on Amazon")}</a>`
     : `<span class="amazon-link disabled">Amazon Coming Soon</span>`;
   return `
     <article class="product-card">
-      <div class="product-visual ${tone}"></div>
+      <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />
       <div class="product-info">
         <div class="product-meta">
           <span>${escapeHtml(product.category || "Knitwear")}</span>

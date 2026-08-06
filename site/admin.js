@@ -75,6 +75,7 @@ function renderProducts() {
             ${field("Color Tone", product.tone, "tone")}
             ${field("Amazon URL", product.amazonUrl, "amazonUrl")}
             ${field("Amazon Button Text", product.amazonLabel, "amazonLabel")}
+            ${field("Image URL", product.image, "image")}
             ${textarea("Description", product.description, "description")}
           </div>
         </article>
@@ -165,7 +166,8 @@ document.querySelector("[data-add-product]").addEventListener("click", () => {
     status: "Draft",
     amazonUrl: "",
     amazonLabel: "View on Amazon",
-    tone: "ivory"
+    tone: "ivory",
+    image: "assets/products/cashmere-ivory.svg"
   });
   renderProducts();
 });

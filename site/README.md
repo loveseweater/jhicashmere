@@ -1,4 +1,4 @@
-# JHI Cashmere Website
+# JINHEXI Website
 
 This is the first maintainable website build for `jhicashmere.com`.
 
@@ -17,13 +17,13 @@ Open:
 Default local admin password:
 
 ```text
-jhi2026
+jinhexi2026
 ```
 
 To use another password:
 
 ```powershell
-$env:JHI_ADMIN_PASSWORD="your-new-password"
+$env:JINHEXI_ADMIN_PASSWORD="your-new-password"
 node server.js
 ```
 

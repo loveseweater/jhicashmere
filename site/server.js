@@ -6,7 +6,7 @@ const crypto = require("crypto");
 const root = __dirname;
 const dataDir = path.join(root, "data");
 const port = Number(process.env.PORT || 4173);
-const adminPassword = process.env.JHI_ADMIN_PASSWORD || "jhi2026";
+const adminPassword = process.env.JINHEXI_ADMIN_PASSWORD || "jinhexi2026";
 const sessions = new Set();
 
 const mimeTypes = {
@@ -154,6 +154,6 @@ const server = http.createServer(async (req, res) => {
 });
 
 server.listen(port, () => {
-  console.log(`JHI Cashmere site running at http://localhost:${port}`);
+  console.log(`JINHEXI site running at http://localhost:${port}`);
   console.log(`Admin: http://localhost:${port}/admin.html`);
 });

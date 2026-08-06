@@ -9,7 +9,8 @@
     "status": "Coming Soon",
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
-    "tone": "ivory"
+    "tone": "ivory",
+    "image": "assets/products/cashmere-ivory.svg"
   },
   {
     "id": "fine-knit-cardigan",
@@ -21,7 +22,8 @@
     "status": "Coming Soon",
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
-    "tone": "sage"
+    "tone": "sage",
+    "image": "assets/products/cashmere-sage.svg"
   },
   {
     "id": "ribbed-turtleneck",
@@ -33,6 +35,7 @@
     "status": "Coming Soon",
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
-    "tone": "charcoal"
+    "tone": "charcoal",
+    "image": "assets/products/cashmere-charcoal.svg"
   }
 ]

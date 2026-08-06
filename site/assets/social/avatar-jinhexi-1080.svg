@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1080 1080" role="img" aria-labelledby="title desc">
+  <title id="title">JINHEXI Avatar</title>
+  <desc id="desc">Cashmere brand avatar for JINHEXI.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#fcf8f1"/>
+      <stop offset="100%" stop-color="#e8dccd"/>
+    </linearGradient>
+    <linearGradient id="ring" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#cab8a4"/>
+      <stop offset="100%" stop-color="#7f7265"/>
+    </linearGradient>
+  </defs>
+  <rect width="1080" height="1080" fill="url(#bg)"/>
+  <circle cx="540" cy="540" r="432" fill="#fffdf9" stroke="url(#ring)" stroke-width="18"/>
+  <circle cx="540" cy="540" r="336" fill="#f8f3eb" stroke="#d7c6b4" stroke-width="3"/>
+
+  <path d="M396 650c0-76 66-140 144-140s144 64 144 140" fill="none" stroke="#373431" stroke-width="18" stroke-linecap="round"/>
+  <path d="M430 622v-92c0-48 38-86 86-86h48c48 0 86 38 86 86v92" fill="none" stroke="#373431" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M540 444v206" stroke="#c7b49f" stroke-width="8" opacity="0.6"/>
+
+  <text x="540" y="346" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="28" font-weight="700" letter-spacing="10" fill="#8c7d6f">JINHEXI</text>
+  <text x="540" y="790" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="94" font-weight="400" fill="#2f2d2a">Cashmere</text>
+  <text x="540" y="846" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="24" font-weight="700" letter-spacing="6" fill="#7a6d5e">WOMEN'S KNITWEAR</text>
+</svg>
