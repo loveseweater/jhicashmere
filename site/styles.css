@@ -50,22 +50,15 @@ a {
 .brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
-  min-width: 170px;
+  min-width: 280px;
 }
 
-.brand-mark {
-  display: grid;
-  place-items: center;
-  width: 42px;
-  height: 42px;
-  border: 1px solid var(--ink);
-  font-family: Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 700;
+.brand-logo {
+  display: block;
+  width: 220px;
+  height: auto;
 }
 
-.brand-name,
 .site-footer span:first-child {
   font-family: Arial, sans-serif;
   font-size: 13px;
@@ -265,6 +258,38 @@ h3 {
   gap: 18px;
 }
 
+.social-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.social-grid a {
+  padding: 18px 20px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  display: grid;
+  gap: 6px;
+  min-height: 96px;
+  align-content: space-between;
+}
+
+.social-grid a strong {
+  display: block;
+  font-size: 13px;
+}
+
+.social-grid a span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+  text-transform: none;
+}
+
 .studio-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -440,6 +465,28 @@ h3 {
   line-height: 1.55;
 }
 
+.post-item .post-body {
+  margin-top: 16px;
+  color: var(--muted);
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+.post-item.featured {
+  display: grid;
+  align-content: space-between;
+}
+
+.post-link {
+  display: inline-flex;
+  margin-top: 18px;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+
 .size-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -584,6 +631,46 @@ textarea {
   font-size: 13px;
 }
 
+.admin-note strong {
+  color: var(--ink);
+}
+
+.analytics-list {
+  display: grid;
+  gap: 16px;
+}
+
+.analytics-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.analytics-grid .metric span {
+  font-size: 24px;
+}
+
+.analytics-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border: 1px solid var(--line);
+}
+
+.analytics-table th,
+.analytics-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
+  font-size: 13px;
+}
+
+.analytics-table th {
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
 .admin-topbar,
 .panel-heading {
   display: flex;
@@ -625,6 +712,32 @@ textarea {
 
 .admin-panel.active {
   display: block;
+}
+
+.admin-overview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.metric {
+  padding: 20px;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.metric strong {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.metric span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 30px;
 }
 
 .editor-list {
@@ -698,10 +811,13 @@ textarea {
 
   .intro-band,
   .product-grid,
+  .social-grid,
   .studio-grid,
   .split-section,
   .wholesale,
   .post-grid,
+  .admin-overview,
+  .analytics-grid,
   .admin-login,
   .editor-grid {
     grid-template-columns: 1fr;
@@ -726,12 +842,16 @@ textarea {
     min-width: 0;
   }
 
-  .brand-name {
-    display: none;
-  }
-
   .header-action {
     padding: 0 14px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .brand-logo {
+    width: 160px;
   }
 
   .hero-text,

@@ -8,6 +8,18 @@ async function loadJson(url, fallback) {
   }
 }
 
+async function trackPageview() {
+  try {
+    await fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: location.pathname })
+    });
+  } catch {
+    return null;
+  }
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -44,11 +56,13 @@ function productTemplate(product) {
 }
 
 function postTemplate(post) {
+  const slug = encodeURIComponent(post.slug || post.id || post.title || "");
   return `
     <article class="post-item">
       <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
       <h3>${escapeHtml(post.title)}</h3>
       <p>${escapeHtml(post.excerpt)}</p>
+      <a class="post-link" href="/journal.html?post=${slug}">Read more</a>
     </article>
   `;
 }
@@ -86,6 +100,8 @@ async function renderSiteData() {
   if (postGrid) {
     postGrid.innerHTML = posts.map(postTemplate).join("");
   }
+
+  await trackPageview();
 }
 
 renderSiteData();

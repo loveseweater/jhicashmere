@@ -26,6 +26,33 @@ async function requestJson(url, options = {}) {
   return data;
 }
 
+async function loadStats() {
+  const stats = await requestJson("/api/stats");
+  document.querySelector('[data-metric="views"]').textContent = String(stats.totalViews || 0);
+  document.querySelector('[data-metric="today"]').textContent = String(stats.todayViews || 0);
+  document.querySelector('[data-metric="products"]').textContent = String(stats.productCount || 0);
+  document.querySelector('[data-metric="posts"]').textContent = String(stats.postCount || 0);
+  document.querySelector('[data-metric="analytics-views"]').textContent = String(stats.totalViews || 0);
+  document.querySelector('[data-metric="analytics-today"]').textContent = String(stats.todayViews || 0);
+  document.querySelector('[data-metric="analytics-products"]').textContent = String(stats.productCount || 0);
+  document.querySelector('[data-metric="analytics-posts"]').textContent = String(stats.postCount || 0);
+  document.querySelector("[data-analytics-list]").innerHTML = `
+    <article class="editor-item">
+      <div class="editor-title"><strong>Top pages</strong></div>
+      <table class="analytics-table">
+        <thead>
+          <tr><th>Path</th><th>Views</th></tr>
+        </thead>
+        <tbody>
+          ${(stats.topPages || [])
+            .map((item) => `<tr><td>${escapeHtml(item.path)}</td><td>${escapeHtml(String(item.views))}</td></tr>`)
+            .join("")}
+        </tbody>
+      </table>
+    </article>
+  `;
+}
+
 function field(label, value, key, type = "text") {
   return `
     <label>
@@ -96,6 +123,9 @@ function renderPosts() {
           <div class="editor-grid">
             ${field("Title", post.title, "title")}
             ${field("Date", post.date, "date", "date")}
+            ${field("Slug", post.slug, "slug")}
+            ${field("SEO Title", post.seoTitle, "seoTitle")}
+            ${field("SEO Description", post.seoDescription, "seoDescription")}
             ${textarea("Excerpt", post.excerpt, "excerpt")}
             ${textarea("Content", post.content, "content")}
           </div>
@@ -121,6 +151,7 @@ async function loadAdminData() {
   posts = await requestJson("/api/posts");
   renderProducts();
   renderPosts();
+  await loadStats();
 }
 
 function showWorkspace() {
@@ -177,6 +208,9 @@ document.querySelector("[data-add-post]").addEventListener("click", () => {
   posts.push({
     title: "New Blog Post",
     date: new Date().toISOString().slice(0, 10),
+    slug: "",
+    seoTitle: "",
+    seoDescription: "",
     excerpt: "Short blog summary for the website.",
     content: "Write the full blog content here."
   });
@@ -221,6 +255,18 @@ document.querySelector("[data-save-posts]").addEventListener("click", async () =
     setStatus("Blog posts saved.");
   } catch (error) {
     setStatus(error.message);
+  }
+});
+
+document.querySelectorAll(".admin-tabs .tab").forEach((button) => {
+  if (button.dataset.tab === "analytics") {
+    button.addEventListener("click", async () => {
+      try {
+        await loadStats();
+      } catch (error) {
+        setStatus(error.message);
+      }
+    });
   }
 });
 

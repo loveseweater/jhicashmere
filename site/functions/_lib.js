@@ -99,10 +99,13 @@ function rowToProduct(row) {
 function rowToPost(row) {
   return {
     id: row.id,
+    slug: row.slug || row.id,
     title: row.title,
     date: row.date,
     excerpt: row.excerpt,
-    content: row.content
+    content: row.content,
+    seoTitle: row.seoTitle || "",
+    seoDescription: row.seoDescription || ""
   };
 }
 
@@ -124,10 +127,18 @@ export async function ensureSchema(env) {
     );
     CREATE TABLE IF NOT EXISTS posts (
       id TEXT PRIMARY KEY,
+      slug TEXT NOT NULL DEFAULT '',
       title TEXT NOT NULL,
       date TEXT NOT NULL,
       excerpt TEXT NOT NULL,
-      content TEXT NOT NULL
+      content TEXT NOT NULL,
+      seoTitle TEXT NOT NULL DEFAULT '',
+      seoDescription TEXT NOT NULL DEFAULT ''
+    );
+    CREATE TABLE IF NOT EXISTS views (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      path TEXT NOT NULL,
+      createdAt TEXT NOT NULL
     );
   `);
   schemaReady = true;
@@ -162,9 +173,18 @@ export async function seedIfNeeded(env) {
     for (const post of defaultPosts) {
       await env.DB.prepare(`
         INSERT OR REPLACE INTO posts
-        (id, title, date, excerpt, content)
-        VALUES (?, ?, ?, ?, ?)
-      `).bind(post.id, post.title, post.date, post.excerpt, post.content).run();
+        (id, slug, title, date, excerpt, content, seoTitle, seoDescription)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        post.id,
+        post.slug || post.id,
+        post.title,
+        post.date,
+        post.excerpt,
+        post.content,
+        post.seoTitle || "",
+        post.seoDescription || ""
+      ).run();
     }
   }
   seedReady = true;
@@ -184,6 +204,16 @@ export async function readPosts(env) {
   await seedIfNeeded(env);
   const { results } = await env.DB.prepare("SELECT * FROM posts ORDER BY date DESC, rowid ASC").all();
   return results.map(rowToPost);
+}
+
+export async function readPostBySlug(env, slug) {
+  if (!env.DB) {
+    return defaultPosts.find((post) => (post.slug || post.id) === slug) || null;
+  }
+  await ensureSchema(env);
+  await seedIfNeeded(env);
+  const row = await env.DB.prepare("SELECT * FROM posts WHERE slug = ? OR id = ? LIMIT 1").bind(slug, slug).first();
+  return row ? rowToPost(row) : null;
 }
 
 export async function saveProducts(env, payload) {
@@ -220,22 +250,67 @@ export async function savePosts(env, payload) {
   await ensureSchema(env);
   const normalized = payload.map((item) => ({
     ...item,
-    id: slugify(item.id || item.title)
+    id: slugify(item.id || item.title),
+    slug: slugify(item.slug || item.title)
   }));
   await env.DB.batch(
     normalized.map((item) =>
       env.DB.prepare(`
         INSERT OR REPLACE INTO posts
-        (id, title, date, excerpt, content)
-        VALUES (?, ?, ?, ?, ?)
+        (id, slug, title, date, excerpt, content, seoTitle, seoDescription)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         item.id,
+        item.slug || item.id,
         item.title || "Untitled Post",
         item.date || new Date().toISOString().slice(0, 10),
         item.excerpt || "",
-        item.content || ""
+        item.content || "",
+        item.seoTitle || "",
+        item.seoDescription || ""
       )
     )
   );
   return normalized;
+}
+
+export async function trackView(env, path) {
+  if (!env.DB) return;
+  await ensureSchema(env);
+  await env.DB.prepare(
+    "INSERT INTO views (path, createdAt) VALUES (?, ?)"
+  ).bind(path || "/", new Date().toISOString()).run();
+}
+
+export async function readStats(env) {
+  if (!env.DB) {
+    return {
+      totalViews: 0,
+      todayViews: 0,
+      productCount: defaultProducts.length,
+      postCount: defaultPosts.length,
+      topPages: []
+    };
+  }
+  await ensureSchema(env);
+  await seedIfNeeded(env);
+  const totalViewsRow = await env.DB.prepare("SELECT COUNT(*) AS count FROM views").first();
+  const todayPrefix = new Date().toISOString().slice(0, 10);
+  const todayViewsRow = await env.DB.prepare("SELECT COUNT(*) AS count FROM views WHERE createdAt LIKE ?").bind(`${todayPrefix}%`).first();
+  const productCountRow = await env.DB.prepare("SELECT COUNT(*) AS count FROM products").first();
+  const postCountRow = await env.DB.prepare("SELECT COUNT(*) AS count FROM posts").first();
+  const { results } = await env.DB.prepare(`
+    SELECT path, COUNT(*) AS views
+    FROM views
+    GROUP BY path
+    ORDER BY views DESC, path ASC
+    LIMIT 10
+  `).all();
+  return {
+    totalViews: Number(totalViewsRow?.count || 0),
+    todayViews: Number(todayViewsRow?.count || 0),
+    productCount: Number(productCountRow?.count || 0),
+    postCount: Number(postCountRow?.count || 0),
+    topPages: results || []
+  };
 }

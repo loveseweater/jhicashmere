@@ -1,16 +1,22 @@
 [
   {
     "id": "cashmere-care-guide",
+    "slug": "cashmere-care-guide",
     "title": "How to Care for Premium Cashmere Knitwear",
     "date": "2026-07-22",
     "excerpt": "Simple care habits help cashmere and premium knitwear keep their hand feel, shape, and refined surface.",
-    "content": "Wash cold by hand or dry clean according to the garment label. Dry flat, avoid hanging heavy knitwear, and store folded between wears."
+    "content": "Wash cold by hand or dry clean according to the garment label. Dry flat, avoid hanging heavy knitwear, and store folded between wears.",
+    "seoTitle": "How to Care for Premium Cashmere Knitwear | JINHEXI",
+    "seoDescription": "Practical care notes for women's cashmere and knitwear, written to support SEO and reduce returns."
   },
   {
     "id": "quiet-luxury-knitwear",
+    "slug": "quiet-luxury-knitwear",
     "title": "Why Quiet Luxury Starts with Texture",
     "date": "2026-07-22",
     "excerpt": "For women's knitwear, premium texture and restrained silhouettes often communicate more than heavy decoration.",
-    "content": "JINHEXI focuses on yarn touch, clean lines, and versatile colors for daily wardrobes, travel, and polished layering."
+    "content": "JINHEXI focuses on yarn touch, clean lines, and versatile colors for daily wardrobes, travel, and polished layering.",
+    "seoTitle": "Why Quiet Luxury Starts with Texture | JINHEXI Journal",
+    "seoDescription": "A brand note on texture, silhouette, and premium women's knitwear positioning."
   }
 ]

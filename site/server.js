@@ -8,6 +8,7 @@ const dataDir = path.join(root, "data");
 const port = Number(process.env.PORT || 4173);
 const adminPassword = process.env.JINHEXI_ADMIN_PASSWORD || "jinhexi2026";
 const sessions = new Set();
+const views = [];
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",
@@ -86,6 +87,31 @@ async function handleApi(req, res, pathname) {
     const token = crypto.randomBytes(24).toString("hex");
     sessions.add(token);
     json(res, 200, { token });
+    return;
+  }
+
+  if (pathname === "/api/track" && req.method === "POST") {
+    const body = JSON.parse((await readBody(req)) || "{}");
+    views.push({ path: body.path || "/", createdAt: new Date().toISOString() });
+    json(res, 200, { ok: true });
+    return;
+  }
+
+  if (pathname === "/api/stats" && req.method === "GET") {
+    const totalViews = views.length;
+    const todayPrefix = new Date().toISOString().slice(0, 10);
+    const todayViews = views.filter((item) => item.createdAt.startsWith(todayPrefix)).length;
+    const productCount = readJson("products").length;
+    const postCount = readJson("posts").length;
+    const topMap = new Map();
+    for (const item of views) {
+      topMap.set(item.path, (topMap.get(item.path) || 0) + 1);
+    }
+    const topPages = [...topMap.entries()]
+      .map(([pathName, count]) => ({ path: pathName, views: count }))
+      .sort((a, b) => b.views - a.views || a.path.localeCompare(b.path))
+      .slice(0, 10);
+    json(res, 200, { totalViews, todayViews, productCount, postCount, topPages });
     return;
   }
 

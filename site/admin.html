@@ -12,7 +12,7 @@
         <div>
           <p class="eyebrow">Website Admin</p>
           <h1>JINHEXI</h1>
-          <p>Manage products and blog posts for the JINHEXI cashmere site.</p>
+          <p>Manage products, blog posts, and browsing data for the JINHEXI cashmere site.</p>
         </div>
         <form class="login-form" data-login-form>
           <label>
@@ -20,7 +20,7 @@
             <input type="password" name="password" autocomplete="current-password" required />
           </label>
           <button class="button primary" type="submit">Login</button>
-          <p class="admin-note">Default local password: jinhexi2026</p>
+          <p class="admin-note">Default local password: <strong>jinhexi2026</strong></p>
         </form>
       </section>
 
@@ -36,7 +36,27 @@
         <div class="admin-tabs" role="tablist" aria-label="Admin sections">
           <button class="tab active" type="button" data-tab="products">Products</button>
           <button class="tab" type="button" data-tab="posts">Blog Posts</button>
+          <button class="tab" type="button" data-tab="analytics">Analytics</button>
         </div>
+
+        <section class="admin-overview" aria-label="Site metrics">
+          <div class="metric">
+            <strong>Total views</strong>
+            <span data-metric="views">0</span>
+          </div>
+          <div class="metric">
+            <strong>Today</strong>
+            <span data-metric="today">0</span>
+          </div>
+          <div class="metric">
+            <strong>Products</strong>
+            <span data-metric="products">0</span>
+          </div>
+          <div class="metric">
+            <strong>Posts</strong>
+            <span data-metric="posts">0</span>
+          </div>
+        </section>
 
         <section class="admin-panel active" data-panel="products">
           <div class="panel-heading">
@@ -54,6 +74,31 @@
           </div>
           <div class="editor-list" data-post-list></div>
           <button class="button primary save-button" type="button" data-save-posts>Save Posts</button>
+        </section>
+
+        <section class="admin-panel" data-panel="analytics">
+          <div class="panel-heading">
+            <h3>Analytics</h3>
+          </div>
+          <div class="analytics-grid">
+            <div class="metric">
+              <strong>Total views</strong>
+              <span data-metric="analytics-views">0</span>
+            </div>
+            <div class="metric">
+              <strong>Today</strong>
+              <span data-metric="analytics-today">0</span>
+            </div>
+            <div class="metric">
+              <strong>Products</strong>
+              <span data-metric="analytics-products">0</span>
+            </div>
+            <div class="metric">
+              <strong>Posts</strong>
+              <span data-metric="analytics-posts">0</span>
+            </div>
+          </div>
+          <div class="analytics-list" data-analytics-list></div>
         </section>
 
         <p class="admin-status" data-status></p>
