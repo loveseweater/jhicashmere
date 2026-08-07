@@ -20,14 +20,25 @@ async function trackPageview() {
   }
 }
 
-const categoryLabels = {
-  "tops": "上衣",
-  "sweaters": "毛衣",
-  "accessories": "配件",
-  "scarves": "围巾",
-  "gloves": "手套",
-  "others": "其他"
-};
+const i18n = window.JINHEXI_I18N || { locale: "en", t: (key) => key };
+
+const categoryLabels = i18n.locale === "zh"
+  ? {
+      tops: "上衣",
+      sweaters: "毛衣",
+      accessories: "配件",
+      scarves: "围巾",
+      gloves: "手套",
+      others: "其他"
+    }
+  : {
+      tops: "Tops",
+      sweaters: "Sweaters",
+      accessories: "Accessories",
+      scarves: "Scarves",
+      gloves: "Gloves",
+      others: "Other"
+    };
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -61,6 +72,79 @@ function normalizeCategory(value) {
   return map[raw.toLowerCase()] || map[raw] || "others";
 }
 
+function applyStaticLocale() {
+  const title = i18n.locale === "zh" ? "JINHEXI | 羊绒女装目录" : "JINHEXI | Cashmere Womenswear Catalog";
+  document.title = title;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) {
+    meta.content = i18n.locale === "zh"
+      ? "JINHEXI 羊绒女装目录，支持按分类浏览产品、打开产品详情页，并可跳转 Amazon 或独立站下单。"
+      : "JINHEXI cashmere womenswear catalog with category browsing, product detail pages, and Amazon or direct-site buying paths.";
+  }
+
+  const navMap = [
+    ["#nav-catalog", i18n.t("catalog")],
+    ["#nav-journal", i18n.t("journal")],
+    ["#nav-social", i18n.t("social")]
+  ];
+  navMap.forEach(([selector, value]) => {
+    const node = document.querySelector(selector);
+    if (node) node.textContent = value;
+  });
+
+  const introTitle = document.querySelector("[data-copy-title]");
+  if (introTitle) introTitle.textContent = i18n.locale === "zh" ? "按分类逛货，直接看产品。" : "Shop by category, then open the product.";
+  const introText = document.querySelector("[data-copy-text]");
+  if (introText) introText.textContent = i18n.locale === "zh"
+    ? "这是一个可持续更新的商品目录，不是营销主页。先看上衣、毛衣、围巾、手套和配件，再跳转到 Amazon 或独立站款式。"
+    : "This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.";
+  const browseButton = document.querySelector("[data-browse-button]");
+  if (browseButton) browseButton.textContent = i18n.t("browseCatalog");
+  const journalButton = document.querySelector("[data-journal-button]");
+  if (journalButton) journalButton.textContent = i18n.t("openJournal");
+
+  const summary = document.querySelectorAll("[data-summary-item]");
+  if (summary[0]) {
+    summary[0].querySelector("[data-summary-title]").textContent = i18n.t("directSite");
+    summary[0].querySelector("[data-summary-text]").textContent = i18n.t("ownStyles");
+  }
+  if (summary[1]) {
+    summary[1].querySelector("[data-summary-title]").textContent = i18n.t("amazon");
+    summary[1].querySelector("[data-summary-text]").textContent = i18n.t("amazonTraffic");
+  }
+  if (summary[2]) {
+    summary[2].querySelector("[data-summary-title]").textContent = i18n.t("whatsapp");
+    summary[2].querySelector("[data-summary-text]").textContent = i18n.t("quickContact");
+  }
+
+  const catalogHeader = document.querySelector("[data-catalog-heading]");
+  if (catalogHeader) catalogHeader.textContent = i18n.t("categoryBrowsing");
+  const catalogEyebrow = document.querySelector("[data-catalog-eyebrow]");
+  if (catalogEyebrow) catalogEyebrow.textContent = i18n.t("productCatalog");
+  const catalogNote = document.querySelector("[data-catalog-note]");
+  if (catalogNote) catalogNote.textContent = i18n.t("catalogNote");
+
+  const journalHeader = document.querySelector("[data-journal-heading]");
+  if (journalHeader) journalHeader.textContent = i18n.t("postsAndArticles");
+  const journalEyebrow = document.querySelector("[data-journal-eyebrow]");
+  if (journalEyebrow) journalEyebrow.textContent = i18n.t("seoJournal");
+  const journalNote = document.querySelector("[data-journal-note]");
+  if (journalNote) journalNote.textContent = i18n.t("journalNote");
+
+  const socialHeader = document.querySelector("[data-social-heading]");
+  if (socialHeader) socialHeader.textContent = i18n.t("socialPlatforms");
+
+  const contactTitle = document.querySelector("[data-contact-title]");
+  if (contactTitle) contactTitle.textContent = i18n.t("contactTitle");
+  const contactText = document.querySelector("[data-contact-text]");
+  if (contactText) contactText.textContent = i18n.t("contactText");
+  const contactLink = document.querySelector("[data-contact-link]");
+  if (contactLink) contactLink.textContent = `${i18n.t("whatsapp")} +86 136 0232 8348`;
+
+  const footerText = document.querySelector("[data-footer-text]");
+  if (footerText) footerText.textContent = i18n.locale === "zh" ? "羊绒女装目录" : "Cashmere Womenswear Catalog";
+}
+
 function productTemplate(product) {
   const tone = ["ivory", "sage", "charcoal"].includes(product.tone) ? product.tone : "ivory";
   const gallery = Array.isArray(product.gallery) && product.gallery.length
@@ -68,8 +152,8 @@ function productTemplate(product) {
     : [product.image || `assets/products/cashmere-${tone}.svg`];
   const image = gallery[0];
   const amazonButton = product.amazonUrl
-    ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || "View on Amazon")}</a>`
-    : `<span class="amazon-link disabled">Amazon Coming Soon</span>`;
+    ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || i18n.t("viewOnAmazon"))}</a>`
+    : `<span class="amazon-link disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
   const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />`).join("");
   const category = normalizeCategory(product.category);
   const id = encodeURIComponent(product.id || product.name || "");
@@ -82,16 +166,16 @@ function productTemplate(product) {
       <div class="product-info">
         <div class="product-meta">
           <span>${escapeHtml(categoryLabels[category] || product.category || "其他")}</span>
-          <span>${escapeHtml(product.status || "Coming Soon")}</span>
+          <span>${escapeHtml(product.status || i18n.t("status"))}</span>
         </div>
         <h3><a href="/product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
-        <p class="product-channel">${escapeHtml(product.channel === "site" ? "Exclusive to JINHEXI" : product.channel === "amazon" ? "Amazon Collection" : "Amazon + Site")}</p>
+        <p class="product-channel">${escapeHtml(product.channel === "site" ? i18n.t("exclusiveSite") : product.channel === "amazon" ? i18n.t("amazonCollection") : i18n.t("bothChannels"))}</p>
         <p>${escapeHtml(product.subtitle || product.description)}</p>
         <div class="product-line">
           <span>${escapeHtml(product.colors)}</span>
           <strong>${escapeHtml(product.price)}</strong>
         </div>
-        <a class="detail-link" href="/product.html?id=${id}">查看详情</a>
+        <a class="detail-link" href="/product.html?id=${id}">${escapeHtml(i18n.t("viewDetails"))}</a>
         ${amazonButton}
       </div>
     </article>
@@ -105,7 +189,7 @@ function postTemplate(post) {
       <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
       <h3>${escapeHtml(post.title)}</h3>
       <p>${escapeHtml(post.excerpt)}</p>
-      <a class="post-link" href="/journal.html?post=${slug}">Read more</a>
+      <a class="post-link" href="/journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
   `;
 }
@@ -131,6 +215,7 @@ const fallbackPosts = [
 ];
 
 async function renderSiteData() {
+  applyStaticLocale();
   const localProducts = await loadJson("/data/products.json", fallbackProducts);
   const apiProducts = await loadJson("/api/products", localProducts);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : localProducts;
@@ -152,7 +237,7 @@ async function renderSiteData() {
       const visible = filteredProducts();
       productGrid.innerHTML = visible.length
         ? visible.map(productTemplate).join("")
-        : `<article class="empty-state"><h3>当前分类暂无产品</h3><p>你可以在后台新增产品，或者切换到其他分类。</p></article>`;
+        : `<article class="empty-state"><h3>${escapeHtml(i18n.t("noProducts"))}</h3><p>${escapeHtml(i18n.t("noProductsNote"))}</p></article>`;
     }
   }
 
@@ -160,7 +245,7 @@ async function renderSiteData() {
     filterGrid.innerHTML = categories
       .map((category) => `
         <button type="button" class="category-pill${category === activeCategory ? " active" : ""}" data-category="${category}">
-          ${escapeHtml(category === "all" ? "全部" : categoryLabels[category])}
+          ${escapeHtml(category === "all" ? i18n.t("all") : categoryLabels[category])}
         </button>
       `)
       .join("");

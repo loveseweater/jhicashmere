@@ -1,3 +1,5 @@
+const i18n = window.JINHEXI_I18N || { locale: "en", t: (key) => key };
+
 async function loadJson(url, fallback) {
   try {
     const response = await fetch(url, { cache: "no-store" });
@@ -27,7 +29,7 @@ function postTemplate(post) {
         <p>${escapeHtml(post.excerpt)}</p>
         <p class="post-body">${escapeHtml(post.content)}</p>
       </div>
-      <a class="post-link" href="/journal.html?post=${slug}">Read more</a>
+      <a class="post-link" href="/journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
   `;
 }
@@ -43,7 +45,7 @@ function renderSinglePost(post) {
         <p>${escapeHtml(post.excerpt)}</p>
         <p class="post-body">${escapeHtml(post.content)}</p>
       </div>
-      <a class="post-link" href="/journal.html">Back to all posts</a>
+      <a class="post-link" href="/journal.html">${escapeHtml(i18n.t("backToHome"))}</a>
     </article>
   `;
   document.title = post.seoTitle || `${post.title} | JINHEXI Journal`;
@@ -53,7 +55,30 @@ function renderSinglePost(post) {
   }
 }
 
+function applyLocale() {
+  document.documentElement.lang = i18n.locale === "zh" ? "zh-CN" : "en";
+  const home = document.querySelector("[data-nav-home]");
+  const catalog = document.querySelector("[data-nav-catalog]");
+  const social = document.querySelector("[data-nav-social]");
+  const admin = document.querySelector("[data-nav-admin]");
+  const back = document.querySelector("[data-back-link]");
+  if (home) home.textContent = i18n.locale === "zh" ? "首页" : "Home";
+  if (catalog) catalog.textContent = i18n.t("catalog");
+  if (social) social.textContent = i18n.t("social");
+  if (admin) admin.textContent = i18n.t("adminLogin");
+  if (back) back.textContent = i18n.t("backToHome");
+  const eyebrow = document.querySelector("[data-journal-eyebrow]");
+  const heading = document.querySelector("[data-journal-heading]");
+  const intro = document.querySelector("[data-journal-intro]");
+  if (eyebrow) eyebrow.textContent = i18n.t("journal");
+  if (heading) heading.textContent = i18n.locale === "zh"
+    ? "用于羊绒内容、护理和 SEO 的博文。"
+    : "SEO articles for premium cashmere knitwear.";
+  if (intro) intro.textContent = i18n.t("journalIntro");
+}
+
 async function init() {
+  applyLocale();
   const posts = await loadJson("/api/posts", []);
   const params = new URLSearchParams(location.search);
   const target = params.get("post");

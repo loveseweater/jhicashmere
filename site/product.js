@@ -1,3 +1,5 @@
+const i18n = window.JINHEXI_I18N || { locale: "en", t: (key) => key };
+
 async function loadJson(url, fallback) {
   try {
     const response = await fetch(url, { cache: "no-store" });
@@ -35,18 +37,37 @@ function detailRow(label, value) {
   `;
 }
 
+function applyLocale() {
+  const title = i18n.locale === "zh" ? "JINHEXI | 产品详情" : "JINHEXI | Product Detail";
+  document.title = title;
+  const meta = document.querySelector('meta[name="description"]');
+  if (meta) {
+    meta.content = i18n.locale === "zh"
+      ? "JINHEXI 产品详情页，展示卖点、材质、尺码、护理和购买信息。"
+      : "JINHEXI product detail page with listing notes, materials, size, care, and buying information.";
+  }
+  const navCatalog = document.querySelector("#nav-catalog");
+  const navJournal = document.querySelector("#nav-journal");
+  const navSocial = document.querySelector("#nav-social");
+  if (navCatalog) navCatalog.textContent = i18n.t("catalog");
+  if (navJournal) navJournal.textContent = i18n.t("journal");
+  if (navSocial) navSocial.textContent = i18n.t("social");
+  const loadingTitle = document.querySelector("[data-loading-title]");
+  if (loadingTitle) loadingTitle.textContent = i18n.t("loadingProduct");
+  const headerAction = document.querySelector(".header-action");
+  if (headerAction) headerAction.textContent = i18n.t("whatsapp");
+}
+
 function renderProduct(product) {
   const gallery = Array.isArray(product.gallery) && product.gallery.length
     ? product.gallery
     : [product.image || "assets/products/cashmere-ivory.svg"];
   const bullets = lines(product.bullets);
   const amazonButton = product.amazonUrl
-    ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || "View on Amazon")}</a>`
-    : `<span class="button secondary disabled">Amazon Coming Soon</span>`;
+    ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || i18n.t("viewOnAmazon"))}</a>`
+    : `<span class="button secondary disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
 
-  document.title = `${product.name || "Product"} | JINHEXI`;
-  const meta = document.querySelector('meta[name="description"]');
-  if (meta) meta.content = product.seoDescription || product.subtitle || product.description || "";
+  document.title = `${product.name || i18n.t("productDetail")} | JINHEXI`;
 
   return `
     <section class="product-detail">
@@ -62,43 +83,43 @@ function renderProduct(product) {
         <p class="product-subtitle">${escapeHtml(product.subtitle || product.description)}</p>
         <div class="product-price-row">
           <strong>${escapeHtml(product.price)}</strong>
-          <span>${escapeHtml(product.status || "Coming Soon")}</span>
+          <span>${escapeHtml(product.status || i18n.t("status"))}</span>
         </div>
         <div class="product-actions">
           ${amazonButton}
-          <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp 咨询</a>
+          <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">${escapeHtml(i18n.t("whatsappInquiry"))}</a>
         </div>
-        <a class="detail-link" href="/#catalog">返回分类</a>
+        <a class="detail-link" href="/#catalog">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
     </section>
 
     <section class="section product-listing-section">
       <div class="section-heading">
         <div>
-          <p class="eyebrow">Listing Brief</p>
-          <h2>产品资料</h2>
+          <p class="eyebrow">${escapeHtml(i18n.t("productBrief"))}</p>
+          <h2>${escapeHtml(i18n.t("productBrief"))}</h2>
         </div>
-        <p class="section-note">这里是简化版 Amazon Listing 信息，后台可以维护。</p>
+        <p class="section-note">${escapeHtml(i18n.t("listingBriefNote"))}</p>
       </div>
       <div class="listing-grid">
         <article class="listing-panel">
-          <h3>核心卖点</h3>
+          <h3>${escapeHtml(i18n.t("coreBullets"))}</h3>
           <ul class="bullet-list">
             ${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("") || `<li>${escapeHtml(product.description || "Premium cashmere knitwear.")}</li>`}
           </ul>
         </article>
         <article class="listing-panel specs-panel">
-          <h3>买家需要知道</h3>
-          ${detailRow("颜色", product.colors)}
-          ${detailRow("材质", product.material)}
-          ${detailRow("尺码", product.sizeRange)}
-          ${detailRow("版型", product.fit)}
-          ${detailRow("护理", product.care)}
-          ${detailRow("适用场景", product.occasion)}
-          ${detailRow("关键词", product.searchKeywords)}
+          <h3>${escapeHtml(i18n.t("buyerNeeds"))}</h3>
+          ${detailRow(i18n.t("colors"), product.colors)}
+          ${detailRow(i18n.t("material"), product.material)}
+          ${detailRow(i18n.t("size"), product.sizeRange)}
+          ${detailRow(i18n.t("fit"), product.fit)}
+          ${detailRow(i18n.t("care"), product.care)}
+          ${detailRow(i18n.t("occasion"), product.occasion)}
+          ${detailRow(i18n.t("keywords"), product.searchKeywords)}
         </article>
         <article class="listing-panel wide">
-          <h3>产品简介</h3>
+          <h3>${escapeHtml(i18n.t("productIntro"))}</h3>
           <p>${escapeHtml(product.description)}</p>
         </article>
       </div>
@@ -107,6 +128,7 @@ function renderProduct(product) {
 }
 
 async function init() {
+  applyLocale();
   const fallback = await loadJson("/data/products.json", []);
   const apiProducts = await loadJson("/api/products", fallback);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : fallback;
@@ -116,7 +138,9 @@ async function init() {
   const page = document.querySelector("[data-product-page]");
   if (!page) return;
   if (!product) {
-    page.innerHTML = `<section class="product-detail-loading"><h1>暂无产品</h1><p>请先在后台新增产品。</p></section>`;
+    page.innerHTML = i18n.locale === "zh"
+      ? `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`
+      : `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`;
     return;
   }
   page.innerHTML = renderProduct(product);

@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JINHEXI 产品详情</title>
-    <meta name="description" content="JINHEXI 羊绒女装产品详情、卖点、材质、尺码、护理和购买信息。" />
+    <title>JINHEXI | Product Detail</title>
+    <meta name="description" content="JINHEXI product detail page with listing notes, materials, size, care, and buying information." />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -13,9 +13,9 @@
         <img class="brand-logo" src="assets/logo-jinhexi.svg" alt="JINHEXI" />
       </a>
       <nav class="site-nav" aria-label="Primary navigation">
-        <a href="/#catalog">分类</a>
-        <a href="/#journal">博文</a>
-        <a href="/#social">社媒</a>
+        <a href="/#catalog" id="nav-catalog">Catalog</a>
+        <a href="/#journal" id="nav-journal">Journal</a>
+        <a href="/#social" id="nav-social">Social</a>
       </nav>
       <a class="header-action" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp</a>
     </header>
@@ -23,13 +23,14 @@
     <main class="product-page" data-product-page>
       <section class="product-detail-loading">
         <p class="eyebrow">JINHEXI</p>
-        <h1>正在加载产品</h1>
+        <h1 data-loading-title>Loading product</h1>
       </section>
     </main>
 
     <a class="whatsapp-float" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer" aria-label="WhatsApp chat">
       WhatsApp
     </a>
+    <script src="i18n.js"></script>
     <script src="product.js"></script>
   </body>
 </html>
