@@ -173,6 +173,7 @@ export async function ensureSchema(env) {
     );
   `);
   await ensureColumn(env, "products", "channel", "TEXT NOT NULL DEFAULT 'both'");
+  await ensureColumn(env, "products", "category", "TEXT NOT NULL DEFAULT 'others'");
   await ensureColumn(env, "products", "gallery", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "slug", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "seoTitle", "TEXT NOT NULL DEFAULT ''");

@@ -47,6 +47,96 @@ a {
   backdrop-filter: blur(18px);
 }
 
+.catalog-page {
+  padding-top: 88px;
+}
+
+.catalog-intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, 0.75fr);
+  gap: 24px;
+  padding: 42px clamp(18px, 5vw, 64px) 24px;
+  align-items: end;
+}
+
+.catalog-copy h1 {
+  max-width: 11ch;
+}
+
+.catalog-text {
+  max-width: 760px;
+  color: var(--muted);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.catalog-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.catalog-summary {
+  display: grid;
+  gap: 1px;
+  border: 1px solid var(--line);
+  background: var(--line);
+}
+
+.catalog-summary div {
+  display: grid;
+  gap: 8px;
+  min-height: 104px;
+  padding: 20px 22px;
+  background: var(--white);
+}
+
+.catalog-summary strong {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.catalog-summary span {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 22px;
+}
+
+.category-pill {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.category-pill.active {
+  color: var(--white);
+  background: var(--ink);
+  border-color: var(--ink);
+}
+
+.section-note {
+  max-width: 420px;
+  margin: 0;
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
 .brand {
   display: inline-flex;
   align-items: center;
@@ -259,35 +349,49 @@ h3 {
 }
 
 .social-grid {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
 }
 
-.social-grid a {
-  padding: 18px 20px;
+.social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
   border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--ink);
   background: var(--white);
   font-family: Arial, sans-serif;
-  font-size: 13px;
+  font-size: 18px;
   font-weight: 700;
-  text-transform: uppercase;
-  display: grid;
-  gap: 6px;
-  min-height: 96px;
-  align-content: space-between;
+  transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 
-.social-grid a strong {
-  display: block;
-  font-size: 13px;
+.social-icon:hover {
+  color: var(--white);
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
-.social-grid a span {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 400;
-  text-transform: none;
+.social-icon span {
+  line-height: 1;
+}
+
+.social-icon.youtube span {
+  transform: translateX(1px);
+}
+
+.social-icon.facebook span {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.social-icon.pinterest span {
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 22px;
 }
 
 .studio-grid {
@@ -370,6 +474,10 @@ h3 {
   color: var(--muted);
   font-size: 16px;
   line-height: 1.5;
+}
+
+.product-channel {
+  min-height: 20px;
 }
 
 .product-info span,
@@ -503,6 +611,13 @@ h3 {
   color: var(--ink);
 }
 
+.empty-state {
+  grid-column: 1 / -1;
+  padding: 28px;
+  border: 1px dashed var(--line);
+  background: var(--white);
+}
+
 .size-table-wrap {
   overflow-x: auto;
   border: 1px solid var(--line);
@@ -558,6 +673,25 @@ h3 {
   border-bottom: 1px solid rgba(255, 255, 255, 0.22);
   color: rgba(255, 255, 255, 0.82);
   font-family: Arial, sans-serif;
+}
+
+.whatsapp-float {
+  position: fixed;
+  z-index: 12;
+  right: 18px;
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 124px;
+  min-height: 48px;
+  padding: 0 18px;
+  border: 1px solid #1f7a47;
+  color: var(--white);
+  background: #25d366;
+  font-family: Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .site-footer {
@@ -863,6 +997,10 @@ textarea {
   .site-footer {
     flex-direction: column;
   }
+
+  .catalog-intro {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 520px) {
@@ -904,7 +1042,20 @@ textarea {
     padding: 64px 18px;
   }
 
+  .catalog-page {
+    padding-top: 74px;
+  }
+
+  .catalog-intro {
+    padding: 28px 18px 18px;
+  }
+
   .care-list div {
     grid-template-columns: 1fr;
+  }
+
+  .whatsapp-float {
+    right: 14px;
+    bottom: 14px;
   }
 }

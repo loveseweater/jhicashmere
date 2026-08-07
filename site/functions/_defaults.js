@@ -2,7 +2,7 @@ export const defaultProducts = [
   {
     id: "cashmere-crewneck",
     name: "Cashmere Crewneck",
-    category: "Pullover Sweaters",
+    category: "sweaters",
     channel: "both",
     colors: "Ivory / Taupe / Charcoal",
     description: "Minimal daily sweater with a smooth hand feel and versatile fit.",
@@ -19,14 +19,14 @@ export const defaultProducts = [
     ]
   },
   {
-    id: "fine-knit-cardigan",
-    name: "Fine Knit Cardigan",
-    category: "Cardigans",
+    id: "soft-knit-top",
+    name: "Soft Knit Top",
+    category: "tops",
     channel: "site",
-    colors: "Soft Sage / Heather Grey",
-    description: "Lightweight layer for office, travel, and transitional weather.",
-    price: "$118.00",
-    status: "Coming Soon",
+    colors: "Pearl / Sand / Grey",
+    description: "Light layer for everyday wear with a clean neckline and gentle drape.",
+    price: "$98.00",
+    status: "Site Exclusive",
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "sage",
@@ -38,14 +38,14 @@ export const defaultProducts = [
     ]
   },
   {
-    id: "ribbed-turtleneck",
-    name: "Ribbed Turtleneck",
-    category: "Turtlenecks",
+    id: "winter-scarf",
+    name: "Winter Scarf",
+    category: "scarves",
     channel: "amazon",
-    colors: "Black / Camel / Cream",
-    description: "Structured rib texture with a slim, warm, under-coat silhouette.",
-    price: "$109.00",
-    status: "Coming Soon",
+    colors: "Oat / Camel / Black",
+    description: "Soft wrapping scarf designed for cold-weather layering and gifting.",
+    price: "$69.00",
+    status: "Amazon Ready",
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "charcoal",
@@ -54,6 +54,44 @@ export const defaultProducts = [
       "assets/products/cashmere-charcoal.svg",
       "assets/products/cashmere-ivory.svg",
       "assets/products/cashmere-sage.svg"
+    ]
+  },
+  {
+    id: "knit-gloves",
+    name: "Knit Gloves",
+    category: "gloves",
+    channel: "site",
+    colors: "Stone / Cocoa / Black",
+    description: "Compact winter accessory with a neat fit and warm hand feel.",
+    price: "$39.00",
+    status: "Draft",
+    amazonUrl: "",
+    amazonLabel: "View on Amazon",
+    tone: "ivory",
+    image: "assets/products/cashmere-ivory.svg",
+    gallery: [
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-charcoal.svg",
+      "assets/products/cashmere-sage.svg"
+    ]
+  },
+  {
+    id: "ribbed-accessories-set",
+    name: "Ribbed Accessories Set",
+    category: "accessories",
+    channel: "both",
+    colors: "Neutral Mix",
+    description: "A small accessory grouping for cross-sell, gifting, and seasonal bundles.",
+    price: "$58.00",
+    status: "Coming Soon",
+    amazonUrl: "",
+    amazonLabel: "View on Amazon",
+    tone: "sage",
+    image: "assets/products/cashmere-sage.svg",
+    gallery: [
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-charcoal.svg"
     ]
   }
 ];

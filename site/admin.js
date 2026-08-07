@@ -62,6 +62,27 @@ function field(label, value, key, type = "text") {
   `;
 }
 
+function categoryField(value) {
+  const options = [
+    ["tops", "上衣"],
+    ["sweaters", "毛衣"],
+    ["accessories", "配件"],
+    ["scarves", "围巾"],
+    ["gloves", "手套"],
+    ["others", "其他"]
+  ];
+  return `
+    <label>
+      分类
+      <select data-key="category">
+        ${options
+          .map(([valueKey, label]) => `<option value="${valueKey}"${String(value || "").trim() === valueKey ? " selected" : ""}>${label}</option>`)
+          .join("")}
+      </select>
+    </label>
+  `;
+}
+
 function textarea(label, value, key) {
   return `
     <label class="wide-field">
@@ -100,7 +121,7 @@ function renderProducts() {
           </div>
           <div class="editor-grid">
             ${field("Name", product.name, "name")}
-            ${field("Category", product.category, "category")}
+            ${categoryField(product.category)}
             ${field("Channel", product.channel, "channel")}
             ${field("Colors", product.colors, "colors")}
             ${field("Price", product.price, "price")}
@@ -195,9 +216,9 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
 
 document.querySelector("[data-add-product]").addEventListener("click", () => {
   products = collect("[data-product-list]", products);
-  products.push({
-    name: "New Knitwear Product",
-    category: "Women's Sweaters",
+    products.push({
+      name: "New Knitwear Product",
+      category: "sweaters",
     channel: "both",
     colors: "Ivory / Taupe",
     description: "Describe the product fabric, fit, and occasion.",
