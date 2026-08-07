@@ -3,24 +3,36 @@
   <desc id="desc">Premium women's cashmere sweater in ivory.</desc>
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#f8f4ed"/>
-      <stop offset="100%" stop-color="#efe5d6"/>
+      <stop offset="0%" stop-color="#f9f6f0"/>
+      <stop offset="100%" stop-color="#ece4d9"/>
     </linearGradient>
-    <linearGradient id="sweater" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f5efe8"/>
+    </linearGradient>
+    <linearGradient id="fabric" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#fffdf9"/>
-      <stop offset="100%" stop-color="#d9cbb8"/>
+      <stop offset="55%" stop-color="#f4eee4"/>
+      <stop offset="100%" stop-color="#d8cabb"/>
+    </linearGradient>
+    <linearGradient id="fabricSoft" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.85"/>
+      <stop offset="100%" stop-color="#d1c1ad" stop-opacity="0.35"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="1500" fill="url(#bg)"/>
-  <rect x="96" y="96" width="1008" height="1308" rx="42" fill="#fffdf9" stroke="#d9ccb9" stroke-width="6"/>
-  <g transform="translate(258 252)">
-    <path d="M186 120c34-44 84-68 144-68h60c60 0 110 24 144 68l126 166-112 84-62-90v716H234V280l-62 90-112-84z" fill="url(#sweater)" stroke="#bfae9a" stroke-width="8" stroke-linejoin="round"/>
-    <path d="M330 78c0 76 0 120-24 184 48 54 72 108 72 160s-24 106-72 160c24 64 24 108 24 184" fill="none" stroke="#e6ddd0" stroke-width="10" opacity="0.8"/>
-    <path d="M510 286l126-166" fill="none" stroke="#cbb8a4" stroke-width="8"/>
-    <path d="M180 286L54 120" fill="none" stroke="#cbb8a4" stroke-width="8"/>
-    <path d="M285 520h234" stroke="#c7b49f" stroke-width="10" opacity="0.7"/>
-    <path d="M285 686h234" stroke="#c7b49f" stroke-width="10" opacity="0.45"/>
-    <path d="M285 852h234" stroke="#c7b49f" stroke-width="10" opacity="0.28"/>
+  <rect x="88" y="88" width="1024" height="1324" rx="44" fill="url(#frame)" stroke="#d9cebf" stroke-width="4"/>
+  <ellipse cx="600" cy="1096" rx="264" ry="64" fill="#b39d88" opacity="0.18"/>
+  <g transform="translate(234 226)">
+    <path d="M194 132c30-47 80-74 147-74h76c67 0 117 27 147 74l108 166-98 76-58-92v712H242V282l-58 92-98-76z" fill="url(#fabric)" stroke="#c8b7a4" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M340 62c0 72 0 112-24 176 45 50 69 104 69 156s-24 106-69 156c24 64 24 104 24 176" fill="none" stroke="#e9dfd1" stroke-width="10" opacity="0.75"/>
+    <path d="M514 292l108-166" fill="none" stroke="#cfbeab" stroke-width="7" stroke-linecap="round"/>
+    <path d="M174 292L66 126" fill="none" stroke="#cfbeab" stroke-width="7" stroke-linecap="round"/>
+    <path d="M286 506h218" stroke="#d2c2b0" stroke-width="10" opacity="0.75"/>
+    <path d="M286 670h218" stroke="#dccfbe" stroke-width="10" opacity="0.52"/>
+    <path d="M286 834h218" stroke="#e8ded0" stroke-width="10" opacity="0.32"/>
+    <path d="M286 998h218" stroke="#efe8de" stroke-width="10" opacity="0.22"/>
+    <path d="M236 284c28 10 64 16 104 16h108c40 0 76-6 104-16" fill="none" stroke="url(#fabricSoft)" stroke-width="18" stroke-linecap="round" opacity="0.7"/>
+    <path d="M266 1016c56 26 112 38 174 38 58 0 112-10 166-32" fill="none" stroke="#cdbca8" stroke-width="6" opacity="0.5"/>
   </g>
-  <text x="600" y="1268" text-anchor="middle" font-family="Arial, Helvetica, sans-serif" font-size="36" font-weight="700" letter-spacing="9" fill="#7a6d5e">JINHEXI CASHMERE</text>
 </svg>

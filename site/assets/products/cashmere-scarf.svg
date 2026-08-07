@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Cashmere Scarf</title>
+  <desc id="desc">Premium women's cashmere scarf in a soft studio flat lay.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f8f5ef"/>
+      <stop offset="100%" stop-color="#e8e0d5"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f7f0e8"/>
+    </linearGradient>
+    <linearGradient id="scarf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ede5d8"/>
+      <stop offset="48%" stop-color="#c9b6a4"/>
+      <stop offset="100%" stop-color="#8f7a69"/>
+    </linearGradient>
+    <linearGradient id="scarfEdge" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#b49f8d"/>
+      <stop offset="100%" stop-color="#756455"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <rect x="88" y="88" width="1024" height="1324" rx="44" fill="url(#frame)" stroke="#d9cdc0" stroke-width="4"/>
+  <ellipse cx="600" cy="1064" rx="322" ry="72" fill="#7a695b" opacity="0.16"/>
+  <g transform="translate(196 250)">
+    <path d="M170 220c74-76 176-114 304-114 110 0 204 30 280 90l34 28c26 20 40 48 40 82 0 54-32 94-96 122-76 34-176 50-300 50-110 0-206-14-286-42-64-24-94-58-94-102 0-28 12-54 36-76z" fill="url(#scarf)" opacity="0.92"/>
+    <path d="M156 282c86-56 194-84 322-84 120 0 222 24 306 72" fill="none" stroke="#eee4d7" stroke-width="20" stroke-linecap="round" opacity="0.45"/>
+    <path d="M204 362c80 46 176 68 288 68 104 0 198-16 282-48" fill="none" stroke="#8b7766" stroke-width="12" opacity="0.28"/>
+    <path d="M210 422c34 140 24 256-30 348" fill="none" stroke="url(#scarfEdge)" stroke-width="34" stroke-linecap="round"/>
+    <path d="M860 420c20 142 10 260-34 350" fill="none" stroke="url(#scarfEdge)" stroke-width="34" stroke-linecap="round"/>
+    <path d="M188 430c-4 136 4 250 22 340" fill="none" stroke="#b9a291" stroke-width="12" opacity="0.55"/>
+    <path d="M842 430c2 134-4 248-24 340" fill="none" stroke="#b9a291" stroke-width="12" opacity="0.55"/>
+    <path d="M322 452c82 46 200 68 338 66 94-2 176-14 246-36" fill="none" stroke="#f4ece2" stroke-width="18" opacity="0.4"/>
+    <path d="M294 212c26-24 62-42 106-52" fill="none" stroke="#f6efe6" stroke-width="12" opacity="0.3"/>
+    <path d="M646 132c54 8 100 24 138 48" fill="none" stroke="#f6efe6" stroke-width="12" opacity="0.3"/>
+  </g>
+</svg>

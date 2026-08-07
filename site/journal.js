@@ -45,7 +45,7 @@ function renderSinglePost(post) {
         <p>${escapeHtml(post.excerpt)}</p>
         <p class="post-body">${escapeHtml(post.content)}</p>
       </div>
-      <a class="post-link" href="/journal.html">${escapeHtml(i18n.t("backToHome"))}</a>
+      <a class="post-link" href="/journal.html">${escapeHtml(i18n.t("backToPosts"))}</a>
     </article>
   `;
   document.title = post.seoTitle || `${post.title} | JINHEXI Journal`;

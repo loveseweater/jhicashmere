@@ -72,6 +72,12 @@ function normalizeCategory(value) {
   return map[raw.toLowerCase()] || map[raw] || "others";
 }
 
+function normalizeChannel(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  if (["site", "amazon", "both"].includes(raw)) return raw;
+  return "all";
+}
+
 function applyStaticLocale() {
   const title = i18n.locale === "zh" ? "JINHEXI | 羊绒女装目录" : "JINHEXI | Cashmere Womenswear Catalog";
   document.title = title;
@@ -107,14 +113,17 @@ function applyStaticLocale() {
   if (summary[0]) {
     summary[0].querySelector("[data-summary-title]").textContent = i18n.t("directSite");
     summary[0].querySelector("[data-summary-text]").textContent = i18n.t("ownStyles");
+    summary[0].querySelector("[data-summary-cta]").textContent = i18n.t("shopSiteStyles");
   }
   if (summary[1]) {
     summary[1].querySelector("[data-summary-title]").textContent = i18n.t("amazon");
     summary[1].querySelector("[data-summary-text]").textContent = i18n.t("amazonTraffic");
+    summary[1].querySelector("[data-summary-cta]").textContent = i18n.t("seeAmazonStyles");
   }
   if (summary[2]) {
     summary[2].querySelector("[data-summary-title]").textContent = i18n.t("whatsapp");
     summary[2].querySelector("[data-summary-text]").textContent = i18n.t("quickContact");
+    summary[2].querySelector("[data-summary-cta]").textContent = i18n.t("chatNow");
   }
 
   const catalogHeader = document.querySelector("[data-catalog-heading]");
@@ -220,16 +229,25 @@ async function renderSiteData() {
   const apiProducts = await loadJson("/api/products", localProducts);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : localProducts;
   const posts = await loadJson("/api/posts", fallbackPosts);
+  const params = new URLSearchParams(location.search);
+  const initialChannel = normalizeChannel(params.get("channel"));
   const productGrid = document.querySelector("[data-products]");
   const postGrid = document.querySelector("[data-posts]");
   const filterGrid = document.querySelector("[data-category-filters]");
   const categories = ["all", "tops", "sweaters", "accessories", "scarves", "gloves", "others"];
   let activeCategory = "all";
+  let activeChannel = initialChannel;
 
   function filteredProducts() {
-    return activeCategory === "all"
-      ? products
-      : products.filter((product) => normalizeCategory(product.category) === activeCategory);
+    return products.filter((product) => {
+      const categoryMatch = activeCategory === "all" || normalizeCategory(product.category) === activeCategory;
+      if (!categoryMatch) return false;
+      if (activeChannel === "all") return true;
+      const productChannel = String(product.channel || "both").toLowerCase();
+      if (activeChannel === "site") return productChannel === "site" || productChannel === "both";
+      if (activeChannel === "amazon") return productChannel === "amazon" || productChannel === "both";
+      return productChannel === activeChannel;
+    });
   }
 
   function renderProducts() {

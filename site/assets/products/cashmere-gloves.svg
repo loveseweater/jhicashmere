@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Cashmere Gloves</title>
+  <desc id="desc">Premium women's cashmere gloves in a soft studio arrangement.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f7f4ef"/>
+      <stop offset="100%" stop-color="#e6dfd5"/>
+    </linearGradient>
+    <linearGradient id="frame" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#f6efe7"/>
+    </linearGradient>
+    <linearGradient id="gloveLight" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#f8f5ef"/>
+      <stop offset="45%" stop-color="#cbb9a6"/>
+      <stop offset="100%" stop-color="#7f6c5d"/>
+    </linearGradient>
+    <linearGradient id="gloveDark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#d3c4b3"/>
+      <stop offset="100%" stop-color="#8a7869"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <rect x="88" y="88" width="1024" height="1324" rx="44" fill="url(#frame)" stroke="#d8cdbf" stroke-width="4"/>
+  <ellipse cx="600" cy="1076" rx="250" ry="64" fill="#7b6a5b" opacity="0.16"/>
+  <g transform="translate(250 236)">
+    <path d="M240 148c24-54 68-84 130-84h24c62 0 106 30 130 84l38 86c10 22 6 42-12 58l-104 96c-26 24-62 36-108 36h-12c-46 0-82-12-108-36l-104-96c-18-16-22-36-12-58z" fill="url(#gloveLight)" stroke="#8d7a6b" stroke-width="7" stroke-linejoin="round"/>
+    <path d="M260 216c18-42 52-66 102-66h16c50 0 84 24 102 66l18 40c8 16 4 32-10 44l-58 54c-16 16-40 24-70 24h-30c-30 0-54-8-70-24l-58-54c-14-12-18-28-10-44z" fill="url(#gloveDark)" stroke="#7f6c5d" stroke-width="6" stroke-linejoin="round"/>
+    <path d="M326 110v92" stroke="#f2e8db" stroke-width="10" opacity="0.58" stroke-linecap="round"/>
+    <path d="M378 110v84" stroke="#f2e8db" stroke-width="10" opacity="0.42" stroke-linecap="round"/>
+    <path d="M430 122v74" stroke="#f2e8db" stroke-width="10" opacity="0.28" stroke-linecap="round"/>
+    <path d="M255 270c28 22 66 34 116 34 44 0 82-10 114-30" fill="none" stroke="#f6f1ea" stroke-width="16" opacity="0.32"/>
+    <path d="M234 316c-58 62-98 126-120 192" fill="none" stroke="#7d6b5c" stroke-width="34" stroke-linecap="round" opacity="0.95"/>
+    <path d="M488 316c58 62 98 126 120 192" fill="none" stroke="#8e7c6d" stroke-width="34" stroke-linecap="round" opacity="0.95"/>
+    <path d="M184 500c54-42 116-58 188-48" fill="none" stroke="#f5ede3" stroke-width="10" opacity="0.28"/>
+    <path d="M626 500c-54-42-116-58-188-48" fill="none" stroke="#f5ede3" stroke-width="10" opacity="0.28"/>
+  </g>
+</svg>

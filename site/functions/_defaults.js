@@ -27,8 +27,13 @@ export const defaultProducts = [
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "ivory",
-    image: "assets/products/cashmere-ivory.svg",
-    gallery: ["assets/products/cashmere-ivory.svg", "assets/products/cashmere-sage.svg", "assets/products/cashmere-charcoal.svg"]
+    image: "assets/jni-cashmere-hero.png",
+    gallery: [
+      "assets/jni-cashmere-hero.png",
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-charcoal.svg"
+    ]
   },
   {
     id: "fine-knit-cardigan",
@@ -59,7 +64,12 @@ export const defaultProducts = [
     amazonLabel: "View on Amazon",
     tone: "sage",
     image: "assets/products/cashmere-sage.svg",
-    gallery: ["assets/products/cashmere-sage.svg", "assets/products/cashmere-ivory.svg", "assets/products/cashmere-charcoal.svg"]
+    gallery: [
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-scarf.svg",
+      "assets/products/cashmere-charcoal.svg"
+    ]
   },
   {
     id: "ribbed-turtleneck-sweater",
@@ -90,7 +100,12 @@ export const defaultProducts = [
     amazonLabel: "View on Amazon",
     tone: "charcoal",
     image: "assets/products/cashmere-charcoal.svg",
-    gallery: ["assets/products/cashmere-charcoal.svg", "assets/products/cashmere-ivory.svg", "assets/products/cashmere-sage.svg"]
+    gallery: [
+      "assets/products/cashmere-charcoal.svg",
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-scarf.svg"
+    ]
   },
   {
     id: "cashmere-winter-scarf",
@@ -120,8 +135,13 @@ export const defaultProducts = [
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "ivory",
-    image: "assets/products/cashmere-ivory.svg",
-    gallery: ["assets/products/cashmere-ivory.svg", "assets/products/cashmere-charcoal.svg", "assets/products/cashmere-sage.svg"]
+    image: "assets/products/cashmere-scarf.svg",
+    gallery: [
+      "assets/products/cashmere-scarf.svg",
+      "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-charcoal.svg"
+    ]
   },
   {
     id: "ribbed-knit-gloves",
@@ -151,8 +171,13 @@ export const defaultProducts = [
     amazonUrl: "",
     amazonLabel: "View on Amazon",
     tone: "charcoal",
-    image: "assets/products/cashmere-charcoal.svg",
-    gallery: ["assets/products/cashmere-charcoal.svg", "assets/products/cashmere-ivory.svg", "assets/products/cashmere-sage.svg"]
+    image: "assets/products/cashmere-gloves.svg",
+    gallery: [
+      "assets/products/cashmere-gloves.svg",
+      "assets/products/cashmere-charcoal.svg",
+      "assets/products/cashmere-scarf.svg",
+      "assets/products/cashmere-ivory.svg"
+    ]
   }
 ];
 

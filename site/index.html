@@ -24,31 +24,36 @@
     </header>
 
     <main id="top" class="catalog-page">
-      <section class="catalog-intro" aria-label="JINHEXI catalog introduction">
-        <div class="catalog-copy">
+      <section class="hero catalog-hero" aria-label="JINHEXI catalog introduction">
+        <img class="hero-image" src="assets/jni-cashmere-hero.png" alt="JINHEXI cashmere womenswear lookbook" />
+        <div class="hero-shade"></div>
+        <div class="hero-copy catalog-copy">
           <p class="eyebrow">JINHEXI Cashmere</p>
           <h1 data-copy-title>Shop by category, then open the product.</h1>
-          <p class="catalog-text" data-copy-text>
+          <p class="catalog-text hero-text" data-copy-text>
             This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.
           </p>
-          <div class="catalog-actions">
+          <div class="catalog-actions hero-actions">
             <a class="button primary" href="#catalog" data-browse-button>Browse Catalog</a>
             <a class="button secondary" href="#journal" data-journal-button>Open Journal</a>
           </div>
         </div>
         <aside class="catalog-summary" aria-label="Store highlights">
-          <div data-summary-item>
+          <a class="summary-card" href="/?channel=site#catalog" data-summary-item data-summary-channel="site">
             <strong data-summary-title>Direct Site</strong>
             <span data-summary-text>Own styles</span>
-          </div>
-          <div data-summary-item>
+            <span class="summary-action" data-summary-cta>Shop site styles</span>
+          </a>
+          <a class="summary-card" href="/?channel=amazon#catalog" data-summary-item data-summary-channel="amazon">
             <strong data-summary-title>Amazon</strong>
             <span data-summary-text>Traffic to listings</span>
-          </div>
-          <div data-summary-item>
+            <span class="summary-action" data-summary-cta>See Amazon styles</span>
+          </a>
+          <a class="summary-card" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer" data-summary-item data-summary-channel="whatsapp">
             <strong data-summary-title>WhatsApp</strong>
             <span data-summary-text>Quick contact</span>
-          </div>
+            <span class="summary-action" data-summary-cta>Chat now</span>
+          </a>
         </aside>
       </section>
 

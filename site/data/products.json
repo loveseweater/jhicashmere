@@ -27,8 +27,9 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "ivory",
-    "image": "assets/products/cashmere-ivory.svg",
+    "image": "assets/jni-cashmere-hero.png",
     "gallery": [
+      "assets/jni-cashmere-hero.png",
       "assets/products/cashmere-ivory.svg",
       "assets/products/cashmere-sage.svg",
       "assets/products/cashmere-charcoal.svg"
@@ -66,6 +67,7 @@
     "gallery": [
       "assets/products/cashmere-sage.svg",
       "assets/products/cashmere-ivory.svg",
+      "assets/products/cashmere-scarf.svg",
       "assets/products/cashmere-charcoal.svg"
     ]
   },
@@ -101,7 +103,8 @@
     "gallery": [
       "assets/products/cashmere-charcoal.svg",
       "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg"
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-scarf.svg"
     ]
   },
   {
@@ -132,11 +135,12 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "ivory",
-    "image": "assets/products/cashmere-ivory.svg",
+    "image": "assets/products/cashmere-scarf.svg",
     "gallery": [
+      "assets/products/cashmere-scarf.svg",
       "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-charcoal.svg",
-      "assets/products/cashmere-sage.svg"
+      "assets/products/cashmere-sage.svg",
+      "assets/products/cashmere-charcoal.svg"
     ]
   },
   {
@@ -167,11 +171,12 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "charcoal",
-    "image": "assets/products/cashmere-charcoal.svg",
+    "image": "assets/products/cashmere-gloves.svg",
     "gallery": [
+      "assets/products/cashmere-gloves.svg",
       "assets/products/cashmere-charcoal.svg",
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg"
+      "assets/products/cashmere-scarf.svg",
+      "assets/products/cashmere-ivory.svg"
     ]
   }
 ]
