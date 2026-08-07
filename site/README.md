@@ -14,16 +14,10 @@ Open:
 - Website: http://localhost:4173
 - Admin: http://localhost:4173/admin.html
 
-Default local admin password:
-
-```text
-jinhexi2026
-```
-
-To use another password:
+Set a local admin password before starting:
 
 ```powershell
-$env:JINHEXI_ADMIN_PASSWORD="your-new-password"
+$env:JINHEXI_ADMIN_PASSWORD="your-private-password"
 node server.js
 ```
 
@@ -36,4 +30,4 @@ The admin panel saves changes back to these JSON files.
 
 ## Domain Deployment Notes
 
-Point `jhicashmere.com` to the hosting server, then run this Node site behind HTTPS. For a production launch, change the admin password and use a proper reverse proxy such as Nginx, Caddy, or a managed Node host.
+For Cloudflare Pages, set `ADMIN_PASSWORD` in the Pages environment variables. Do not write the admin password into website files or documentation.

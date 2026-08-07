@@ -1,13 +1,15 @@
-let token = localStorage.getItem("jhiAdminToken") || "";
+let token = "";
 let products = [];
 let posts = [];
 
 const loginPanel = document.querySelector("[data-login-panel]");
 const workspace = document.querySelector("[data-admin-workspace]");
 const statusLine = document.querySelector("[data-status]");
+const loginStatus = document.querySelector("[data-login-status]");
 
 function setStatus(message) {
-  statusLine.textContent = message;
+  if (statusLine) statusLine.textContent = message;
+  if (loginStatus && !loginPanel.hidden) loginStatus.textContent = message;
 }
 
 async function requestJson(url, options = {}) {
@@ -196,13 +198,22 @@ document.querySelector("[data-login-form]").addEventListener("submit", async (ev
       body: JSON.stringify({ password })
     });
     token = data.token;
-    localStorage.setItem("jhiAdminToken", token);
     showWorkspace();
     await loadAdminData();
     setStatus("登录成功。修改后点击保存即可同步到站点数据。");
   } catch (error) {
     setStatus(error.message);
   }
+});
+
+document.querySelector("[data-logout]").addEventListener("click", () => {
+  token = "";
+  products = [];
+  posts = [];
+  workspace.hidden = true;
+  loginPanel.hidden = false;
+  document.querySelector("[data-login-form]").reset();
+  setStatus("已退出，请重新输入管理员密码。");
 });
 
 document.querySelectorAll("[data-tab]").forEach((button) => {
@@ -304,12 +315,4 @@ document.querySelectorAll(".admin-tabs .tab").forEach((button) => {
   }
 });
 
-if (token) {
-  showWorkspace();
-  loadAdminData().catch(() => {
-    localStorage.removeItem("jhiAdminToken");
-    token = "";
-    loginPanel.hidden = false;
-    workspace.hidden = true;
-  });
-}
+localStorage.removeItem("jhiAdminToken");

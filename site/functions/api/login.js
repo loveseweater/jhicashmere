@@ -2,7 +2,10 @@ import { createToken, json, readJson } from "../_lib.js";
 
 export async function onRequestPost({ request, env }) {
   const body = await readJson(request);
-  const secret = env.ADMIN_PASSWORD || "jinhexi2026";
+  const secret = env.ADMIN_PASSWORD;
+  if (!secret) {
+    return json({ error: "Admin password is not configured" }, { status: 500 });
+  }
   if (body.password !== secret) {
     return json({ error: "Incorrect password" }, { status: 403 });
   }

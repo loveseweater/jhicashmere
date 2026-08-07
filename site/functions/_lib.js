@@ -74,7 +74,8 @@ export async function verifyToken(token, secret) {
 }
 
 export async function requireAdmin(request, env) {
-  const secret = env.ADMIN_PASSWORD || "jinhexi2026";
+  const secret = env.ADMIN_PASSWORD;
+  if (!secret) return null;
   const auth = request.headers.get("Authorization") || "";
   const token = auth.startsWith("Bearer ") ? auth.slice(7) : "";
   return verifyToken(token, secret);

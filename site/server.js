@@ -6,9 +6,14 @@ const crypto = require("crypto");
 const root = __dirname;
 const dataDir = path.join(root, "data");
 const port = Number(process.env.PORT || 4173);
-const adminPassword = process.env.JINHEXI_ADMIN_PASSWORD || "jinhexi2026";
+const adminPassword = process.env.JINHEXI_ADMIN_PASSWORD;
 const sessions = new Set();
 const views = [];
+
+if (!adminPassword) {
+  console.error("Please set JINHEXI_ADMIN_PASSWORD before starting the local admin server.");
+  process.exit(1);
+}
 
 const mimeTypes = {
   ".html": "text/html; charset=utf-8",

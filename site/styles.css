@@ -760,7 +760,8 @@ h3 {
 }
 
 input,
-textarea {
+textarea,
+select {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 0;
@@ -772,6 +773,10 @@ textarea {
 
 textarea {
   resize: vertical;
+}
+
+select {
+  appearance: none;
 }
 
 .admin-note,
@@ -835,6 +840,13 @@ textarea {
   justify-content: space-between;
   gap: 24px;
   margin-bottom: 24px;
+}
+
+.admin-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
 }
 
 .admin-tabs {
