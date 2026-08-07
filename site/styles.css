@@ -558,6 +558,24 @@ h3 {
   margin-top: 10px;
 }
 
+.thumb-button {
+  padding: 0;
+  border: 1px solid var(--line);
+  background: var(--white);
+  cursor: pointer;
+}
+
+.thumb-button.active {
+  border-color: var(--ink);
+}
+
+.thumb-button img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+}
+
 .product-detail-thumbs img {
   display: block;
   width: 100%;

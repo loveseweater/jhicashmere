@@ -51,9 +51,9 @@ function renderProduct(product) {
   return `
     <section class="product-detail">
       <div class="product-gallery">
-        <img class="product-main-image" src="${escapeHtml(gallery[0])}" alt="${escapeHtml(product.name)}" />
+        <img class="product-main-image" data-main-image src="${escapeHtml(gallery[0])}" alt="${escapeHtml(product.name)}" />
         <div class="product-detail-thumbs">
-          ${gallery.slice(0, 5).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name)}" />`).join("")}
+          ${gallery.slice(0, 5).map((src, index) => `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(product.name)}" /></button>`).join("")}
         </div>
       </div>
       <div class="product-detail-copy">
@@ -68,6 +68,7 @@ function renderProduct(product) {
           ${amazonButton}
           <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp 咨询</a>
         </div>
+        <a class="detail-link" href="/#catalog">返回分类</a>
       </div>
     </section>
 
@@ -119,6 +120,15 @@ async function init() {
     return;
   }
   page.innerHTML = renderProduct(product);
+  const mainImage = page.querySelector("[data-main-image]");
+  const thumbButtons = [...page.querySelectorAll("[data-thumb]")];
+  thumbButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (!mainImage) return;
+      mainImage.src = button.dataset.thumb;
+      thumbButtons.forEach((item) => item.classList.toggle("active", item === button));
+    });
+  });
   try {
     await fetch("/api/track", {
       method: "POST",
