@@ -1,7 +1,6 @@
 (function () {
-  const locale = String(navigator.language || navigator.userLanguage || "en").toLowerCase().startsWith("zh")
-    ? "zh"
-    : "en";
+  // Public storefront stays English-only.
+  const locale = "en";
 
   const dict = {
     en: {
@@ -129,5 +128,5 @@
   const t = (key) => (dict[locale] && dict[locale][key]) || dict.en[key] || key;
 
   window.JINHEXI_I18N = { locale, t };
-  document.documentElement.lang = locale === "zh" ? "zh-CN" : "en";
+  document.documentElement.lang = "en";
 })();
