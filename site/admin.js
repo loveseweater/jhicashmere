@@ -23,7 +23,7 @@ async function requestJson(url, options = {}) {
   const response = await fetch(url, { ...options, headers });
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || "Request failed");
+    throw new Error(data.error || "请求失败");
   }
   return data;
 }
@@ -64,6 +64,19 @@ function field(label, value, key, type = "text") {
   `;
 }
 
+function selectField(label, value, key, options) {
+  return `
+    <label>
+      ${label}
+      <select data-key="${key}">
+        ${options
+          .map(([optionValue, optionLabel]) => `<option value="${escapeAttr(optionValue)}"${String(value || "").trim() === optionValue ? " selected" : ""}>${optionLabel}</option>`)
+          .join("")}
+      </select>
+    </label>
+  `;
+}
+
 function categoryField(value) {
   const options = [
     ["tops", "上衣"],
@@ -83,6 +96,23 @@ function categoryField(value) {
       </select>
     </label>
   `;
+}
+
+function channelField(value) {
+  return selectField("销售渠道", value, "channel", [
+    ["site", "独立站"],
+    ["amazon", "Amazon"],
+    ["both", "双渠道"]
+  ]);
+}
+
+function statusField(value) {
+  return selectField("状态", normalizeStatus(value), "status", [
+    ["Draft", "草稿"],
+    ["Coming Soon", "即将上架"],
+    ["Site Exclusive", "独家上架"],
+    ["Amazon Ready", "Amazon 备货"]
+  ]);
 }
 
 function textarea(label, value, key) {
@@ -117,26 +147,42 @@ function escapeAttr(value) {
   return escapeHtml(value).replaceAll("\n", " ");
 }
 
+function normalizeStatus(value) {
+  const raw = String(value || "").trim();
+  const key = raw.toLowerCase();
+  const map = {
+    draft: "Draft",
+    "草稿": "Draft",
+    "coming soon": "Coming Soon",
+    "即将上架": "Coming Soon",
+    "site exclusive": "Site Exclusive",
+    "独家上架": "Site Exclusive",
+    "amazon ready": "Amazon Ready",
+    "amazon 备货": "Amazon Ready"
+  };
+  return map[key] || map[raw] || "Draft";
+}
+
 function renderProducts() {
   document.querySelector("[data-product-list]").innerHTML = products
     .map(
       (product, index) => `
     <article class="editor-item" data-index="${index}">
           <div class="editor-title">
-            <strong>${escapeHtml(product.name || "New Product")}</strong>
-            <button type="button" data-remove-product="${index}">Remove</button>
+            <strong>${escapeHtml(product.name || "新产品")}</strong>
+            <button type="button" data-remove-product="${index}">删除</button>
           </div>
           <div class="editor-grid">
             ${field("产品标题", product.name, "name")}
             ${field("SKU / 款号", product.sku, "sku")}
             ${categoryField(product.category)}
-            ${field("销售渠道（site / amazon / both）", product.channel, "channel")}
+            ${channelField(product.channel)}
             ${field("颜色", product.colors, "colors")}
             ${field("价格", product.price, "price")}
-            ${field("状态", product.status, "status")}
+            ${statusField(product.status)}
             ${field("色调（ivory / sage / charcoal）", product.tone, "tone")}
-            ${field("Amazon URL", product.amazonUrl, "amazonUrl")}
-            ${field("Amazon按钮文案", product.amazonLabel, "amazonLabel")}
+            ${field("Amazon 链接", product.amazonUrl, "amazonUrl")}
+            ${field("Amazon 按钮文案", product.amazonLabel, "amazonLabel")}
             ${field("材质成分", product.material, "material")}
             ${field("尺码范围", product.sizeRange, "sizeRange")}
             ${field("版型", product.fit, "fit")}
@@ -162,17 +208,17 @@ function renderPosts() {
       (post, index) => `
         <article class="editor-item" data-index="${index}">
           <div class="editor-title">
-            <strong>${escapeHtml(post.title || "New Post")}</strong>
-            <button type="button" data-remove-post="${index}">Remove</button>
+            <strong>${escapeHtml(post.title || "新博文")}</strong>
+            <button type="button" data-remove-post="${index}">删除</button>
           </div>
           <div class="editor-grid">
-            ${field("Title", post.title, "title")}
-            ${field("Date", post.date, "date", "date")}
-            ${field("Slug", post.slug, "slug")}
-            ${field("SEO Title", post.seoTitle, "seoTitle")}
-            ${field("SEO Description", post.seoDescription, "seoDescription")}
-            ${textarea("Excerpt", post.excerpt, "excerpt")}
-            ${textarea("Content", post.content, "content")}
+            ${field("标题", post.title, "title")}
+            ${field("日期", post.date, "date", "date")}
+            ${field("URL 别名", post.slug, "slug")}
+            ${field("SEO 标题", post.seoTitle, "seoTitle")}
+            ${field("SEO 描述", post.seoDescription, "seoDescription")}
+            ${textarea("摘要", post.excerpt, "excerpt")}
+            ${textarea("正文", post.content, "content")}
           </div>
         </article>
       `
@@ -187,6 +233,9 @@ function collect(listSelector, source) {
     item.querySelectorAll("[data-key]").forEach((input) => {
       next[input.dataset.key] = input.value.trim();
     });
+    if (Object.prototype.hasOwnProperty.call(next, "status")) {
+      next.status = normalizeStatus(next.status);
+    }
     return next;
   });
 }
@@ -243,36 +292,36 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
 document.querySelector("[data-add-product]").addEventListener("click", () => {
   products = collect("[data-product-list]", products);
     products.push({
-      name: "New Cashmere Product",
+      name: "新羊绒产品",
       sku: "JHX-NEW",
       category: "sweaters",
-    channel: "both",
-    colors: "Ivory / Taupe",
-    subtitle: "Premium knitwear piece for refined daily dressing.",
-    description: "Describe the product fabric, fit, hand feel, styling occasions, and buyer-facing details.",
-    bullets: [
-      "Soft hand feel for daily layering",
-      "Clean silhouette for work and travel",
-      "Easy to pair with coats, trousers, and skirts"
-    ],
-    material: "Cashmere blend",
-    sizeRange: "S / M / L / XL",
-    fit: "Regular fit",
-    care: "Cold hand wash or dry clean; dry flat",
-    occasion: "Daily wear / travel / gifting",
-    searchKeywords: "women cashmere sweater, premium knitwear",
-    seoDescription: "JINHEXI premium women's knitwear product.",
-    price: "$0.00",
-    status: "Draft",
-    amazonUrl: "",
-    amazonLabel: "View on Amazon",
-    tone: "ivory",
-    image: "assets/products/cashmere-ivory.svg",
-    gallery: [
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg",
-      "assets/products/cashmere-charcoal.svg"
-    ]
+      channel: "both",
+      colors: "Ivory / Taupe",
+      subtitle: "适合日常穿搭的高端羊绒单品。",
+      description: "在这里填写面料、版型、手感、适用场景和买家需要知道的信息。",
+      bullets: [
+        "手感柔软，适合日常叠穿",
+        "版型干净，适合通勤和出行",
+        "方便搭配大衣、裤装和裙装"
+      ],
+      material: "羊绒混纺",
+      sizeRange: "S / M / L / XL",
+      fit: "常规版型",
+      care: "冷水手洗或干洗，平铺晾干",
+      occasion: "日常 / 出行 / 送礼",
+      searchKeywords: "女装羊绒衫, 高端针织, JINHEXI",
+      seoDescription: "JINHEXI 高端女装羊绒单品。",
+      price: "$0.00",
+      status: "Draft",
+      amazonUrl: "",
+      amazonLabel: "View on Amazon",
+      tone: "ivory",
+      image: "assets/products/cashmere-ivory.svg",
+      gallery: [
+        "assets/products/cashmere-ivory.svg",
+        "assets/products/cashmere-sage.svg",
+        "assets/products/cashmere-charcoal.svg"
+      ]
   });
   renderProducts();
 });
@@ -280,13 +329,13 @@ document.querySelector("[data-add-product]").addEventListener("click", () => {
 document.querySelector("[data-add-post]").addEventListener("click", () => {
   posts = collect("[data-post-list]", posts);
   posts.push({
-    title: "New Blog Post",
+    title: "新博文",
     date: new Date().toISOString().slice(0, 10),
     slug: "",
     seoTitle: "",
     seoDescription: "",
-    excerpt: "Short blog summary for the website.",
-    content: "Write the full blog content here."
+    excerpt: "这里填写博文摘要。",
+    content: "这里填写博文正文。"
   });
   renderPosts();
 });
@@ -343,5 +392,3 @@ document.querySelectorAll(".admin-tabs .tab").forEach((button) => {
     });
   }
 });
-
-localStorage.removeItem("jhiAdminToken");

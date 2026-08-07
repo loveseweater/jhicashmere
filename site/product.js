@@ -37,6 +37,42 @@ function detailRow(label, value) {
   `;
 }
 
+function normalizeStatus(value) {
+  const raw = String(value || "").trim();
+  const key = raw.toLowerCase();
+  const map = {
+    draft: "Draft",
+    "草稿": "Draft",
+    "coming soon": "Coming Soon",
+    "即将上架": "Coming Soon",
+    "site exclusive": "Site Exclusive",
+    "独家上架": "Site Exclusive",
+    "amazon ready": "Amazon Ready",
+    "amazon 备货": "Amazon Ready"
+  };
+  return map[key] || map[raw] || raw || "Draft";
+}
+
+function statusLabel(value) {
+  const status = normalizeStatus(value);
+  if (i18n.locale !== "zh") return status;
+  const map = {
+    Draft: "草稿",
+    "Coming Soon": "即将上架",
+    "Site Exclusive": "独家上架",
+    "Amazon Ready": "Amazon 备货"
+  };
+  return map[status] || status;
+}
+
+function amazonLabel(product) {
+  const label = String(product.amazonLabel || "").trim();
+  if (!label) return i18n.t("viewOnAmazon");
+  if (i18n.locale === "zh" && label === "View on Amazon") return "查看 Amazon";
+  if (i18n.locale !== "zh" && label === "查看 Amazon") return "View on Amazon";
+  return label;
+}
+
 function applyLocale() {
   const title = i18n.locale === "zh" ? "JINHEXI | 产品详情" : "JINHEXI | Product Detail";
   document.title = title;
@@ -64,7 +100,7 @@ function renderProduct(product) {
     : [product.image || "assets/products/cashmere-ivory.svg"];
   const bullets = lines(product.bullets);
   const amazonButton = product.amazonUrl
-    ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || i18n.t("viewOnAmazon"))}</a>`
+    ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(amazonLabel(product))}</a>`
     : `<span class="button secondary disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
 
   document.title = `${product.name || i18n.t("productDetail")} | JINHEXI`;
@@ -83,7 +119,7 @@ function renderProduct(product) {
         <p class="product-subtitle">${escapeHtml(product.subtitle || product.description)}</p>
         <div class="product-price-row">
           <strong>${escapeHtml(product.price)}</strong>
-          <span>${escapeHtml(product.status || i18n.t("status"))}</span>
+          <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
         </div>
         <div class="product-actions">
           ${amazonButton}

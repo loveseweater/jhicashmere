@@ -407,22 +407,36 @@ h3 {
   border-color: var(--ink);
 }
 
-.social-icon span {
-  line-height: 1;
+.social-icon svg {
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
 }
 
-.social-icon.youtube span {
-  transform: translateX(1px);
+.social-icon.youtube svg {
+  width: 24px;
+  height: 24px;
 }
 
-.social-icon.facebook span {
-  font-size: 24px;
-  font-weight: 700;
+.social-icon.instagram svg {
+  width: 21px;
+  height: 21px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
-.social-icon.pinterest span {
-  font-family: Georgia, "Times New Roman", serif;
-  font-size: 22px;
+.social-icon.pinterest svg {
+  width: 18px;
+  height: 18px;
+  transform: translateY(1px);
+}
+
+.social-icon.whatsapp svg {
+  width: 23px;
+  height: 23px;
 }
 
 .studio-grid {

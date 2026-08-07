@@ -11,7 +11,7 @@ const sessions = new Set();
 const views = [];
 
 if (!adminPassword) {
-  console.error("Please set JINHEXI_ADMIN_PASSWORD before starting the local admin server.");
+  console.error("请先设置 JINHEXI_ADMIN_PASSWORD，再启动本地后台服务。");
   process.exit(1);
 }
 
@@ -78,7 +78,7 @@ function requireAuth(req, res) {
   if (sessions.has(getToken(req))) {
     return true;
   }
-  json(res, 401, { error: "Admin login required" });
+  json(res, 401, { error: "需要管理员登录" });
   return false;
 }
 
@@ -86,7 +86,7 @@ async function handleApi(req, res, pathname) {
   if (pathname === "/api/login" && req.method === "POST") {
     const body = JSON.parse((await readBody(req)) || "{}");
     if (body.password !== adminPassword) {
-      json(res, 403, { error: "Incorrect password" });
+      json(res, 403, { error: "密码不正确" });
       return;
     }
     const token = crypto.randomBytes(24).toString("hex");
@@ -122,7 +122,7 @@ async function handleApi(req, res, pathname) {
 
   const match = pathname.match(/^\/api\/(products|posts)$/);
   if (!match) {
-    json(res, 404, { error: "API route not found" });
+    json(res, 404, { error: "未找到接口" });
     return;
   }
 
@@ -139,7 +139,7 @@ async function handleApi(req, res, pathname) {
   if (req.method === "PUT") {
     const payload = JSON.parse((await readBody(req)) || "[]");
     if (!Array.isArray(payload)) {
-      json(res, 400, { error: "Expected an array" });
+      json(res, 400, { error: "需要数组格式" });
       return;
     }
     const normalized = payload.map((item) => ({
@@ -151,7 +151,7 @@ async function handleApi(req, res, pathname) {
     return;
   }
 
-  json(res, 405, { error: "Method not allowed" });
+  json(res, 405, { error: "不允许的请求方法" });
 }
 
 function serveStatic(req, res, pathname) {

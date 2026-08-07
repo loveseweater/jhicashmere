@@ -60,12 +60,10 @@ function applyLocale() {
   const home = document.querySelector("[data-nav-home]");
   const catalog = document.querySelector("[data-nav-catalog]");
   const social = document.querySelector("[data-nav-social]");
-  const admin = document.querySelector("[data-nav-admin]");
   const back = document.querySelector("[data-back-link]");
   if (home) home.textContent = i18n.locale === "zh" ? "首页" : "Home";
   if (catalog) catalog.textContent = i18n.t("catalog");
   if (social) social.textContent = i18n.t("social");
-  if (admin) admin.textContent = i18n.t("adminLogin");
   if (back) back.textContent = i18n.t("backToHome");
   const eyebrow = document.querySelector("[data-journal-eyebrow]");
   const heading = document.querySelector("[data-journal-heading]");

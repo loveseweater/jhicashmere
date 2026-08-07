@@ -78,6 +78,42 @@ function normalizeChannel(value) {
   return "all";
 }
 
+function normalizeStatus(value) {
+  const raw = String(value || "").trim();
+  const key = raw.toLowerCase();
+  const map = {
+    draft: "Draft",
+    "草稿": "Draft",
+    "coming soon": "Coming Soon",
+    "即将上架": "Coming Soon",
+    "site exclusive": "Site Exclusive",
+    "独家上架": "Site Exclusive",
+    "amazon ready": "Amazon Ready",
+    "amazon 备货": "Amazon Ready"
+  };
+  return map[key] || map[raw] || raw || "Draft";
+}
+
+function statusLabel(value) {
+  const status = normalizeStatus(value);
+  if (i18n.locale !== "zh") return status;
+  const map = {
+    Draft: "草稿",
+    "Coming Soon": "即将上架",
+    "Site Exclusive": "独家上架",
+    "Amazon Ready": "Amazon 备货"
+  };
+  return map[status] || status;
+}
+
+function amazonLabel(product) {
+  const label = String(product.amazonLabel || "").trim();
+  if (!label) return i18n.t("viewOnAmazon");
+  if (i18n.locale === "zh" && label === "View on Amazon") return "查看 Amazon";
+  if (i18n.locale !== "zh" && label === "查看 Amazon") return "View on Amazon";
+  return label;
+}
+
 function applyStaticLocale() {
   const title = i18n.locale === "zh" ? "JINHEXI | 羊绒女装目录" : "JINHEXI | Cashmere Womenswear Catalog";
   document.title = title;
@@ -100,6 +136,8 @@ function applyStaticLocale() {
 
   const introTitle = document.querySelector("[data-copy-title]");
   if (introTitle) introTitle.textContent = i18n.locale === "zh" ? "按分类逛货，直接看产品。" : "Shop by category, then open the product.";
+  const heroEyebrow = document.querySelector("[data-hero-eyebrow]");
+  if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
   if (introText) introText.textContent = i18n.locale === "zh"
     ? "这是一个可持续更新的商品目录，不是营销主页。先看上衣、毛衣、围巾、手套和配件，再跳转到 Amazon 或独立站款式。"
@@ -142,9 +180,13 @@ function applyStaticLocale() {
 
   const socialHeader = document.querySelector("[data-social-heading]");
   if (socialHeader) socialHeader.textContent = i18n.t("socialPlatforms");
+  const socialEyebrow = document.querySelector("[data-social-eyebrow]");
+  if (socialEyebrow) socialEyebrow.textContent = i18n.t("social");
 
   const contactTitle = document.querySelector("[data-contact-title]");
   if (contactTitle) contactTitle.textContent = i18n.t("contactTitle");
+  const contactEyebrow = document.querySelector("[data-contact-eyebrow]");
+  if (contactEyebrow) contactEyebrow.textContent = i18n.t("contactEyebrow");
   const contactText = document.querySelector("[data-contact-text]");
   if (contactText) contactText.textContent = i18n.t("contactText");
   const contactLink = document.querySelector("[data-contact-link]");
@@ -161,7 +203,7 @@ function productTemplate(product) {
     : [product.image || `assets/products/cashmere-${tone}.svg`];
   const image = gallery[0];
   const amazonButton = product.amazonUrl
-    ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(product.amazonLabel || i18n.t("viewOnAmazon"))}</a>`
+    ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(amazonLabel(product))}</a>`
     : `<span class="amazon-link disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
   const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />`).join("");
   const category = normalizeCategory(product.category);
@@ -175,7 +217,7 @@ function productTemplate(product) {
       <div class="product-info">
         <div class="product-meta">
           <span>${escapeHtml(categoryLabels[category] || product.category || "其他")}</span>
-          <span>${escapeHtml(product.status || i18n.t("status"))}</span>
+          <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
         </div>
         <h3><a href="/product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
         <p class="product-channel">${escapeHtml(product.channel === "site" ? i18n.t("exclusiveSite") : product.channel === "amazon" ? i18n.t("amazonCollection") : i18n.t("bothChannels"))}</p>
