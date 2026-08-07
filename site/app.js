@@ -72,22 +72,26 @@ function productTemplate(product) {
     : `<span class="amazon-link disabled">Amazon Coming Soon</span>`;
   const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />`).join("");
   const category = normalizeCategory(product.category);
+  const id = encodeURIComponent(product.id || product.name || "");
   return `
     <article class="product-card">
-      <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />
+      <a href="/product.html?id=${id}" aria-label="${escapeHtml(product.name || "Product detail")}">
+        <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />
+      </a>
       <div class="product-thumbs">${thumbs}</div>
       <div class="product-info">
         <div class="product-meta">
           <span>${escapeHtml(categoryLabels[category] || product.category || "其他")}</span>
           <span>${escapeHtml(product.status || "Coming Soon")}</span>
         </div>
-        <h3>${escapeHtml(product.name)}</h3>
+        <h3><a href="/product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
         <p class="product-channel">${escapeHtml(product.channel === "site" ? "Exclusive to JINHEXI" : product.channel === "amazon" ? "Amazon Collection" : "Amazon + Site")}</p>
-        <p>${escapeHtml(product.description)}</p>
+        <p>${escapeHtml(product.subtitle || product.description)}</p>
         <div class="product-line">
           <span>${escapeHtml(product.colors)}</span>
           <strong>${escapeHtml(product.price)}</strong>
         </div>
+        <a class="detail-link" href="/product.html?id=${id}">查看详情</a>
         ${amazonButton}
       </div>
     </article>
@@ -127,7 +131,9 @@ const fallbackPosts = [
 ];
 
 async function renderSiteData() {
-  const products = await loadJson("/api/products", fallbackProducts);
+  const localProducts = await loadJson("/data/products.json", fallbackProducts);
+  const apiProducts = await loadJson("/api/products", localProducts);
+  const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : localProducts;
   const posts = await loadJson("/api/posts", fallbackPosts);
   const productGrid = document.querySelector("[data-products]");
   const postGrid = document.querySelector("[data-posts]");

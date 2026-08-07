@@ -85,10 +85,20 @@ function rowToProduct(row) {
   return {
     id: row.id,
     name: row.name,
+    sku: row.sku || "",
     category: row.category,
     channel: row.channel || "both",
     colors: row.colors,
+    subtitle: row.subtitle || "",
     description: row.description,
+    bullets: normalizeLines(row.bullets),
+    material: row.material || "",
+    sizeRange: row.sizeRange || "",
+    fit: row.fit || "",
+    care: row.care || "",
+    occasion: row.occasion || "",
+    searchKeywords: row.searchKeywords || "",
+    seoDescription: row.seoDescription || "",
     price: row.price,
     status: row.status,
     amazonUrl: row.amazonUrl || "",
@@ -97,6 +107,25 @@ function rowToProduct(row) {
     image: row.image || "assets/products/cashmere-ivory.svg",
     gallery: normalizeGallery(row.gallery, row.image || "assets/products/cashmere-ivory.svg")
   };
+}
+
+function normalizeLines(value) {
+  if (Array.isArray(value)) return value;
+  if (typeof value === "string" && value.trim().startsWith("[")) {
+    try {
+      const parsed = JSON.parse(value);
+      if (Array.isArray(parsed)) return parsed;
+    } catch {
+      // fall through to newline parsing
+    }
+  }
+  if (typeof value === "string" && value.trim()) {
+    return value
+      .split("\n")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+  return [];
 }
 
 function normalizeGallery(value, fallbackImage) {
@@ -145,10 +174,20 @@ export async function ensureSchema(env) {
     CREATE TABLE IF NOT EXISTS products (
       id TEXT PRIMARY KEY,
       name TEXT NOT NULL,
+      sku TEXT NOT NULL DEFAULT '',
       category TEXT NOT NULL,
       channel TEXT NOT NULL DEFAULT 'both',
       colors TEXT NOT NULL,
+      subtitle TEXT NOT NULL DEFAULT '',
       description TEXT NOT NULL,
+      bullets TEXT NOT NULL DEFAULT '',
+      material TEXT NOT NULL DEFAULT '',
+      sizeRange TEXT NOT NULL DEFAULT '',
+      fit TEXT NOT NULL DEFAULT '',
+      care TEXT NOT NULL DEFAULT '',
+      occasion TEXT NOT NULL DEFAULT '',
+      searchKeywords TEXT NOT NULL DEFAULT '',
+      seoDescription TEXT NOT NULL DEFAULT '',
       price TEXT NOT NULL,
       status TEXT NOT NULL,
       amazonUrl TEXT NOT NULL DEFAULT '',
@@ -176,6 +215,16 @@ export async function ensureSchema(env) {
   await ensureColumn(env, "products", "channel", "TEXT NOT NULL DEFAULT 'both'");
   await ensureColumn(env, "products", "category", "TEXT NOT NULL DEFAULT 'others'");
   await ensureColumn(env, "products", "gallery", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "sku", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "subtitle", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "bullets", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "material", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "sizeRange", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "fit", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "care", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "occasion", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "searchKeywords", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "products", "seoDescription", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "slug", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "seoTitle", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "seoDescription", "TEXT NOT NULL DEFAULT ''");
@@ -189,16 +238,26 @@ export async function seedIfNeeded(env) {
   if ((productCount?.count || 0) === 0) {
     for (const product of defaultProducts) {
       await env.DB.prepare(`
-        INSERT OR REPLACE INTO products
-        (id, name, category, channel, colors, description, price, status, amazonUrl, amazonLabel, tone, image, gallery)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        INSERT OR IGNORE INTO products
+        (id, name, sku, category, channel, colors, subtitle, description, bullets, material, sizeRange, fit, care, occasion, searchKeywords, seoDescription, price, status, amazonUrl, amazonLabel, tone, image, gallery)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         product.id,
         product.name,
+        product.sku || "",
         product.category,
         product.channel || "both",
         product.colors,
+        product.subtitle || "",
         product.description,
+        JSON.stringify(normalizeLines(product.bullets)),
+        product.material || "",
+        product.sizeRange || "",
+        product.fit || "",
+        product.care || "",
+        product.occasion || "",
+        product.searchKeywords || "",
+        product.seoDescription || "",
         product.price,
         product.status,
         product.amazonUrl || "",
@@ -261,21 +320,33 @@ export async function saveProducts(env, payload) {
   const normalized = payload.map((item) => ({
     ...item,
     id: slugify(item.id || item.name),
-    gallery: normalizeGallery(item.gallery, item.image || "assets/products/cashmere-ivory.svg")
+    gallery: normalizeGallery(item.gallery, item.image || "assets/products/cashmere-ivory.svg"),
+    bullets: normalizeLines(item.bullets)
   }));
+  await env.DB.prepare("DELETE FROM products").run();
   await env.DB.batch(
     normalized.map((item) =>
       env.DB.prepare(`
         INSERT OR REPLACE INTO products
-        (id, name, category, channel, colors, description, price, status, amazonUrl, amazonLabel, tone, image, gallery)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        (id, name, sku, category, channel, colors, subtitle, description, bullets, material, sizeRange, fit, care, occasion, searchKeywords, seoDescription, price, status, amazonUrl, amazonLabel, tone, image, gallery)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         item.id,
         item.name || "Untitled Product",
+        item.sku || "",
         item.category || "Knitwear",
         item.channel || "both",
         item.colors || "",
+        item.subtitle || "",
         item.description || "",
+        JSON.stringify(item.bullets || []),
+        item.material || "",
+        item.sizeRange || "",
+        item.fit || "",
+        item.care || "",
+        item.occasion || "",
+        item.searchKeywords || "",
+        item.seoDescription || "",
         item.price || "",
         item.status || "Draft",
         item.amazonUrl || "",

@@ -99,6 +99,11 @@ function galleryTextarea(value) {
   return textarea("图片图册（每行一个URL）", gallery, "gallery");
 }
 
+function bulletsTextarea(value) {
+  const bullets = Array.isArray(value) ? value.join("\n") : String(value || "");
+  return textarea("核心卖点（每行一条，类似Amazon五点描述）", bullets, "bullets");
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -122,18 +127,28 @@ function renderProducts() {
             <button type="button" data-remove-product="${index}">Remove</button>
           </div>
           <div class="editor-grid">
-            ${field("Name", product.name, "name")}
+            ${field("产品标题", product.name, "name")}
+            ${field("SKU / 款号", product.sku, "sku")}
             ${categoryField(product.category)}
-            ${field("Channel", product.channel, "channel")}
-            ${field("Colors", product.colors, "colors")}
-            ${field("Price", product.price, "price")}
-            ${field("Status", product.status, "status")}
-            ${field("Color Tone", product.tone, "tone")}
+            ${field("销售渠道（site / amazon / both）", product.channel, "channel")}
+            ${field("颜色", product.colors, "colors")}
+            ${field("价格", product.price, "price")}
+            ${field("状态", product.status, "status")}
+            ${field("色调（ivory / sage / charcoal）", product.tone, "tone")}
             ${field("Amazon URL", product.amazonUrl, "amazonUrl")}
-            ${field("Amazon Button Text", product.amazonLabel, "amazonLabel")}
+            ${field("Amazon按钮文案", product.amazonLabel, "amazonLabel")}
+            ${field("材质成分", product.material, "material")}
+            ${field("尺码范围", product.sizeRange, "sizeRange")}
+            ${field("版型", product.fit, "fit")}
+            ${field("护理方式", product.care, "care")}
+            ${field("适用场景", product.occasion, "occasion")}
+            ${field("搜索关键词", product.searchKeywords, "searchKeywords")}
             ${field("主图URL", product.image, "image")}
             ${galleryTextarea(product.gallery)}
-            ${textarea("Description", product.description, "description")}
+            ${textarea("一句话简介（前台卡片显示）", product.subtitle, "subtitle")}
+            ${bulletsTextarea(product.bullets)}
+            ${textarea("产品详情描述", product.description, "description")}
+            ${textarea("SEO描述", product.seoDescription, "seoDescription")}
           </div>
         </article>
       `
@@ -228,11 +243,25 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
 document.querySelector("[data-add-product]").addEventListener("click", () => {
   products = collect("[data-product-list]", products);
     products.push({
-      name: "New Knitwear Product",
+      name: "New Cashmere Product",
+      sku: "JHX-NEW",
       category: "sweaters",
     channel: "both",
     colors: "Ivory / Taupe",
-    description: "Describe the product fabric, fit, and occasion.",
+    subtitle: "Premium knitwear piece for refined daily dressing.",
+    description: "Describe the product fabric, fit, hand feel, styling occasions, and buyer-facing details.",
+    bullets: [
+      "Soft hand feel for daily layering",
+      "Clean silhouette for work and travel",
+      "Easy to pair with coats, trousers, and skirts"
+    ],
+    material: "Cashmere blend",
+    sizeRange: "S / M / L / XL",
+    fit: "Regular fit",
+    care: "Cold hand wash or dry clean; dry flat",
+    occasion: "Daily wear / travel / gifting",
+    searchKeywords: "women cashmere sweater, premium knitwear",
+    seoDescription: "JINHEXI premium women's knitwear product.",
     price: "$0.00",
     status: "Draft",
     amazonUrl: "",
