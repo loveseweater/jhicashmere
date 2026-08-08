@@ -104,11 +104,11 @@ function applyStaticLocale() {
   });
 
   const introTitle = document.querySelector("[data-copy-title]");
-  if (introTitle) introTitle.textContent = "Cashmere womenswear, presented with clarity.";
+  if (introTitle) introTitle.textContent = "Cashmere womenswear, presented like a clean editorial feature.";
   const heroEyebrow = document.querySelector("[data-hero-eyebrow]");
   if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
-  if (introText) introText.textContent = "Browse a retail-ready edit of sweaters, tops, scarves, and gloves. Independent styles and Amazon-linked pieces live in one clean catalog, with product pages and editorial articles for search.";
+  if (introText) introText.textContent = "Browse a focused edit of sweaters, tops, scarves, and gloves. The layout stays quiet and readable, with product pages, editorial articles, and buying paths in one place.";
   const searchField = document.querySelector("[data-search-input]");
   if (searchField) searchField.placeholder = "Search products";
   const heroHighlights = document.querySelector("[data-hero-highlights]");
@@ -121,18 +121,18 @@ function applyStaticLocale() {
   }
 
   const catalogHeader = document.querySelector("[data-catalog-heading]");
-  if (catalogHeader) catalogHeader.textContent = "The Original Edit";
+  if (catalogHeader) catalogHeader.textContent = "Featured pieces";
   const catalogEyebrow = document.querySelector("[data-catalog-eyebrow]");
   if (catalogEyebrow) catalogEyebrow.textContent = i18n.t("productCatalog");
   const catalogNote = document.querySelector("[data-catalog-note]");
-  if (catalogNote) catalogNote.textContent = "Clean category browsing with site exclusives, Amazon-linked styles, and journal content.";
+  if (catalogNote) catalogNote.textContent = "Category browsing, buying paths, and editorial context are kept close together.";
 
   const journalHeader = document.querySelector("[data-journal-heading]");
   if (journalHeader) journalHeader.textContent = i18n.t("postsAndArticles");
   const journalEyebrow = document.querySelector("[data-journal-eyebrow]");
   if (journalEyebrow) journalEyebrow.textContent = i18n.t("seoJournal");
   const journalNote = document.querySelector("[data-journal-note]");
-  if (journalNote) journalNote.textContent = i18n.t("journalNote");
+  if (journalNote) journalNote.textContent = "Use these articles for search, styling guidance, and product education.";
 
   const socialHeader = document.querySelector("[data-social-heading]");
   if (socialHeader) socialHeader.textContent = i18n.t("socialPlatforms");
@@ -144,15 +144,12 @@ function applyStaticLocale() {
   const contactEyebrow = document.querySelector("[data-contact-eyebrow]");
   if (contactEyebrow) contactEyebrow.textContent = i18n.t("contactEyebrow");
   const contactText = document.querySelector("[data-contact-text]");
-  if (contactText) contactText.textContent = i18n.t("contactText");
+  if (contactText) contactText.textContent = "Reach out for products, wholesale, or partnerships. The same team can keep direct-site and Amazon updates moving together.";
   const contactLink = document.querySelector("[data-contact-link]");
   if (contactLink) contactLink.textContent = `${i18n.t("whatsapp")} +86 136 0232 8348`;
 
   const footerText = document.querySelector("[data-footer-text]");
   if (footerText) footerText.textContent = "Cashmere Womenswear";
-
-  const contactHeader = document.querySelector("[data-contact-title]");
-  if (contactHeader) contactHeader.textContent = "Contact us on WhatsApp.";
 }
 
 function productTemplate(product) {
@@ -192,13 +189,19 @@ function productTemplate(product) {
   `;
 }
 
-function postTemplate(post) {
+function postTemplate(post, index = 0) {
   const slug = encodeURIComponent(post.slug || post.id || post.title || "");
+  const leadClass = index === 0 ? " lead" : "";
   return `
-    <article class="post-item">
-      <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
-      <h3>${escapeHtml(post.title)}</h3>
-      <p>${escapeHtml(post.excerpt)}</p>
+    <article class="post-item featured${leadClass}">
+      <a class="post-media" href="journal.html?post=${slug}" aria-label="${escapeHtml(post.title)}">
+        <img class="post-image" src="${escapeHtml(post.image || "assets/jni-cashmere-hero.png")}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy" decoding="async" />
+      </a>
+      <div class="post-copy">
+        <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
+        <h3>${escapeHtml(post.title)}</h3>
+        <p>${escapeHtml(post.excerpt)}</p>
+      </div>
       <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
   `;
@@ -342,7 +345,7 @@ async function renderSiteData() {
   renderProducts();
 
   if (postGrid) {
-    postGrid.innerHTML = posts.map(postTemplate).join("");
+    postGrid.innerHTML = posts.map((post, index) => postTemplate(post, index)).join("");
   }
 
   await trackPageview();

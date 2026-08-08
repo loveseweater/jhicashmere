@@ -36,14 +36,15 @@ function postImage(post) {
   return post.image || "assets/jni-cashmere-hero.png";
 }
 
-function postTemplate(post) {
+function postTemplate(post, index = 0) {
   const slug = encodeURIComponent(post.slug || post.id || post.title || "");
+  const leadClass = index === 0 ? " lead" : "";
   return `
-    <article class="post-item featured">
+    <article class="post-item featured${leadClass}">
       <a class="post-media" href="journal.html?post=${slug}" aria-label="${escapeHtml(post.title)}">
         <img class="post-image" src="${escapeHtml(postImage(post))}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy" decoding="async" />
       </a>
-      <div>
+      <div class="post-copy">
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
@@ -54,9 +55,29 @@ function postTemplate(post) {
   `;
 }
 
-function renderSinglePost(post) {
+function renderSinglePost(post, allPosts = []) {
   const container = document.querySelector("[data-posts]");
   if (!container) return;
+  const relatedPosts = allPosts
+    .filter((item) => (item.slug || item.id) !== (post.slug || post.id))
+    .slice(0, 3)
+    .map((item) => {
+      const slug = encodeURIComponent(item.slug || item.id || "");
+      return `
+        <article class="post-item featured">
+          <a class="post-media" href="journal.html?post=${slug}" aria-label="${escapeHtml(item.title)}">
+            <img class="post-image" src="${escapeHtml(postImage(item))}" alt="${escapeHtml(item.imageAlt || item.title)}" loading="lazy" decoding="async" />
+          </a>
+          <div class="post-copy">
+            <time datetime="${escapeHtml(item.date)}">${escapeHtml(item.date)}</time>
+            <h3>${escapeHtml(item.title)}</h3>
+            <p>${escapeHtml(item.excerpt)}</p>
+          </div>
+          <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
+        </article>
+      `;
+    })
+    .join("");
   container.innerHTML = `
     <article class="post-item featured post-single">
       <a class="post-media" href="journal.html" aria-label="${escapeHtml(post.title)}">
@@ -70,6 +91,18 @@ function renderSinglePost(post) {
       </div>
       <a class="post-link" href="journal.html">${escapeHtml(i18n.t("backToPosts"))}</a>
     </article>
+    <section class="section related-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">${escapeHtml(i18n.t("relatedPosts"))}</p>
+          <h2>${escapeHtml(i18n.t("moreReading"))}</h2>
+        </div>
+        <p class="section-note">${escapeHtml(i18n.t("relatedPostsNote"))}</p>
+      </div>
+      <div class="post-grid">
+        ${relatedPosts}
+      </div>
+    </section>
   `;
   document.title = post.seoTitle || `${post.title} | JINHEXI Journal`;
   const meta = document.querySelector('meta[name="description"]');
@@ -111,12 +144,12 @@ async function init() {
   if (target) {
     const post = posts.find((item) => (item.slug || item.id) === target);
     if (post) {
-      renderSinglePost(post);
+      renderSinglePost(post, posts);
       await trackPageview();
       return;
     }
   }
-  container.innerHTML = posts.map(postTemplate).join("");
+  container.innerHTML = posts.map((post, index) => postTemplate(post, index)).join("");
   await trackPageview();
 }
 

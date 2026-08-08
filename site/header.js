@@ -3,38 +3,59 @@
   const siteMenu = document.querySelector("#site-menu");
   if (!menuToggle || !siteMenu) return;
 
-  const closeMenu = () => {
-    siteMenu.hidden = true;
-    menuToggle.setAttribute("aria-expanded", "false");
-  };
+  const mobileQuery = window.matchMedia("(max-width: 860px)");
+  let menuOpen = false;
 
-  const openMenu = () => {
+  const syncMenu = () => {
+    if (mobileQuery.matches) {
+      menuToggle.hidden = false;
+      siteMenu.hidden = !menuOpen;
+      siteMenu.classList.toggle("is-open", menuOpen);
+      menuToggle.setAttribute("aria-expanded", String(menuOpen));
+      siteMenu.setAttribute("aria-hidden", String(!menuOpen));
+      return;
+    }
+
+    menuOpen = false;
+    menuToggle.hidden = true;
     siteMenu.hidden = false;
+    siteMenu.classList.remove("is-open");
     menuToggle.setAttribute("aria-expanded", "true");
+    siteMenu.removeAttribute("aria-hidden");
   };
 
   menuToggle.addEventListener("click", () => {
-    if (siteMenu.hidden) {
-      openMenu();
-    } else {
-      closeMenu();
-    }
+    menuOpen = !menuOpen;
+    syncMenu();
   });
 
   siteMenu.querySelectorAll("a").forEach((link) => {
-    link.addEventListener("click", closeMenu);
+    link.addEventListener("click", () => {
+      if (!mobileQuery.matches) return;
+      menuOpen = false;
+      syncMenu();
+    });
   });
 
   document.addEventListener("click", (event) => {
-    if (siteMenu.hidden) return;
+    if (!mobileQuery.matches || !menuOpen) return;
     if (siteMenu.contains(event.target) || menuToggle.contains(event.target)) return;
-    closeMenu();
+    menuOpen = false;
+    syncMenu();
   });
 
   document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !siteMenu.hidden) closeMenu();
+    if (event.key === "Escape" && mobileQuery.matches && menuOpen) {
+      menuOpen = false;
+      syncMenu();
+    }
   });
 
-  siteMenu.hidden = true;
-  menuToggle.setAttribute("aria-expanded", "false");
+  if (typeof mobileQuery.addEventListener === "function") {
+    mobileQuery.addEventListener("change", syncMenu);
+  } else if (typeof mobileQuery.addListener === "function") {
+    mobileQuery.addListener(syncMenu);
+  }
+
+  syncMenu();
 })();

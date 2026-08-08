@@ -54,6 +54,19 @@ function statusLabel(value) {
   return normalizeStatus(value);
 }
 
+function normalizeCategory(value) {
+  const raw = String(value || "").trim().toLowerCase();
+  const map = {
+    sweaters: "Sweaters",
+    tops: "Tops",
+    accessories: "Accessories",
+    scarves: "Scarves",
+    gloves: "Gloves",
+    others: "Other"
+  };
+  return map[raw] || "Collection";
+}
+
 function amazonLabel(product) {
   const label = String(product.amazonLabel || "").trim();
   if (!label) return i18n.t("viewOnAmazon");
@@ -78,7 +91,7 @@ function applyLocale() {
   if (loadingTitle) loadingTitle.textContent = i18n.t("loadingProduct");
 }
 
-function renderProduct(product) {
+function renderProduct(product, products = []) {
   const gallery = Array.isArray(product.gallery) && product.gallery.length
     ? product.gallery
     : [product.image || "assets/products/cashmere-ivory.svg"];
@@ -86,6 +99,33 @@ function renderProduct(product) {
   const amazonButton = product.amazonUrl
     ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(amazonLabel(product))}</a>`
     : `<span class="button secondary disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
+  const relatedProducts = products
+    .filter((item) => item.id !== product.id)
+    .slice(0, 3)
+    .map((item) => `
+      <article class="product-card">
+        <a href="product.html?id=${encodeURIComponent(item.id || item.name || "")}" aria-label="${escapeHtml(item.name)}">
+          <img class="product-image" src="${escapeHtml(item.image || item.gallery?.[0] || "assets/products/cashmere-ivory.svg")}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" />
+        </a>
+        <div class="product-thumbs">
+          ${(Array.isArray(item.gallery) ? item.gallery : []).slice(1, 5).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" />`).join("")}
+        </div>
+        <div class="product-info">
+          <div class="product-meta">
+            <span>${escapeHtml(normalizeCategory(item.category))}</span>
+            <span>${escapeHtml(statusLabel(item.status || i18n.t("status")))}</span>
+          </div>
+          <h3><a href="product.html?id=${encodeURIComponent(item.id || item.name || "")}">${escapeHtml(item.name)}</a></h3>
+          <p>${escapeHtml(item.subtitle || item.description)}</p>
+          <div class="product-line">
+            <span>${escapeHtml(item.colors)}</span>
+            <strong>${escapeHtml(item.price)}</strong>
+          </div>
+          <a class="detail-link" href="product.html?id=${encodeURIComponent(item.id || item.name || "")}">${escapeHtml(i18n.t("viewDetails"))}</a>
+        </div>
+      </article>
+    `)
+    .join("");
 
   document.title = `${product.name || i18n.t("productDetail")} | JINHEXI`;
 
@@ -144,6 +184,19 @@ function renderProduct(product) {
         </article>
       </div>
     </section>
+
+    <section class="section related-section">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">${escapeHtml(i18n.t("relatedPieces"))}</p>
+          <h2>${escapeHtml(i18n.t("moreToExplore"))}</h2>
+        </div>
+        <p class="section-note">${escapeHtml(i18n.t("relatedPiecesNote"))}</p>
+      </div>
+      <div class="product-grid related-grid">
+        ${relatedProducts}
+      </div>
+    </section>
   `;
 }
 
@@ -161,7 +214,7 @@ async function init() {
     page.innerHTML = `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`;
     return;
   }
-  page.innerHTML = renderProduct(product);
+  page.innerHTML = renderProduct(product, products);
   const mainImage = page.querySelector("[data-main-image]");
   const thumbButtons = [...page.querySelectorAll("[data-thumb]")];
   thumbButtons.forEach((button) => {

@@ -16,28 +16,19 @@
   </head>
   <body>
     <header class="site-header">
-      <a class="brand" href="index.html" aria-label="JINHEXI home">
-        <img class="brand-logo" src="assets/logo-jinhexi.svg" alt="JINHEXI" />
-      </a>
-      <button class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="site-menu">
-        <span>Menu</span>
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
-        </svg>
-      </button>
-      <div class="site-menu" id="site-menu" hidden>
-        <nav class="menu-links" aria-label="Primary navigation">
-          <a href="index.html" id="nav-home">Home</a>
-          <a href="index.html#catalog" id="nav-catalog">Catalog</a>
-          <a href="index.html#journal" id="nav-journal">Journal</a>
-          <a href="index.html#contact" id="nav-contact">Contact</a>
-        </nav>
-        <div class="menu-actions">
-          <a class="menu-action" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp</a>
-          <a class="menu-action" href="index.html#catalog">Site exclusives</a>
-          <a class="menu-action" href="index.html?channel=amazon#catalog">Amazon edit</a>
+      <div class="site-utility">
+        <div class="utility-links">
+          <a href="index.html#contact">Contact Us</a>
+          <a href="index.html#journal">Journal</a>
+          <a href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp</a>
         </div>
-        <div class="menu-social" aria-label="Social platforms">
+        <div class="utility-icons" aria-label="Social platforms">
+          <a class="social-icon search" href="index.html#catalog" aria-label="Search products" title="Search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2" />
+              <path d="M16.2 16.2 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </a>
           <a class="social-icon tiktok" href="https://www.tiktok.com/@jhicashmere" target="_blank" rel="noreferrer" aria-label="TikTok" title="TikTok">
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M15 4.2c.7 1.8 2 3.1 3.8 3.7v2.7c-1.4-.2-2.8-.8-3.8-1.6v5.7c0 3.2-2.5 5.8-5.8 5.8S3.4 18.6 3.4 15.4 6 9.6 9.2 9.6c.5 0 1 .1 1.5.2v3c-.5-.2-1-.3-1.5-.3-1.5 0-2.8 1.2-2.8 2.8s1.2 2.8 2.8 2.8 2.9-1.3 2.9-2.9V4.2H15z" />
@@ -77,6 +68,25 @@
             </svg>
           </a>
         </div>
+      </div>
+      <div class="site-nav-row">
+        <a class="brand" href="index.html" aria-label="JINHEXI home">
+          <img class="brand-logo" src="assets/logo-jinhexi.svg" alt="JINHEXI" />
+        </a>
+        <nav class="site-menu" id="site-menu">
+          <div class="menu-links" aria-label="Primary navigation">
+            <a href="index.html" id="nav-home">Home</a>
+            <a href="index.html#catalog" id="nav-catalog">Catalog</a>
+            <a href="index.html#journal" id="nav-journal">Journal</a>
+            <a href="index.html#contact" id="nav-contact">Contact</a>
+          </div>
+        </nav>
+        <button class="menu-toggle" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="site-menu">
+          <span>Menu</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 10l5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
       </div>
     </header>
 
