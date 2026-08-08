@@ -6,8 +6,12 @@
     <title>JINHEXI | Cashmere Womenswear Catalog</title>
     <meta
       name="description"
-      content="JINHEXI cashmere womenswear catalog with category browsing, product detail pages, and Amazon or direct-site buying paths."
+      content="JINHEXI cashmere womenswear collection with clean category browsing, SEO journal content, and Amazon or direct-site buying paths."
     />
+    <link rel="canonical" href="https://jhicashmere.com/" />
+    <meta property="og:title" content="JINHEXI | Cashmere Womenswear Catalog" />
+    <meta property="og:description" content="Browse premium cashmere styles, journal articles, and Amazon-linked or direct-site products." />
+    <meta property="og:type" content="website" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -54,7 +58,24 @@
           </div>
           <p class="section-note" data-catalog-note>Clean category browsing with site exclusives, Amazon-linked styles, and journal content.</p>
         </div>
-        <div class="category-filters" data-category-filters></div>
+        <div class="catalog-toolbar">
+          <div class="category-filters" data-category-filters></div>
+          <div class="catalog-controls">
+            <label class="search-control">
+              <span>Search</span>
+              <input type="search" data-search-input placeholder="Search products" />
+            </label>
+            <label class="sort-control">
+              <span>Sort</span>
+              <select data-sort-select>
+                <option value="featured">Featured</option>
+                <option value="newest">Newest</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+              </select>
+            </label>
+          </div>
+        </div>
         <p class="collection-count" data-product-count></p>
         <div class="product-grid" data-products></div>
       </section>

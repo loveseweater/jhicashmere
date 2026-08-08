@@ -113,6 +113,8 @@ function applyStaticLocale() {
   if (browseButton) browseButton.textContent = i18n.t("browseCatalog");
   const journalButton = document.querySelector("[data-journal-button]");
   if (journalButton) journalButton.textContent = i18n.t("openJournal");
+  const searchField = document.querySelector("[data-search-input]");
+  if (searchField) searchField.placeholder = "Search products";
 
   const catalogHeader = document.querySelector("[data-catalog-heading]");
   if (catalogHeader) catalogHeader.textContent = "The Original Edit";
@@ -230,20 +232,46 @@ async function renderSiteData() {
   const postGrid = document.querySelector("[data-posts]");
   const filterGrid = document.querySelector("[data-category-filters]");
   const productCount = document.querySelector("[data-product-count]");
+  const sortSelect = document.querySelector("[data-sort-select]");
+  const searchInput = document.querySelector("[data-search-input]");
   const categories = ["all", "tops", "sweaters", "accessories", "scarves", "gloves", "others"];
   let activeCategory = "all";
   let activeChannel = initialChannel;
+  let activeSort = "featured";
+  let activeSearch = "";
 
   function filteredProducts() {
-    return products.filter((product) => {
+    const visible = products.filter((product) => {
       const categoryMatch = activeCategory === "all" || normalizeCategory(product.category) === activeCategory;
       if (!categoryMatch) return false;
+      if (activeSearch) {
+        const haystack = [
+          product.name,
+          product.sku,
+          product.subtitle,
+          product.description,
+          product.colors,
+          product.searchKeywords
+        ].join(" ").toLowerCase();
+        if (!haystack.includes(activeSearch)) return false;
+      }
       if (activeChannel === "all") return true;
       const productChannel = String(product.channel || "both").toLowerCase();
       if (activeChannel === "site") return productChannel === "site" || productChannel === "both";
       if (activeChannel === "amazon") return productChannel === "amazon" || productChannel === "both";
       return productChannel === activeChannel;
     });
+    const byPrice = (value) => Number(String(value || "").replace(/[^0-9.]/g, "")) || 0;
+    if (activeSort === "newest") {
+      return visible.slice().reverse();
+    }
+    if (activeSort === "price-asc") {
+      return visible.slice().sort((a, b) => byPrice(a.price) - byPrice(b.price));
+    }
+    if (activeSort === "price-desc") {
+      return visible.slice().sort((a, b) => byPrice(b.price) - byPrice(a.price));
+    }
+    return visible;
   }
 
   function renderProducts() {
@@ -271,6 +299,20 @@ async function renderSiteData() {
       if (!button) return;
       activeCategory = button.dataset.category;
       filterGrid.querySelectorAll("[data-category]").forEach((item) => item.classList.toggle("active", item === button));
+      renderProducts();
+    });
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener("change", () => {
+      activeSort = sortSelect.value;
+      renderProducts();
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", () => {
+      activeSearch = searchInput.value.trim().toLowerCase();
       renderProducts();
     });
   }

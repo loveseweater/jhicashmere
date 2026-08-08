@@ -64,14 +64,16 @@ function applyLocale() {
   document.title = "JINHEXI | Product Detail";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = "JINHEXI product detail page with listing notes, materials, size, care, and buying information.";
+    meta.content = "JINHEXI product detail page with materials, size, care, buying paths, and Amazon-ready listing notes.";
   }
+  const navHome = document.querySelector("#nav-home");
   const navCatalog = document.querySelector("#nav-catalog");
+  const navContact = document.querySelector("#nav-contact");
   const navJournal = document.querySelector("#nav-journal");
-  const navSocial = document.querySelector("#nav-social");
   if (navCatalog) navCatalog.textContent = i18n.t("catalog");
+  if (navHome) navHome.textContent = i18n.t("backToHome");
+  if (navContact) navContact.textContent = i18n.t("contactEyebrow");
   if (navJournal) navJournal.textContent = i18n.t("journal");
-  if (navSocial) navSocial.textContent = i18n.t("social");
   const loadingTitle = document.querySelector("[data-loading-title]");
   if (loadingTitle) loadingTitle.textContent = i18n.t("loadingProduct");
   const headerAction = document.querySelector(".header-action");

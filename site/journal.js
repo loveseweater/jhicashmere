@@ -60,11 +60,11 @@ function applyLocale() {
   document.documentElement.lang = "en";
   const home = document.querySelector("[data-nav-home]");
   const catalog = document.querySelector("[data-nav-catalog]");
-  const social = document.querySelector("[data-nav-social]");
+  const contact = document.querySelector("[data-nav-contact]");
   const back = document.querySelector("[data-back-link]");
   if (home) home.textContent = "Home";
   if (catalog) catalog.textContent = i18n.t("catalog");
-  if (social) social.textContent = i18n.t("social");
+  if (contact) contact.textContent = i18n.t("contactEyebrow");
   if (back) back.textContent = i18n.t("backToHome");
   const eyebrow = document.querySelector("[data-journal-eyebrow]");
   const heading = document.querySelector("[data-journal-heading]");
