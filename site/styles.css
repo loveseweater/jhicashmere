@@ -243,6 +243,27 @@ a {
   padding: 18px 0 0 18px;
 }
 
+.hero-highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+.hero-highlights span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  color: var(--muted);
+  font-family: Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
 .catalog-hero .hero-copy {
   align-self: end;
 }
@@ -369,6 +390,14 @@ h3 {
   line-height: 1.35;
 }
 
+.collection-band {
+  background: #fbfaf7;
+}
+
+.collection-band a {
+  margin-top: 16px;
+}
+
 .section,
 .split-section,
 .wholesale {
@@ -490,6 +519,7 @@ h3 {
 }
 
 .product-card {
+  contain: content;
   border: 1px solid var(--line);
   background: var(--white);
 }
@@ -801,6 +831,34 @@ h3 {
   background: #f1f4ef;
 }
 
+.journal-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(260px, 1.05fr);
+  gap: 36px;
+  align-items: end;
+  padding: 120px clamp(18px, 5vw, 56px) 28px;
+  background: linear-gradient(180deg, #faf9f5 0%, #f1f4ef 100%);
+}
+
+.journal-hero h1 {
+  max-width: 12ch;
+}
+
+.journal-hero p:not(.eyebrow) {
+  max-width: 640px;
+  color: var(--muted);
+  font-size: 19px;
+  line-height: 1.6;
+}
+
+.journal-listing {
+  padding-top: 24px;
+}
+
+.journal-page .post-grid {
+  border-top: 0;
+}
+
 .post-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -835,6 +893,13 @@ h3 {
 .post-item.featured {
   display: grid;
   align-content: space-between;
+}
+
+.post-item.featured time,
+.post-item.featured h3,
+.post-item.featured p,
+.post-item.featured a {
+  max-width: 100%;
 }
 
 .post-link {
@@ -939,6 +1004,10 @@ h3 {
   font-family: Arial, sans-serif;
   font-size: 12px;
   background: var(--paper);
+}
+
+[content-visibility="auto"] {
+  contain-intrinsic-size: 1px 700px;
 }
 
 .admin-body {
@@ -1259,6 +1328,11 @@ select {
 
   .section-heading {
     display: block;
+  }
+
+  .journal-hero {
+    grid-template-columns: 1fr;
+    padding-top: 98px;
   }
 
   .site-footer {

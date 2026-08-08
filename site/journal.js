@@ -54,6 +54,10 @@ function renderSinglePost(post) {
   if (meta) {
     meta.content = post.seoDescription || post.excerpt || "";
   }
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) {
+    canonical.href = `https://jhicashmere.com/journal.html?post=${encodeURIComponent(post.slug || post.id || "")}`;
+  }
 }
 
 function applyLocale() {

@@ -87,10 +87,10 @@ function amazonLabel(product) {
 }
 
 function applyStaticLocale() {
-  document.title = "JINHEXI | Cashmere Womenswear Catalog";
+  document.title = "JINHEXI | Cashmere Womenswear";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = "JINHEXI cashmere womenswear catalog with category browsing, product detail pages, and Amazon or direct-site buying paths.";
+    meta.content = "JINHEXI cashmere womenswear with a clean retail collection, product detail pages, editorial journal content, and Amazon or direct-site buying paths.";
   }
 
   const navMap = [
@@ -104,13 +104,21 @@ function applyStaticLocale() {
   });
 
   const introTitle = document.querySelector("[data-copy-title]");
-  if (introTitle) introTitle.textContent = "Women's cashmere, edited for clarity.";
+  if (introTitle) introTitle.textContent = "Cashmere womenswear, presented with clarity.";
   const heroEyebrow = document.querySelector("[data-hero-eyebrow]");
   if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
-  if (introText) introText.textContent = "Browse a premium cashmere catalog with clear category navigation, direct-site exclusives, Amazon-linked styles, and SEO-ready journal content.";
+  if (introText) introText.textContent = "Browse a retail-ready edit of sweaters, tops, scarves, and gloves. Independent styles and Amazon-linked pieces live in one clean catalog, with product pages and editorial articles for search.";
   const searchField = document.querySelector("[data-search-input]");
   if (searchField) searchField.placeholder = "Search products";
+  const heroHighlights = document.querySelector("[data-hero-highlights]");
+  if (heroHighlights) {
+    heroHighlights.innerHTML = `
+      <span>Independent styles</span>
+      <span>Amazon-linked edit</span>
+      <span>Editorial journal</span>
+    `;
+  }
 
   const catalogHeader = document.querySelector("[data-catalog-heading]");
   if (catalogHeader) catalogHeader.textContent = "The Original Edit";
@@ -141,7 +149,7 @@ function applyStaticLocale() {
   if (contactLink) contactLink.textContent = `${i18n.t("whatsapp")} +86 136 0232 8348`;
 
   const footerText = document.querySelector("[data-footer-text]");
-  if (footerText) footerText.textContent = "Cashmere Womenswear Catalog";
+  if (footerText) footerText.textContent = "Cashmere Womenswear";
 
   const contactHeader = document.querySelector("[data-contact-title]");
   if (contactHeader) contactHeader.textContent = "Contact us on WhatsApp.";
@@ -156,13 +164,13 @@ function productTemplate(product) {
   const amazonButton = product.amazonUrl
     ? `<a class="amazon-link" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(amazonLabel(product))}</a>`
     : `<span class="amazon-link disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
-  const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />`).join("");
+  const thumbs = gallery.slice(0, 4).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" loading="lazy" decoding="async" />`).join("");
   const category = normalizeCategory(product.category);
   const id = encodeURIComponent(product.id || product.name || "");
   return `
     <article class="product-card">
       <a href="/product.html?id=${id}" aria-label="${escapeHtml(product.name || "Product detail")}">
-        <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" />
+        <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" loading="lazy" decoding="async" />
       </a>
       <div class="product-thumbs">${thumbs}</div>
       <div class="product-info">

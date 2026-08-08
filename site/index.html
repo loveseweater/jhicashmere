@@ -3,15 +3,22 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>JINHEXI | Cashmere Womenswear Catalog</title>
+    <title>JINHEXI | Cashmere Womenswear</title>
     <meta
       name="description"
-      content="JINHEXI cashmere womenswear collection with clean category browsing, SEO journal content, and Amazon or direct-site buying paths."
+      content="JINHEXI cashmere womenswear with a clean retail collection, product detail pages, editorial journal content, and Amazon or direct-site buying paths."
     />
     <link rel="canonical" href="https://jhicashmere.com/" />
-    <meta property="og:title" content="JINHEXI | Cashmere Womenswear Catalog" />
+    <meta name="robots" content="index,follow" />
+    <meta name="theme-color" content="#f8f7f3" />
+    <meta property="og:title" content="JINHEXI | Cashmere Womenswear" />
     <meta property="og:description" content="Browse premium cashmere styles, journal articles, and Amazon-linked or direct-site products." />
     <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://jhicashmere.com/" />
+    <meta property="og:image" content="https://jhicashmere.com/assets/jni-cashmere-hero.png" />
+    <meta property="og:image:alt" content="JINHEXI cashmere womenswear lookbook" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" as="image" href="assets/jni-cashmere-hero.png" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -36,14 +43,37 @@
     <main id="top" class="catalog-page">
       <section class="hero catalog-hero" aria-label="JINHEXI catalog introduction">
         <div class="hero-media">
-          <img class="hero-image" src="assets/jni-cashmere-hero.png" alt="JINHEXI cashmere womenswear lookbook" />
+          <img class="hero-image" src="assets/jni-cashmere-hero.png" alt="JINHEXI cashmere womenswear lookbook" loading="eager" fetchpriority="high" decoding="async" />
         </div>
         <div class="hero-copy catalog-copy">
           <p class="eyebrow" data-hero-eyebrow>JINHEXI Cashmere</p>
-          <h1 data-copy-title>Women's cashmere, edited for clarity.</h1>
+          <h1 data-copy-title>Cashmere womenswear, presented with clarity.</h1>
           <p class="catalog-text hero-text" data-copy-text>
-            Browse a premium cashmere catalog with clear category navigation, direct-site exclusives, Amazon-linked styles, and SEO-ready journal content.
+            Browse a retail-ready edit of sweaters, tops, scarves, and gloves. Independent styles and Amazon-linked pieces live in one clean catalog, with product pages and editorial articles for search.
           </p>
+          <div class="hero-highlights" data-hero-highlights aria-label="Site highlights">
+            <span>Independent styles</span>
+            <span>Amazon-linked edit</span>
+            <span>Editorial journal</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="intro-band collection-band" aria-label="Brand highlights">
+        <div>
+          <span>01</span>
+          <p>Refined cashmere womenswear built for daily retail, gifting, and long-term brand growth.</p>
+          <a class="detail-link" href="#catalog">Browse collection</a>
+        </div>
+        <div>
+          <span>02</span>
+          <p>Separate site-exclusive styles from Amazon-linked products without splitting the brand story.</p>
+          <a class="detail-link" href="#catalog">Explore products</a>
+        </div>
+        <div>
+          <span>03</span>
+          <p>Publish care notes, styling ideas, and brand articles in the journal for ongoing SEO.</p>
+          <a class="detail-link" href="#journal">Read journal</a>
         </div>
       </section>
 
@@ -156,9 +186,26 @@
 
     <footer class="site-footer">
       <span>JINHEXI</span>
-      <span data-footer-text>Cashmere Womenswear Catalog</span>
+      <span data-footer-text>Cashmere Womenswear</span>
       <span>jhicashmere.com</span>
     </footer>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "JINHEXI",
+        "url": "https://jhicashmere.com/",
+        "logo": "https://jhicashmere.com/assets/logo-jinhexi.svg",
+        "sameAs": [
+          "https://www.tiktok.com/@jhicashmere",
+          "https://x.com/Jinhexius",
+          "https://www.youtube.com/@Jinhexi",
+          "https://www.facebook.com/profile.php?id=61592931025273",
+          "https://www.instagram.com/jinhexius/",
+          "https://www.pinterest.com/jhicashmere/"
+        ]
+      }
+    </script>
     <script src="i18n.js"></script>
     <script src="app.js"></script>
   </body>

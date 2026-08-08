@@ -94,9 +94,9 @@ function renderProduct(product) {
   return `
     <section class="product-detail">
       <div class="product-gallery">
-        <img class="product-main-image" data-main-image src="${escapeHtml(gallery[0])}" alt="${escapeHtml(product.name)}" />
+        <img class="product-main-image" data-main-image src="${escapeHtml(gallery[0])}" alt="${escapeHtml(product.name)}" loading="eager" fetchpriority="high" decoding="async" />
         <div class="product-detail-thumbs">
-          ${gallery.slice(0, 5).map((src, index) => `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(product.name)}" /></button>`).join("")}
+          ${gallery.slice(0, 5).map((src, index) => `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" /></button>`).join("")}
         </div>
       </div>
       <div class="product-detail-copy">
