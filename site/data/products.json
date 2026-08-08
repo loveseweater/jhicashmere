@@ -27,12 +27,13 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "ivory",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/products/cashmere-crewneck-sweater-01.png",
     "gallery": [
-      "assets/jni-cashmere-hero.png",
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg",
-      "assets/products/cashmere-charcoal.svg"
+      "assets/products/cashmere-crewneck-sweater-01.png",
+      "assets/products/cashmere-crewneck-sweater-02.png",
+      "assets/products/cashmere-crewneck-sweater-03.png",
+      "assets/products/cashmere-crewneck-sweater-04.png",
+      "assets/products/cashmere-crewneck-sweater-05.png"
     ]
   },
   {
@@ -63,12 +64,13 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "sage",
-    "image": "assets/products/cashmere-sage.svg",
+    "image": "assets/products/fine-knit-cardigan-01.png",
     "gallery": [
-      "assets/products/cashmere-sage.svg",
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-scarf.svg",
-      "assets/products/cashmere-charcoal.svg"
+      "assets/products/fine-knit-cardigan-01.png",
+      "assets/products/fine-knit-cardigan-02.png",
+      "assets/products/fine-knit-cardigan-03.png",
+      "assets/products/fine-knit-cardigan-04.png",
+      "assets/products/fine-knit-cardigan-05.png"
     ]
   },
   {
@@ -99,12 +101,13 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "charcoal",
-    "image": "assets/products/cashmere-charcoal.svg",
+    "image": "assets/products/ribbed-turtleneck-sweater-01.png",
     "gallery": [
-      "assets/products/cashmere-charcoal.svg",
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg",
-      "assets/products/cashmere-scarf.svg"
+      "assets/products/ribbed-turtleneck-sweater-01.png",
+      "assets/products/ribbed-turtleneck-sweater-02.png",
+      "assets/products/ribbed-turtleneck-sweater-03.png",
+      "assets/products/ribbed-turtleneck-sweater-04.png",
+      "assets/products/ribbed-turtleneck-sweater-05.png"
     ]
   },
   {
@@ -135,12 +138,13 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "ivory",
-    "image": "assets/products/cashmere-scarf.svg",
+    "image": "assets/products/cashmere-winter-scarf-01.png",
     "gallery": [
-      "assets/products/cashmere-scarf.svg",
-      "assets/products/cashmere-ivory.svg",
-      "assets/products/cashmere-sage.svg",
-      "assets/products/cashmere-charcoal.svg"
+      "assets/products/cashmere-winter-scarf-01.png",
+      "assets/products/cashmere-winter-scarf-02.png",
+      "assets/products/cashmere-winter-scarf-03.png",
+      "assets/products/cashmere-winter-scarf-04.png",
+      "assets/products/cashmere-winter-scarf-05.png"
     ]
   },
   {
@@ -171,12 +175,13 @@
     "amazonUrl": "",
     "amazonLabel": "View on Amazon",
     "tone": "charcoal",
-    "image": "assets/products/cashmere-gloves.svg",
+    "image": "assets/products/ribbed-knit-gloves-01.png",
     "gallery": [
-      "assets/products/cashmere-gloves.svg",
-      "assets/products/cashmere-charcoal.svg",
-      "assets/products/cashmere-scarf.svg",
-      "assets/products/cashmere-ivory.svg"
+      "assets/products/ribbed-knit-gloves-01.png",
+      "assets/products/ribbed-knit-gloves-02.png",
+      "assets/products/ribbed-knit-gloves-03.png",
+      "assets/products/ribbed-knit-gloves-04.png",
+      "assets/products/ribbed-knit-gloves-05.png"
     ]
   }
 ]

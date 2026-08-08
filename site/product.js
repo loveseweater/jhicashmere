@@ -1,4 +1,5 @@
 const i18n = window.JINHEXI_I18N || { locale: "en", t: (key) => key };
+const dataPrefix = location.protocol === "file:" ? "./" : "/";
 
 async function loadJson(url, fallback) {
   try {
@@ -42,45 +43,28 @@ function normalizeStatus(value) {
   const key = raw.toLowerCase();
   const map = {
     draft: "Draft",
-    "草稿": "Draft",
     "coming soon": "Coming Soon",
-    "即将上架": "Coming Soon",
     "site exclusive": "Site Exclusive",
-    "独家上架": "Site Exclusive",
-    "amazon ready": "Amazon Ready",
-    "amazon 备货": "Amazon Ready"
+    "amazon ready": "Amazon Ready"
   };
   return map[key] || map[raw] || raw || "Draft";
 }
 
 function statusLabel(value) {
-  const status = normalizeStatus(value);
-  if (i18n.locale !== "zh") return status;
-  const map = {
-    Draft: "草稿",
-    "Coming Soon": "即将上架",
-    "Site Exclusive": "独家上架",
-    "Amazon Ready": "Amazon 备货"
-  };
-  return map[status] || status;
+  return normalizeStatus(value);
 }
 
 function amazonLabel(product) {
   const label = String(product.amazonLabel || "").trim();
   if (!label) return i18n.t("viewOnAmazon");
-  if (i18n.locale === "zh" && label === "View on Amazon") return "查看 Amazon";
-  if (i18n.locale !== "zh" && label === "查看 Amazon") return "View on Amazon";
   return label;
 }
 
 function applyLocale() {
-  const title = i18n.locale === "zh" ? "JINHEXI | 产品详情" : "JINHEXI | Product Detail";
-  document.title = title;
+  document.title = "JINHEXI | Product Detail";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = i18n.locale === "zh"
-      ? "JINHEXI 产品详情页，展示卖点、材质、尺码、护理和购买信息。"
-      : "JINHEXI product detail page with listing notes, materials, size, care, and buying information.";
+    meta.content = "JINHEXI product detail page with listing notes, materials, size, care, and buying information.";
   }
   const navCatalog = document.querySelector("#nav-catalog");
   const navJournal = document.querySelector("#nav-journal");
@@ -165,7 +149,7 @@ function renderProduct(product) {
 
 async function init() {
   applyLocale();
-  const fallback = await loadJson("/data/products.json", []);
+  const fallback = await loadJson(`${dataPrefix}data/products.json`, []);
   const apiProducts = await loadJson("/api/products", fallback);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : fallback;
   const params = new URLSearchParams(location.search);
@@ -174,9 +158,7 @@ async function init() {
   const page = document.querySelector("[data-product-page]");
   if (!page) return;
   if (!product) {
-    page.innerHTML = i18n.locale === "zh"
-      ? `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`
-      : `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`;
+    page.innerHTML = `<section class="product-detail-loading"><h1>${escapeHtml(i18n.t("noProductsYet"))}</h1><p>${escapeHtml(i18n.t("noProductsHint"))}</p></section>`;
     return;
   }
   page.innerHTML = renderProduct(product);

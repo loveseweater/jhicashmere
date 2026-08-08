@@ -21,24 +21,16 @@ async function trackPageview() {
 }
 
 const i18n = window.JINHEXI_I18N || { locale: "en", t: (key) => key };
+const dataPrefix = location.protocol === "file:" ? "./" : "/";
 
-const categoryLabels = i18n.locale === "zh"
-  ? {
-      tops: "上衣",
-      sweaters: "毛衣",
-      accessories: "配件",
-      scarves: "围巾",
-      gloves: "手套",
-      others: "其他"
-    }
-  : {
-      tops: "Tops",
-      sweaters: "Sweaters",
-      accessories: "Accessories",
-      scarves: "Scarves",
-      gloves: "Gloves",
-      others: "Other"
-    };
+const categoryLabels = {
+  tops: "Tops",
+  sweaters: "Sweaters",
+  accessories: "Accessories",
+  scarves: "Scarves",
+  gloves: "Gloves",
+  others: "Other"
+};
 
 function escapeHtml(value) {
   return String(value ?? "")
@@ -52,12 +44,6 @@ function escapeHtml(value) {
 function normalizeCategory(value) {
   const raw = String(value || "").trim();
   const map = {
-    "上衣": "tops",
-    "毛衣": "sweaters",
-    "配件": "accessories",
-    "围巾": "scarves",
-    "手套": "gloves",
-    "其他": "others",
     "pullover sweaters": "sweaters",
     "cardigans": "tops",
     "turtlenecks": "sweaters",
@@ -83,45 +69,28 @@ function normalizeStatus(value) {
   const key = raw.toLowerCase();
   const map = {
     draft: "Draft",
-    "草稿": "Draft",
     "coming soon": "Coming Soon",
-    "即将上架": "Coming Soon",
     "site exclusive": "Site Exclusive",
-    "独家上架": "Site Exclusive",
-    "amazon ready": "Amazon Ready",
-    "amazon 备货": "Amazon Ready"
+    "amazon ready": "Amazon Ready"
   };
   return map[key] || map[raw] || raw || "Draft";
 }
 
 function statusLabel(value) {
-  const status = normalizeStatus(value);
-  if (i18n.locale !== "zh") return status;
-  const map = {
-    Draft: "草稿",
-    "Coming Soon": "即将上架",
-    "Site Exclusive": "独家上架",
-    "Amazon Ready": "Amazon 备货"
-  };
-  return map[status] || status;
+  return normalizeStatus(value);
 }
 
 function amazonLabel(product) {
   const label = String(product.amazonLabel || "").trim();
   if (!label) return i18n.t("viewOnAmazon");
-  if (i18n.locale === "zh" && label === "View on Amazon") return "查看 Amazon";
-  if (i18n.locale !== "zh" && label === "查看 Amazon") return "View on Amazon";
   return label;
 }
 
 function applyStaticLocale() {
-  const title = i18n.locale === "zh" ? "JINHEXI | 羊绒女装目录" : "JINHEXI | Cashmere Womenswear Catalog";
-  document.title = title;
+  document.title = "JINHEXI | Cashmere Womenswear Catalog";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = i18n.locale === "zh"
-      ? "JINHEXI 羊绒女装目录，支持按分类浏览产品、打开产品详情页，并可跳转 Amazon 或独立站下单。"
-      : "JINHEXI cashmere womenswear catalog with category browsing, product detail pages, and Amazon or direct-site buying paths.";
+    meta.content = "JINHEXI cashmere womenswear catalog with category browsing, product detail pages, and Amazon or direct-site buying paths.";
   }
 
   const navMap = [
@@ -135,13 +104,11 @@ function applyStaticLocale() {
   });
 
   const introTitle = document.querySelector("[data-copy-title]");
-  if (introTitle) introTitle.textContent = i18n.locale === "zh" ? "按分类逛货，直接看产品。" : "Shop by category, then open the product.";
+  if (introTitle) introTitle.textContent = "Shop by category, then open the product.";
   const heroEyebrow = document.querySelector("[data-hero-eyebrow]");
   if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
-  if (introText) introText.textContent = i18n.locale === "zh"
-    ? "这是一个可持续更新的商品目录，不是营销主页。先看上衣、毛衣、围巾、手套和配件，再跳转到 Amazon 或独立站款式。"
-    : "This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.";
+  if (introText) introText.textContent = "This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.";
   const browseButton = document.querySelector("[data-browse-button]");
   if (browseButton) browseButton.textContent = i18n.t("browseCatalog");
   const journalButton = document.querySelector("[data-journal-button]");
@@ -193,7 +160,7 @@ function applyStaticLocale() {
   if (contactLink) contactLink.textContent = `${i18n.t("whatsapp")} +86 136 0232 8348`;
 
   const footerText = document.querySelector("[data-footer-text]");
-  if (footerText) footerText.textContent = i18n.locale === "zh" ? "羊绒女装目录" : "Cashmere Womenswear Catalog";
+  if (footerText) footerText.textContent = "Cashmere Womenswear Catalog";
 }
 
 function productTemplate(product) {
@@ -216,7 +183,7 @@ function productTemplate(product) {
       <div class="product-thumbs">${thumbs}</div>
       <div class="product-info">
         <div class="product-meta">
-          <span>${escapeHtml(categoryLabels[category] || product.category || "其他")}</span>
+          <span>${escapeHtml(categoryLabels[category] || product.category || "Other")}</span>
           <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
         </div>
         <h3><a href="/product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
@@ -267,10 +234,10 @@ const fallbackPosts = [
 
 async function renderSiteData() {
   applyStaticLocale();
-  const localProducts = await loadJson("/data/products.json", fallbackProducts);
+  const localProducts = await loadJson(`${dataPrefix}data/products.json`, fallbackProducts);
   const apiProducts = await loadJson("/api/products", localProducts);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : localProducts;
-  const posts = await loadJson("/api/posts", fallbackPosts);
+  const posts = await loadJson(`${dataPrefix}data/posts.json`, fallbackPosts);
   const params = new URLSearchParams(location.search);
   const initialChannel = normalizeChannel(params.get("channel"));
   const productGrid = document.querySelector("[data-products]");
