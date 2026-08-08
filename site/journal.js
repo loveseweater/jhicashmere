@@ -20,10 +20,17 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function postImage(post) {
+  return post.image || "assets/jni-cashmere-hero.png";
+}
+
 function postTemplate(post) {
   const slug = encodeURIComponent(post.slug || post.id || post.title || "");
   return `
     <article class="post-item featured">
+      <a class="post-media" href="/journal.html?post=${slug}" aria-label="${escapeHtml(post.title)}">
+        <img class="post-image" src="${escapeHtml(postImage(post))}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy" decoding="async" />
+      </a>
       <div>
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
@@ -39,8 +46,11 @@ function renderSinglePost(post) {
   const container = document.querySelector("[data-posts]");
   if (!container) return;
   container.innerHTML = `
-    <article class="post-item featured">
-      <div>
+    <article class="post-item featured post-single">
+      <a class="post-media" href="/journal.html" aria-label="${escapeHtml(post.title)}">
+        <img class="post-image" src="${escapeHtml(postImage(post))}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="eager" fetchpriority="high" decoding="async" />
+      </a>
+      <div class="post-copy">
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
