@@ -75,14 +75,43 @@ a {
 
 .search-control,
 .sort-control {
-  display: grid;
-  gap: 6px;
-  min-width: 180px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   color: var(--muted);
   font-family: Arial, sans-serif;
   font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
+}
+
+.search-control {
+  min-width: auto;
+}
+
+.search-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  color: var(--muted);
+  background: var(--white);
+}
+
+.search-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.search-control.is-open input {
+  width: 220px;
+  opacity: 1;
+  pointer-events: auto;
+  margin-left: 4px;
 }
 
 .sort-control select {
@@ -92,7 +121,15 @@ a {
 
 .search-control input {
   min-height: 40px;
+  width: 0;
+  padding-left: 0;
+  padding-right: 0;
+  border: 0;
+  opacity: 0;
+  pointer-events: none;
   background: var(--white);
+  transition: width 0.18s ease, opacity 0.18s ease, padding 0.18s ease;
+  overflow: hidden;
 }
 
 .category-pill {
@@ -141,65 +178,79 @@ a {
   text-transform: uppercase;
 }
 
-.site-nav {
-  display: flex;
+.menu-toggle {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: clamp(12px, 2.2vw, 28px);
+  min-height: 44px;
+  gap: 8px;
+  padding: 0 14px;
+  border: 0;
+  color: var(--ink);
+  background: var(--white);
   font-family: Arial, sans-serif;
   font-size: 13px;
-  color: var(--muted);
-}
-
-.site-nav a,
-.header-action {
-  min-height: 40px;
-  display: inline-flex;
-  align-items: center;
-}
-
-.header-actions {
-  display: flex;
-  flex: 1 1 auto;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 10px;
-  min-width: 0;
-}
-
-.header-button {
-  padding: 0 16px;
-  background: var(--white);
-  white-space: nowrap;
-}
-
-.header-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 40px;
-  padding: 0 14px;
-  border: 1px solid var(--line);
-  background: var(--white);
-  color: var(--ink);
-  font-family: Arial, sans-serif;
-  font-size: 12px;
   font-weight: 700;
   text-transform: uppercase;
-  white-space: nowrap;
 }
 
-.site-nav a:hover,
-.header-action:hover,
-.contact-panel a:hover {
+.menu-toggle svg {
+  width: 16px;
+  height: 16px;
+}
+
+.site-menu {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: clamp(18px, 5vw, 56px);
+  width: min(560px, calc(100vw - 36px));
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: rgba(248, 247, 243, 0.98);
+  box-shadow: 0 16px 40px rgba(36, 35, 33, 0.08);
+}
+
+.site-menu[hidden] {
+  display: none;
+}
+
+.menu-links {
+  display: grid;
+  gap: 8px;
+}
+
+.menu-links a,
+.menu-action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
   color: var(--ink);
-}
-
-.header-action {
-  padding: 0 18px;
-  border: 1px solid var(--ink);
+  background: var(--white);
   font-family: Arial, sans-serif;
   font-size: 13px;
+  font-weight: 700;
+}
+
+.menu-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.menu-social {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.menu-links a:hover,
+.menu-action:hover,
+.contact-panel a:hover {
+  color: var(--ink);
 }
 
 .hero {
@@ -1250,21 +1301,11 @@ select {
 @media (max-width: 860px) {
   .site-header {
     position: sticky;
-    flex-wrap: wrap;
     min-height: auto;
   }
 
-  .header-actions {
-    order: 3;
-    width: 100%;
-    justify-content: flex-start;
-  }
-
-  .site-nav {
-    order: 3;
-    width: 100%;
-    justify-content: flex-start;
-    overflow-x: auto;
+  .site-menu {
+    right: 18px;
   }
 
   .hero {
@@ -1317,8 +1358,13 @@ select {
 
   .catalog-controls {
     margin-left: 0;
-    flex-direction: column;
-    align-items: stretch;
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .search-control.is-open input {
+    width: min(100%, 220px);
   }
 
   .intro-band div {
@@ -1347,10 +1393,6 @@ select {
 @media (max-width: 520px) {
   .brand {
     min-width: 0;
-  }
-
-  .header-action {
-    padding: 0 14px;
   }
 
   .brand {

@@ -76,8 +76,6 @@ function applyLocale() {
   if (navJournal) navJournal.textContent = i18n.t("journal");
   const loadingTitle = document.querySelector("[data-loading-title]");
   if (loadingTitle) loadingTitle.textContent = i18n.t("loadingProduct");
-  const headerAction = document.querySelector(".header-action");
-  if (headerAction) headerAction.textContent = i18n.t("whatsapp");
 }
 
 function renderProduct(product) {

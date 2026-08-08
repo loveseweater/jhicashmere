@@ -238,6 +238,8 @@ async function renderSiteData() {
   const productCount = document.querySelector("[data-product-count]");
   const sortSelect = document.querySelector("[data-sort-select]");
   const searchInput = document.querySelector("[data-search-input]");
+  const searchControl = document.querySelector(".search-control");
+  const searchButton = document.querySelector(".search-button");
   const categories = ["all", "tops", "sweaters", "accessories", "scarves", "gloves", "others"];
   let activeCategory = "all";
   let activeChannel = initialChannel;
@@ -318,6 +320,22 @@ async function renderSiteData() {
     searchInput.addEventListener("input", () => {
       activeSearch = searchInput.value.trim().toLowerCase();
       renderProducts();
+    });
+  }
+
+  if (searchButton && searchControl && searchInput) {
+    searchButton.addEventListener("click", () => {
+      const isOpen = searchControl.classList.toggle("is-open");
+      if (isOpen) {
+        searchInput.focus();
+      } else {
+        searchInput.blur();
+      }
+    });
+    document.addEventListener("click", (event) => {
+      if (!searchControl.classList.contains("is-open")) return;
+      if (searchControl.contains(event.target)) return;
+      searchControl.classList.remove("is-open");
     });
   }
 
