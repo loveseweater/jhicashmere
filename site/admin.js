@@ -163,6 +163,13 @@ function normalizeStatus(value) {
   return map[key] || map[raw] || "Draft";
 }
 
+function splitLines(value) {
+  return String(value || "")
+    .split("\n")
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
 function renderProducts() {
   document.querySelector("[data-product-list]").innerHTML = products
     .map(
@@ -215,6 +222,8 @@ function renderPosts() {
             ${field("标题", post.title, "title")}
             ${field("日期", post.date, "date", "date")}
             ${field("URL 别名", post.slug, "slug")}
+            ${field("封面图片", post.image, "image")}
+            ${field("封面文案", post.imageAlt, "imageAlt")}
             ${field("SEO 标题", post.seoTitle, "seoTitle")}
             ${field("SEO 描述", post.seoDescription, "seoDescription")}
             ${textarea("摘要", post.excerpt, "excerpt")}
@@ -231,7 +240,13 @@ function collect(listSelector, source) {
     const index = Number(item.dataset.index);
     const next = { ...source[index] };
     item.querySelectorAll("[data-key]").forEach((input) => {
-      next[input.dataset.key] = input.value.trim();
+      const key = input.dataset.key;
+      const value = input.value.trim();
+      if (key === "gallery" || key === "bullets") {
+        next[key] = splitLines(value);
+      } else {
+        next[key] = value;
+      }
     });
     if (Object.prototype.hasOwnProperty.call(next, "status")) {
       next.status = normalizeStatus(next.status);

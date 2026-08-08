@@ -169,7 +169,7 @@ function productTemplate(product) {
   const id = encodeURIComponent(product.id || product.name || "");
   return `
     <article class="product-card">
-      <a href="/product.html?id=${id}" aria-label="${escapeHtml(product.name || "Product detail")}">
+      <a href="product.html?id=${id}" aria-label="${escapeHtml(product.name || "Product detail")}">
         <img class="product-image" src="${escapeHtml(image)}" alt="${escapeHtml(product.name || "Cashmere sweater")}" loading="lazy" decoding="async" />
       </a>
       <div class="product-thumbs">${thumbs}</div>
@@ -178,14 +178,14 @@ function productTemplate(product) {
           <span>${escapeHtml(categoryLabels[category] || product.category || "Other")}</span>
           <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
         </div>
-        <h3><a href="/product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
+        <h3><a href="product.html?id=${id}">${escapeHtml(product.name)}</a></h3>
         <p class="product-channel">${escapeHtml(product.channel === "site" ? i18n.t("exclusiveSite") : product.channel === "amazon" ? i18n.t("amazonCollection") : i18n.t("bothChannels"))}</p>
         <p>${escapeHtml(product.subtitle || product.description)}</p>
         <div class="product-line">
           <span>${escapeHtml(product.colors)}</span>
           <strong>${escapeHtml(product.price)}</strong>
         </div>
-        <a class="detail-link" href="/product.html?id=${id}">${escapeHtml(i18n.t("viewDetails"))}</a>
+        <a class="detail-link" href="product.html?id=${id}">${escapeHtml(i18n.t("viewDetails"))}</a>
         ${amazonButton}
       </div>
     </article>
@@ -199,7 +199,7 @@ function postTemplate(post) {
       <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
       <h3>${escapeHtml(post.title)}</h3>
       <p>${escapeHtml(post.excerpt)}</p>
-      <a class="post-link" href="/journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
+      <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
   `;
 }

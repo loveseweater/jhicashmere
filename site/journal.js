@@ -11,6 +11,18 @@ async function loadJson(url, fallback) {
   }
 }
 
+async function trackPageview() {
+  try {
+    await fetch("/api/track", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ path: location.pathname + location.search })
+    });
+  } catch {
+    return null;
+  }
+}
+
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -28,7 +40,7 @@ function postTemplate(post) {
   const slug = encodeURIComponent(post.slug || post.id || post.title || "");
   return `
     <article class="post-item featured">
-      <a class="post-media" href="/journal.html?post=${slug}" aria-label="${escapeHtml(post.title)}">
+      <a class="post-media" href="journal.html?post=${slug}" aria-label="${escapeHtml(post.title)}">
         <img class="post-image" src="${escapeHtml(postImage(post))}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="lazy" decoding="async" />
       </a>
       <div>
@@ -37,7 +49,7 @@ function postTemplate(post) {
         <p>${escapeHtml(post.excerpt)}</p>
         <p class="post-body">${escapeHtml(post.content)}</p>
       </div>
-      <a class="post-link" href="/journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
+      <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
   `;
 }
@@ -47,7 +59,7 @@ function renderSinglePost(post) {
   if (!container) return;
   container.innerHTML = `
     <article class="post-item featured post-single">
-      <a class="post-media" href="/journal.html" aria-label="${escapeHtml(post.title)}">
+      <a class="post-media" href="journal.html" aria-label="${escapeHtml(post.title)}">
         <img class="post-image" src="${escapeHtml(postImage(post))}" alt="${escapeHtml(post.imageAlt || post.title)}" loading="eager" fetchpriority="high" decoding="async" />
       </a>
       <div class="post-copy">
@@ -56,7 +68,7 @@ function renderSinglePost(post) {
         <p>${escapeHtml(post.excerpt)}</p>
         <p class="post-body">${escapeHtml(post.content)}</p>
       </div>
-      <a class="post-link" href="/journal.html">${escapeHtml(i18n.t("backToPosts"))}</a>
+      <a class="post-link" href="journal.html">${escapeHtml(i18n.t("backToPosts"))}</a>
     </article>
   `;
   document.title = post.seoTitle || `${post.title} | JINHEXI Journal`;
@@ -100,19 +112,12 @@ async function init() {
     const post = posts.find((item) => (item.slug || item.id) === target);
     if (post) {
       renderSinglePost(post);
+      await trackPageview();
       return;
     }
   }
   container.innerHTML = posts.map(postTemplate).join("");
-  try {
-    await fetch("/api/track", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ path: location.pathname + location.search })
-    });
-  } catch {
-    return;
-  }
+  await trackPageview();
 }
 
 init();

@@ -109,7 +109,7 @@ function renderProduct(product) {
           ${amazonButton}
           <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">${escapeHtml(i18n.t("whatsappInquiry"))}</a>
         </div>
-        <a class="detail-link" href="/#catalog">${escapeHtml(i18n.t("backToCatalog"))}</a>
+        <a class="detail-link" href="index.html#catalog">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
     </section>
 
