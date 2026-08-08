@@ -18,54 +18,44 @@
       <nav class="site-nav" aria-label="Primary navigation">
         <a href="#catalog" id="nav-catalog">Catalog</a>
         <a href="#journal" id="nav-journal">Journal</a>
-        <a href="#social" id="nav-social">Social</a>
+        <a href="#contact" id="nav-contact">Contact</a>
       </nav>
       <a class="header-action" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp</a>
     </header>
 
     <main id="top" class="catalog-page">
       <section class="hero catalog-hero" aria-label="JINHEXI catalog introduction">
-        <img class="hero-image" src="assets/jni-cashmere-hero.png" alt="JINHEXI cashmere womenswear lookbook" />
-        <div class="hero-shade"></div>
+        <div class="hero-media">
+          <img class="hero-image" src="assets/jni-cashmere-hero.png" alt="JINHEXI cashmere womenswear lookbook" />
+        </div>
         <div class="hero-copy catalog-copy">
           <p class="eyebrow" data-hero-eyebrow>JINHEXI Cashmere</p>
-          <h1 data-copy-title>Shop by category, then open the product.</h1>
+          <h1 data-copy-title>Women's cashmere, edited for clarity.</h1>
           <p class="catalog-text hero-text" data-copy-text>
-            This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.
+            Browse a premium cashmere catalog with clear category navigation, direct-site exclusives, Amazon-linked styles, and SEO-ready journal content.
           </p>
           <div class="catalog-actions hero-actions">
             <a class="button primary" href="#catalog" data-browse-button>Browse Catalog</a>
             <a class="button secondary" href="#journal" data-journal-button>Open Journal</a>
           </div>
+          <div class="hero-links" aria-label="Quick links">
+            <a href="/?channel=site#catalog" data-summary-item data-summary-channel="site">Site exclusives</a>
+            <a href="/?channel=amazon#catalog" data-summary-item data-summary-channel="amazon">Amazon edit</a>
+            <a href="https://wa.me/8613602328348" target="_blank" rel="noreferrer" data-summary-item data-summary-channel="whatsapp">WhatsApp</a>
+          </div>
         </div>
-        <aside class="catalog-summary" aria-label="Store highlights">
-          <a class="summary-card" href="/?channel=site#catalog" data-summary-item data-summary-channel="site">
-            <strong data-summary-title>Direct Site</strong>
-            <span data-summary-text>Own styles</span>
-            <span class="summary-action" data-summary-cta>Shop site styles</span>
-          </a>
-          <a class="summary-card" href="/?channel=amazon#catalog" data-summary-item data-summary-channel="amazon">
-            <strong data-summary-title>Amazon</strong>
-            <span data-summary-text>Traffic to listings</span>
-            <span class="summary-action" data-summary-cta>See Amazon styles</span>
-          </a>
-          <a class="summary-card" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer" data-summary-item data-summary-channel="whatsapp">
-            <strong data-summary-title>WhatsApp</strong>
-            <span data-summary-text>Quick contact</span>
-            <span class="summary-action" data-summary-cta>Chat now</span>
-          </a>
-        </aside>
       </section>
 
       <section class="section catalog-section" id="catalog">
         <div class="section-heading">
           <div>
             <p class="eyebrow" data-catalog-eyebrow>Product Catalog</p>
-            <h2 data-catalog-heading>Category browsing</h2>
+            <h2 data-catalog-heading>The Original Edit</h2>
           </div>
-          <p class="section-note" data-catalog-note>Categories include tops, sweaters, accessories, scarves, gloves, and more.</p>
+          <p class="section-note" data-catalog-note>Clean category browsing with site exclusives, Amazon-linked styles, and journal content.</p>
         </div>
         <div class="category-filters" data-category-filters></div>
+        <p class="collection-count" data-product-count></p>
         <div class="product-grid" data-products></div>
       </section>
 

@@ -96,7 +96,7 @@ function applyStaticLocale() {
   const navMap = [
     ["#nav-catalog", i18n.t("catalog")],
     ["#nav-journal", i18n.t("journal")],
-    ["#nav-social", i18n.t("social")]
+    ["#nav-contact", "Contact"]
   ];
   navMap.forEach(([selector, value]) => {
     const node = document.querySelector(selector);
@@ -104,39 +104,22 @@ function applyStaticLocale() {
   });
 
   const introTitle = document.querySelector("[data-copy-title]");
-  if (introTitle) introTitle.textContent = "Shop by category, then open the product.";
+  if (introTitle) introTitle.textContent = "Women's cashmere, edited for clarity.";
   const heroEyebrow = document.querySelector("[data-hero-eyebrow]");
   if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
-  if (introText) introText.textContent = "This is a maintainable product catalog, not a marketing landing page. Browse tops, sweaters, scarves, gloves, and accessories, then move to Amazon or direct-site listings.";
+  if (introText) introText.textContent = "Browse a premium cashmere catalog with clear category navigation, direct-site exclusives, Amazon-linked styles, and SEO-ready journal content.";
   const browseButton = document.querySelector("[data-browse-button]");
   if (browseButton) browseButton.textContent = i18n.t("browseCatalog");
   const journalButton = document.querySelector("[data-journal-button]");
   if (journalButton) journalButton.textContent = i18n.t("openJournal");
 
-  const summary = document.querySelectorAll("[data-summary-item]");
-  if (summary[0]) {
-    summary[0].querySelector("[data-summary-title]").textContent = i18n.t("directSite");
-    summary[0].querySelector("[data-summary-text]").textContent = i18n.t("ownStyles");
-    summary[0].querySelector("[data-summary-cta]").textContent = i18n.t("shopSiteStyles");
-  }
-  if (summary[1]) {
-    summary[1].querySelector("[data-summary-title]").textContent = i18n.t("amazon");
-    summary[1].querySelector("[data-summary-text]").textContent = i18n.t("amazonTraffic");
-    summary[1].querySelector("[data-summary-cta]").textContent = i18n.t("seeAmazonStyles");
-  }
-  if (summary[2]) {
-    summary[2].querySelector("[data-summary-title]").textContent = i18n.t("whatsapp");
-    summary[2].querySelector("[data-summary-text]").textContent = i18n.t("quickContact");
-    summary[2].querySelector("[data-summary-cta]").textContent = i18n.t("chatNow");
-  }
-
   const catalogHeader = document.querySelector("[data-catalog-heading]");
-  if (catalogHeader) catalogHeader.textContent = i18n.t("categoryBrowsing");
+  if (catalogHeader) catalogHeader.textContent = "The Original Edit";
   const catalogEyebrow = document.querySelector("[data-catalog-eyebrow]");
   if (catalogEyebrow) catalogEyebrow.textContent = i18n.t("productCatalog");
   const catalogNote = document.querySelector("[data-catalog-note]");
-  if (catalogNote) catalogNote.textContent = i18n.t("catalogNote");
+  if (catalogNote) catalogNote.textContent = "Clean category browsing with site exclusives, Amazon-linked styles, and journal content.";
 
   const journalHeader = document.querySelector("[data-journal-heading]");
   if (journalHeader) journalHeader.textContent = i18n.t("postsAndArticles");
@@ -161,6 +144,9 @@ function applyStaticLocale() {
 
   const footerText = document.querySelector("[data-footer-text]");
   if (footerText) footerText.textContent = "Cashmere Womenswear Catalog";
+
+  const contactHeader = document.querySelector("[data-contact-title]");
+  if (contactHeader) contactHeader.textContent = "Contact us on WhatsApp.";
 }
 
 function productTemplate(product) {
@@ -243,6 +229,7 @@ async function renderSiteData() {
   const productGrid = document.querySelector("[data-products]");
   const postGrid = document.querySelector("[data-posts]");
   const filterGrid = document.querySelector("[data-category-filters]");
+  const productCount = document.querySelector("[data-product-count]");
   const categories = ["all", "tops", "sweaters", "accessories", "scarves", "gloves", "others"];
   let activeCategory = "all";
   let activeChannel = initialChannel;
@@ -262,6 +249,9 @@ async function renderSiteData() {
   function renderProducts() {
     if (productGrid) {
       const visible = filteredProducts();
+      if (productCount) {
+        productCount.textContent = `${visible.length} product${visible.length === 1 ? "" : "s"}`;
+      }
       productGrid.innerHTML = visible.length
         ? visible.map(productTemplate).join("")
         : `<article class="empty-state"><h3>${escapeHtml(i18n.t("noProducts"))}</h3><p>${escapeHtml(i18n.t("noProductsNote"))}</p></article>`;
