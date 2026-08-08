@@ -109,10 +109,6 @@ function applyStaticLocale() {
   if (heroEyebrow) heroEyebrow.textContent = i18n.t("heroEyebrow");
   const introText = document.querySelector("[data-copy-text]");
   if (introText) introText.textContent = "Browse a premium cashmere catalog with clear category navigation, direct-site exclusives, Amazon-linked styles, and SEO-ready journal content.";
-  const browseButton = document.querySelector("[data-browse-button]");
-  if (browseButton) browseButton.textContent = i18n.t("browseCatalog");
-  const journalButton = document.querySelector("[data-journal-button]");
-  if (journalButton) journalButton.textContent = i18n.t("openJournal");
   const searchField = document.querySelector("[data-search-input]");
   if (searchField) searchField.placeholder = "Search products";
 
