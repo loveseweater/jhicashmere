@@ -114,9 +114,9 @@ function applyStaticLocale() {
   const heroHighlights = document.querySelector("[data-hero-highlights]");
   if (heroHighlights) {
     heroHighlights.innerHTML = `
-      <span>Independent styles</span>
-      <span>Amazon-linked edit</span>
-      <span>Editorial journal</span>
+      <a class="button primary" href="#catalog">Shop collection</a>
+      <a class="button secondary" href="#journal">Read journal</a>
+      <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">WhatsApp chat</a>
     `;
   }
 

@@ -58,6 +58,24 @@ a {
   text-transform: uppercase;
 }
 
+.site-promo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  padding: 0 16px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.site-promo a {
+  color: #f6e7c7;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .utility-links,
 .utility-icons {
   display: flex;
@@ -391,6 +409,10 @@ a {
   flex-wrap: wrap;
   gap: 12px;
   margin-top: 24px;
+}
+
+.hero-actions .button {
+  min-width: 158px;
 }
 
 .eyebrow {
@@ -1478,9 +1500,17 @@ select {
   }
 
   .site-utility {
+    flex-wrap: wrap;
     min-height: auto;
-    padding: 8px 18px;
+    padding: 8px 18px 10px;
     overflow-x: auto;
+  }
+
+  .site-promo {
+    order: 3;
+    width: 100%;
+    padding: 6px 0 0;
+    white-space: normal;
   }
 
   .utility-links {
@@ -1557,6 +1587,11 @@ select {
   .hero-copy {
     width: 100%;
     padding: 0;
+  }
+
+  .hero-actions .button {
+    min-width: 0;
+    width: 100%;
   }
 
   h1 {
