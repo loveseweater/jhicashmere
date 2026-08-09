@@ -164,7 +164,9 @@ function rowToPost(row) {
     excerpt: row.excerpt,
     content: row.content,
     seoTitle: row.seoTitle || "",
-    seoDescription: row.seoDescription || ""
+    seoDescription: row.seoDescription || "",
+    image: row.image || "assets/jni-cashmere-hero.png",
+    imageAlt: row.imageAlt || row.title || ""
   };
 }
 
@@ -204,7 +206,9 @@ export async function ensureSchema(env) {
       excerpt TEXT NOT NULL,
       content TEXT NOT NULL,
       seoTitle TEXT NOT NULL DEFAULT '',
-      seoDescription TEXT NOT NULL DEFAULT ''
+      seoDescription TEXT NOT NULL DEFAULT '',
+      image TEXT NOT NULL DEFAULT 'assets/jni-cashmere-hero.png',
+      imageAlt TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS views (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -228,6 +232,8 @@ export async function ensureSchema(env) {
   await ensureColumn(env, "posts", "slug", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "seoTitle", "TEXT NOT NULL DEFAULT ''");
   await ensureColumn(env, "posts", "seoDescription", "TEXT NOT NULL DEFAULT ''");
+  await ensureColumn(env, "posts", "image", "TEXT NOT NULL DEFAULT 'assets/jni-cashmere-hero.png'");
+  await ensureColumn(env, "posts", "imageAlt", "TEXT NOT NULL DEFAULT ''");
   schemaReady = true;
 }
 
@@ -272,8 +278,8 @@ export async function seedIfNeeded(env) {
     for (const post of defaultPosts) {
       await env.DB.prepare(`
         INSERT OR REPLACE INTO posts
-        (id, slug, title, date, excerpt, content, seoTitle, seoDescription)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (id, slug, title, date, excerpt, content, seoTitle, seoDescription, image, imageAlt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         post.id,
         post.slug || post.id,
@@ -282,7 +288,9 @@ export async function seedIfNeeded(env) {
         post.excerpt,
         post.content,
         post.seoTitle || "",
-        post.seoDescription || ""
+        post.seoDescription || "",
+        post.image || "assets/jni-cashmere-hero.png",
+        post.imageAlt || post.title || ""
       ).run();
     }
   }
@@ -371,8 +379,8 @@ export async function savePosts(env, payload) {
     normalized.map((item) =>
       env.DB.prepare(`
         INSERT OR REPLACE INTO posts
-        (id, slug, title, date, excerpt, content, seoTitle, seoDescription)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        (id, slug, title, date, excerpt, content, seoTitle, seoDescription, image, imageAlt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `).bind(
         item.id,
         item.slug || item.id,
@@ -381,7 +389,9 @@ export async function savePosts(env, payload) {
         item.excerpt || "",
         item.content || "",
         item.seoTitle || "",
-        item.seoDescription || ""
+        item.seoDescription || "",
+        item.image || "assets/jni-cashmere-hero.png",
+        item.imageAlt || item.title || ""
       )
     )
   );

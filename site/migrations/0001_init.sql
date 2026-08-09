@@ -32,7 +32,9 @@ CREATE TABLE IF NOT EXISTS posts (
   excerpt TEXT NOT NULL,
   content TEXT NOT NULL,
   seoTitle TEXT NOT NULL DEFAULT '',
-  seoDescription TEXT NOT NULL DEFAULT ''
+  seoDescription TEXT NOT NULL DEFAULT '',
+  image TEXT NOT NULL DEFAULT 'assets/jni-cashmere-hero.png',
+  imageAlt TEXT NOT NULL DEFAULT ''
 );
 
 CREATE TABLE IF NOT EXISTS views (
