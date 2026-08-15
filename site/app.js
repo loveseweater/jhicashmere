@@ -99,11 +99,13 @@ function productTemplate(product, index) {
   const imageSet = srcsetAttr(image, [360, 540, 720, 960, 1200], "(max-width: 620px) 92vw, (max-width: 1050px) 44vw, 28vw");
   const category = normalizeCategory(product.category);
   const productUrl = `product.html?id=${encodeURIComponent(product.id || product.name || "")}`;
+  const imageLoading = index < 4 ? "eager" : "lazy";
+  const imagePriority = index < 4 ? " fetchpriority=\"high\"" : "";
 
   return `
     <article class="sales-product-card reveal" style="--reveal-delay:${Math.min(index * 70, 280)}ms">
       <a class="sales-product-media" href="${escapeHtml(productUrl)}" aria-label="${escapeHtml(product.name)}">
-        <img src="${escapeHtml(imageSrc)}"${imageSet} alt="${escapeHtml(product.name || "JINHEXI cashmere product")}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
+        <img src="${escapeHtml(imageSrc)}"${imageSet} alt="${escapeHtml(product.name || "JINHEXI cashmere product")}" loading="${imageLoading}"${imagePriority} decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
       </a>
       <div class="sales-product-info">
         <div class="sales-product-topline">
