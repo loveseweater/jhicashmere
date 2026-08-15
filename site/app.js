@@ -48,6 +48,12 @@ function imageVariant(url, width) {
   return `${cleaned}${cleaned.includes("?") ? "&" : "?"}width=${width}`;
 }
 
+function catalogThumb(url) {
+  const src = String(url || "").trim();
+  if (!src) return src;
+  return src.replace("assets/catalog-branded/", "assets/catalog-thumbs/");
+}
+
 function imageSrcSet(url, widths) {
   if (!/cdn\.shopify\.com/.test(String(url || ""))) return "";
   return widths.map((width) => `${imageVariant(url, width)} ${width}w`).join(", ");
@@ -89,18 +95,15 @@ function amazonButtonLabel(product) {
 
 function productTemplate(product, index) {
   const image = product.image || (Array.isArray(product.gallery) ? product.gallery[0] : "") || "assets/real-cashmere-hero-jinhexi.webp";
-  const imageSrc = imageVariant(image, 960);
+  const imageSrc = catalogThumb(imageVariant(image, 760));
   const imageSet = srcsetAttr(image, [360, 540, 720, 960, 1200], "(max-width: 620px) 92vw, (max-width: 1050px) 44vw, 28vw");
   const category = normalizeCategory(product.category);
-  const status = String(product.status || "Limited release");
   const productUrl = `product.html?id=${encodeURIComponent(product.id || product.name || "")}`;
-  const bullets = Array.isArray(product.bullets) ? product.bullets.filter(Boolean).slice(0, 2) : [];
 
   return `
     <article class="sales-product-card reveal" style="--reveal-delay:${Math.min(index * 70, 280)}ms">
       <a class="sales-product-media" href="${escapeHtml(productUrl)}" aria-label="${escapeHtml(product.name)}">
         <img src="${escapeHtml(imageSrc)}"${imageSet} alt="${escapeHtml(product.name || "JINHEXI cashmere product")}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
-        <span class="product-status">${escapeHtml(status)}</span>
       </a>
       <div class="sales-product-info">
         <div class="sales-product-topline">
@@ -112,7 +115,6 @@ function productTemplate(product, index) {
         <div class="product-material"><span>Material</span><strong>${escapeHtml(product.material || "100% cashmere")}</strong></div>
         <div class="product-colors"><span>Size</span><span>${escapeHtml(product.sizeRange || "Ask for current sizes")}</span></div>
         <div class="product-colors"><span>Colors</span><span>${escapeHtml(product.colors || "Ask for current colors")}</span></div>
-        ${bullets.length ? `<ul class="product-mini-bullets">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
         <div class="product-actions">
           <span class="product-buy amazon-disabled" aria-disabled="true">${escapeHtml(amazonButtonLabel(product))}</span>
           <a class="product-inquiry" href="${escapeHtml(productUrl)}">View details <span aria-hidden="true">→</span></a>
