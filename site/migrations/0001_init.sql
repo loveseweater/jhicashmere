@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS products (
   amazonUrl TEXT NOT NULL DEFAULT '',
   amazonLabel TEXT NOT NULL DEFAULT 'View on Amazon',
   tone TEXT NOT NULL DEFAULT 'ivory',
-  image TEXT NOT NULL DEFAULT 'assets/products/cashmere-ivory.svg',
+  image TEXT NOT NULL DEFAULT 'assets/real-cashmere-hero-jinhexi.webp',
   gallery TEXT NOT NULL DEFAULT ''
 );
 

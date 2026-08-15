@@ -4,7 +4,7 @@ import math
 import random
 from pathlib import Path
 
-from PIL import Image, ImageChops, ImageDraw, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter, ImageFont
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -13,45 +13,23 @@ SIZE = (1600, 2000)
 
 
 PRODUCTS = [
-    {
-        "id": "cashmere-crewneck-sweater",
-        "kind": "sweater",
-        "body": ("#f6f0e8", "#d8cab8"),
-        "accent": "#b9a58f",
-    },
-    {
-        "id": "fine-knit-cardigan",
-        "kind": "cardigan",
-        "body": ("#e9efe7", "#bfd0c2"),
-        "accent": "#7f9185",
-    },
-    {
-        "id": "ribbed-turtleneck-sweater",
-        "kind": "turtleneck",
-        "body": ("#ece9e3", "#8d9492"),
-        "accent": "#606866",
-    },
-    {
-        "id": "cashmere-winter-scarf",
-        "kind": "scarf",
-        "body": ("#efe5d8", "#ad9178"),
-        "accent": "#7e6654",
-    },
-    {
-        "id": "ribbed-knit-gloves",
-        "kind": "gloves",
-        "body": ("#e8e2d9", "#8b7768"),
-        "accent": "#6c5a4d",
-    },
+    {"id": "100-cashmere-crewneck-sweater", "kind": "crewneck", "body": ("#f5efe6", "#d5c5b4"), "accent": "#a48f7c"},
+    {"id": "100-cashmere-v-neck-sweater", "kind": "vneck", "body": ("#d9d2ca", "#9b9287"), "accent": "#6f675f"},
+    {"id": "100-cashmere-cardigan", "kind": "cardigan", "body": ("#e8eee5", "#b9c8bb"), "accent": "#74887b"},
+    {"id": "100-cashmere-turtleneck-sweater", "kind": "turtleneck", "body": ("#2c302f", "#858a86"), "accent": "#f0eee7"},
+    {"id": "100-cashmere-wrap-scarf", "kind": "scarf", "body": ("#efe1cf", "#ad896d"), "accent": "#80624e"},
+    {"id": "100-cashmere-ribbed-beanie", "kind": "beanie", "body": ("#ede7dd", "#aa9d8e"), "accent": "#74685d"},
+    {"id": "100-cashmere-knit-gloves", "kind": "gloves", "body": ("#ded7cf", "#8c7c6d"), "accent": "#62564b"},
+    {"id": "100-cashmere-winter-gift-set", "kind": "gift-set", "body": ("#f0e8dd", "#b99d82"), "accent": "#7a5d49"},
 ]
 
 
 VARIANTS = [
-    {"suffix": "01", "bg": ("#f7f8f5", "#e4ebe7"), "seed": 11, "rotation": -3, "scale": 1.00, "x": 0.0, "y": 0.0},
-    {"suffix": "02", "bg": ("#f8f5f0", "#e7ddd2"), "seed": 23, "rotation": 2, "scale": 0.96, "x": -0.04, "y": 0.02},
-    {"suffix": "03", "bg": ("#f4f7f6", "#dee7e3"), "seed": 37, "rotation": 0, "scale": 1.06, "x": 0.03, "y": -0.03},
-    {"suffix": "04", "bg": ("#f7f6f2", "#e7e1d7"), "seed": 41, "rotation": -5, "scale": 0.92, "x": -0.02, "y": 0.05},
-    {"suffix": "05", "bg": ("#f6f7f4", "#dfe8e1"), "seed": 53, "rotation": 4, "scale": 1.02, "x": 0.02, "y": 0.00},
+    {"suffix": "01", "bg": "#f8f8f5", "seed": 11, "rotation": -1.5, "scale": 1.06, "x": 0.00, "y": 0.00},
+    {"suffix": "02", "bg": "#f5f0ea", "seed": 23, "rotation": 1.2, "scale": 1.00, "x": -0.03, "y": 0.02},
+    {"suffix": "03", "bg": "#eef3ef", "seed": 37, "rotation": 0.0, "scale": 1.10, "x": 0.02, "y": -0.02},
+    {"suffix": "04", "bg": "#f3f2ee", "seed": 41, "rotation": -2.4, "scale": 0.98, "x": 0.02, "y": 0.04},
+    {"suffix": "05", "bg": "#f7f4ee", "seed": 53, "rotation": 2.0, "scale": 1.04, "x": -0.01, "y": 0.00},
 ]
 
 
@@ -60,220 +38,194 @@ def hex_to_rgb(value: str) -> tuple[int, int, int]:
     return tuple(int(value[i : i + 2], 16) for i in (0, 2, 4))
 
 
-def mix(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> tuple[int, int, int]:
+def blend(a: tuple[int, int, int], b: tuple[int, int, int], t: float) -> tuple[int, int, int]:
     return tuple(round(a[i] + (b[i] - a[i]) * t) for i in range(3))
 
 
-def make_linear_gradient(size: tuple[int, int], top: tuple[int, int, int], bottom: tuple[int, int, int]) -> Image.Image:
-    w, h = size
-    img = Image.new("RGB", size)
-    px = img.load()
-    for y in range(h):
-        t = y / max(h - 1, 1)
-        row = mix(top, bottom, t)
-        for x in range(w):
-            px[x, y] = row
-    return img
+def solid_studio_bg(color: str, seed: int) -> Image.Image:
+    rng = random.Random(seed)
+    base = hex_to_rgb(color)
+    img = Image.new("RGB", SIZE, base).convert("RGBA")
+    draw = ImageDraw.Draw(img)
+    for _ in range(18):
+        cx = rng.randint(-80, SIZE[0] + 80)
+        cy = rng.randint(-80, SIZE[1] + 80)
+        radius = rng.randint(180, 440)
+        tint = blend(base, rng.choice([(255, 255, 255), (205, 216, 207), (224, 211, 196)]), 0.62)
+        draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=tint + (18,))
+    return img.filter(ImageFilter.GaussianBlur(42))
 
 
-def gradient_background(size: tuple[int, int], top: str, bottom: str, seed: int) -> Image.Image:
-    w, h = size
+def knit_lines(mask: Image.Image, accent: str, kind: str, seed: int) -> Image.Image:
+    rng = random.Random(seed)
+    layer = Image.new("RGBA", mask.size, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(layer)
+    accent_rgb = hex_to_rgb(accent)
+    dark = blend(accent_rgb, (0, 0, 0), 0.18)
+    light = blend(accent_rgb, (255, 255, 255), 0.45)
+    w, h = mask.size
+
+    if kind in {"crewneck", "vneck", "cardigan", "turtleneck", "beanie", "gloves"}:
+        step = 18 if kind in {"turtleneck", "beanie", "gloves"} else 24
+        for x in range(80, w - 80, step):
+            wave = math.sin((x + seed) * 0.024) * 5
+            draw.line((x, 60, x + wave, h - 70), fill=dark + (48,), width=2)
+        for x in range(90, w - 90, step):
+            draw.line((x, 80, x, h - 80), fill=light + (22,), width=1)
+
+    if kind in {"scarf", "gift-set"}:
+        for y in range(100, h - 100, 18):
+            draw.line((70, y, w - 70, y + rng.randint(-2, 2)), fill=dark + (42,), width=2)
+        for x in range(90, w - 90, 42):
+            draw.line((x, 90, x + rng.randint(-6, 6), h - 90), fill=light + (22,), width=1)
+
+    fuzz = Image.new("RGBA", mask.size, (0, 0, 0, 0))
+    fdraw = ImageDraw.Draw(fuzz)
+    for _ in range(450):
+        x = rng.randint(70, w - 70)
+        y = rng.randint(70, h - 70)
+        length = rng.randint(4, 16)
+        fdraw.line((x, y, x + rng.randint(-length, length), y + rng.randint(-3, 3)), fill=light + (30,), width=1)
+
+    texture = Image.alpha_composite(layer, fuzz.filter(ImageFilter.GaussianBlur(0.25)))
+    texture.putalpha(Image.composite(texture.getchannel("A"), Image.new("L", mask.size, 0), mask))
+    return texture
+
+
+def gradient_fill(size: tuple[int, int], top: str, bottom: str, mask: Image.Image) -> Image.Image:
     top_rgb = hex_to_rgb(top)
     bottom_rgb = hex_to_rgb(bottom)
-    img = make_linear_gradient(size, top_rgb, bottom_rgb).convert("RGBA")
-    rng = random.Random(seed)
-
-    overlay = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(overlay)
-    for _ in range(24):
-        cx = rng.randint(-100, w + 100)
-        cy = rng.randint(-100, h + 100)
-        radius = rng.randint(220, 520)
-        alpha = rng.randint(7, 18)
-        color = rng.choice([(255, 255, 255, alpha), (195, 205, 199, alpha), (227, 217, 207, alpha)])
-        draw.ellipse((cx - radius, cy - radius, cx + radius, cy + radius), fill=color)
-    overlay = overlay.filter(ImageFilter.GaussianBlur(60))
-    img = Image.alpha_composite(img.convert("RGBA"), overlay)
-
-    vignette = Image.new("L", size, 0)
-    vdraw = ImageDraw.Draw(vignette)
-    margin = int(min(w, h) * 0.06)
-    vdraw.rectangle((margin, margin, w - margin, h - margin), fill=255)
-    vignette = vignette.filter(ImageFilter.GaussianBlur(120))
-    dark = Image.new("RGBA", size, (30, 34, 33, 50))
-    img = Image.composite(dark, img, ImageChops.invert(vignette))
+    img = Image.new("RGBA", size)
+    px = img.load()
+    w, h = size
+    for y in range(h):
+        row = blend(top_rgb, bottom_rgb, y / max(h - 1, 1))
+        for x in range(w):
+            px[x, y] = row + (255,)
+    img.putalpha(mask)
     return img
 
 
-def add_grain(image: Image.Image, seed: int, amount: int = 14) -> Image.Image:
-    rng = random.Random(seed)
-    noise = Image.new("L", image.size)
-    px = noise.load()
-    step = 4
-    for y in range(0, image.size[1], step):
-        for x in range(0, image.size[0], step):
-            px[x, y] = max(0, min(255, 128 + rng.randint(-amount, amount)))
-    noise = noise.filter(ImageFilter.GaussianBlur(0.35))
-    if step > 1:
-        noise = noise.resize(image.size, Image.Resampling.BILINEAR)
-    tint = Image.merge("RGBA", (noise, noise, noise, Image.new("L", image.size, 30)))
-    return Image.alpha_composite(image, tint)
-
-
-def shadow_layer(size: tuple[int, int], y: int, scale: float = 1.0, blur: int = 80, alpha: int = 85) -> Image.Image:
-    layer = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(layer)
+def rounded_mask(size: tuple[int, int], radius: int, box: tuple[float, float, float, float]) -> Image.Image:
     w, h = size
-    draw.ellipse((w * 0.24, y - 40, w * (0.76 * scale), y + 95), fill=(20, 20, 20, alpha))
-    return layer.filter(ImageFilter.GaussianBlur(blur))
+    mask = Image.new("L", size, 0)
+    draw = ImageDraw.Draw(mask)
+    draw.rounded_rectangle((w * box[0], h * box[1], w * box[2], h * box[3]), radius=radius, fill=255)
+    return mask
 
 
-def fabric_texture(size: tuple[int, int], color: tuple[int, int, int], mask: Image.Image, seed: int, mode: str = "sweater") -> Image.Image:
-    w, h = size
-    layer = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(layer)
-    rng = random.Random(seed)
-
-    if mode in {"sweater", "cardigan", "turtleneck"}:
-        step = 24 if mode != "turtleneck" else 20
-        for x in range(int(w * 0.2), int(w * 0.8), step):
-            offset = int(math.sin((x + seed) * 0.03) * 6)
-            draw.line((x, int(h * 0.12), x + offset, int(h * 0.86)), fill=tuple(max(0, min(255, c - 16)) for c in color) + (42,), width=2)
-        for y in range(int(h * 0.18), int(h * 0.84), 20):
-            draw.line((int(w * 0.26), y, int(w * 0.74), y), fill=tuple(max(0, min(255, c + 10)) for c in color) + (20,), width=1)
-    elif mode == "scarf":
-        for y in range(int(h * 0.28), int(h * 0.74), 16):
-            draw.line((int(w * 0.18), y, int(w * 0.82), y), fill=tuple(max(0, min(255, c - 10)) for c in color) + (38,), width=2)
-        for _ in range(80):
-            x = rng.randint(int(w * 0.2), int(w * 0.8))
-            y = rng.randint(int(h * 0.22), int(h * 0.78))
-            draw.line((x, y, x + rng.randint(-16, 16), y + rng.randint(-6, 6)), fill=tuple(max(0, min(255, c + 14)) for c in color) + (24,), width=1)
-    else:
-        for x in range(int(w * 0.34), int(w * 0.66), 14):
-            draw.line((x, int(h * 0.20), x, int(h * 0.86)), fill=tuple(max(0, min(255, c - 12)) for c in color) + (34,), width=2)
-        for y in range(int(h * 0.30), int(h * 0.78), 18):
-            draw.line((int(w * 0.34), y, int(w * 0.66), y), fill=tuple(max(0, min(255, c + 10)) for c in color) + (18,), width=1)
-
-    layer = layer.filter(ImageFilter.GaussianBlur(0.6))
-    return Image.composite(layer, Image.new("RGBA", size, (0, 0, 0, 0)), mask)
-
-
-def vertical_gradient_fill(size: tuple[int, int], top: tuple[int, int, int], bottom: tuple[int, int, int]) -> Image.Image:
-    return make_linear_gradient(size, top, bottom).convert("RGBA")
-
-
-def garment_mask(kind: str, size: tuple[int, int]) -> Image.Image:
+def clothing_mask(kind: str, size: tuple[int, int]) -> Image.Image:
     w, h = size
     mask = Image.new("L", size, 0)
     draw = ImageDraw.Draw(mask)
 
-    if kind in {"sweater", "cardigan", "turtleneck"}:
-        draw.rounded_rectangle((w * 0.35, h * 0.22, w * 0.65, h * 0.82), radius=100, fill=255)
-        draw.polygon([(w * 0.35, h * 0.27), (w * 0.23, h * 0.40), (w * 0.30, h * 0.52), (w * 0.35, h * 0.47)], fill=255)
-        draw.polygon([(w * 0.65, h * 0.27), (w * 0.77, h * 0.40), (w * 0.70, h * 0.52), (w * 0.65, h * 0.47)], fill=255)
-        draw.ellipse((w * 0.43, h * 0.11, w * 0.57, h * 0.33), fill=255)
+    if kind in {"crewneck", "vneck", "cardigan", "turtleneck"}:
+        draw.rounded_rectangle((w * 0.30, h * 0.24, w * 0.70, h * 0.84), radius=82, fill=255)
+        draw.polygon([(w * 0.32, h * 0.28), (w * 0.12, h * 0.42), (w * 0.24, h * 0.65), (w * 0.34, h * 0.52)], fill=255)
+        draw.polygon([(w * 0.68, h * 0.28), (w * 0.88, h * 0.42), (w * 0.76, h * 0.65), (w * 0.66, h * 0.52)], fill=255)
         if kind == "turtleneck":
-            draw.rounded_rectangle((w * 0.44, h * 0.12, w * 0.56, h * 0.36), radius=30, fill=255)
+            draw.rounded_rectangle((w * 0.42, h * 0.10, w * 0.58, h * 0.34), radius=30, fill=255)
+            draw.ellipse((w * 0.445, h * 0.12, w * 0.555, h * 0.25), fill=0)
+        else:
+            draw.ellipse((w * 0.37, h * 0.17, w * 0.63, h * 0.34), fill=0)
+        if kind == "vneck":
+            draw.polygon([(w * 0.39, h * 0.20), (w * 0.61, h * 0.20), (w * 0.50, h * 0.39)], fill=0)
         if kind == "cardigan":
-            draw.rectangle((w * 0.483, h * 0.23, w * 0.517, h * 0.81), fill=0)
+            draw.rectangle((w * 0.489, h * 0.23, w * 0.511, h * 0.83), fill=0)
     elif kind == "scarf":
-        draw.rounded_rectangle((w * 0.18, h * 0.34, w * 0.82, h * 0.56), radius=120, fill=255)
-        draw.rounded_rectangle((w * 0.38, h * 0.44, w * 0.70, h * 0.67), radius=115, fill=255)
-        draw.rounded_rectangle((w * 0.22, h * 0.58, w * 0.54, h * 0.79), radius=115, fill=255)
+        draw.rounded_rectangle((w * 0.12, h * 0.31, w * 0.88, h * 0.54), radius=110, fill=255)
+        draw.rounded_rectangle((w * 0.30, h * 0.47, w * 0.73, h * 0.78), radius=92, fill=255)
+        draw.rounded_rectangle((w * 0.18, h * 0.53, w * 0.49, h * 0.82), radius=86, fill=255)
+    elif kind == "beanie":
+        draw.pieslice((w * 0.18, h * 0.10, w * 0.82, h * 0.72), start=180, end=360, fill=255)
+        draw.rounded_rectangle((w * 0.17, h * 0.42, w * 0.83, h * 0.64), radius=34, fill=255)
+        draw.ellipse((w * 0.42, h * 0.05, w * 0.58, h * 0.18), fill=255)
     elif kind == "gloves":
-        draw.rounded_rectangle((w * 0.28, h * 0.28, w * 0.49, h * 0.70), radius=65, fill=255)
-        draw.rounded_rectangle((w * 0.51, h * 0.30, w * 0.72, h * 0.72), radius=65, fill=255)
-        for idx, x0 in enumerate((0.29, 0.325, 0.36, 0.395)):
-            draw.rounded_rectangle((w * x0, h * (0.19 + idx * 0.005), w * (x0 + 0.055), h * 0.33), radius=24, fill=255)
-        for idx, x0 in enumerate((0.53, 0.565, 0.60, 0.635)):
-            draw.rounded_rectangle((w * x0, h * (0.20 + idx * 0.005), w * (x0 + 0.055), h * 0.34), radius=24, fill=255)
-    return mask.filter(ImageFilter.GaussianBlur(1.0))
+        draw.rounded_rectangle((w * 0.19, h * 0.29, w * 0.45, h * 0.80), radius=70, fill=255)
+        draw.rounded_rectangle((w * 0.55, h * 0.30, w * 0.81, h * 0.81), radius=70, fill=255)
+        for idx, x0 in enumerate((0.19, 0.24, 0.29, 0.34)):
+            draw.rounded_rectangle((w * x0, h * (0.13 + idx * 0.012), w * (x0 + 0.07), h * 0.36), radius=24, fill=255)
+        for idx, x0 in enumerate((0.56, 0.61, 0.66, 0.71)):
+            draw.rounded_rectangle((w * x0, h * (0.14 + idx * 0.012), w * (x0 + 0.07), h * 0.37), radius=24, fill=255)
+    elif kind == "gift-set":
+        scarf = rounded_mask(size, 95, (0.08, 0.46, 0.92, 0.65))
+        hat = clothing_mask("beanie", size).resize((int(w * 0.45), int(h * 0.45)), Image.Resampling.LANCZOS)
+        glove = clothing_mask("gloves", size).resize((int(w * 0.48), int(h * 0.48)), Image.Resampling.LANCZOS)
+        mask.paste(scarf, (0, 0), scarf)
+        mask.paste(hat, (int(w * 0.07), int(h * 0.05)), hat)
+        mask.paste(glove, (int(w * 0.43), int(h * 0.11)), glove)
+    return mask.filter(ImageFilter.GaussianBlur(0.8))
 
 
-def garment_base_image(kind: str, body: tuple[str, str], accent: str, size: tuple[int, int], seed: int) -> Image.Image:
-    w, h = size
-    top = hex_to_rgb(body[0])
-    bottom = hex_to_rgb(body[1])
-    accent_rgb = hex_to_rgb(accent)
-    mask = garment_mask(kind, size)
-    garment = vertical_gradient_fill(size, top, bottom)
-    garment.putalpha(mask)
-
-    shadow = Image.new("RGBA", size, (0, 0, 0, 0))
-    draw = ImageDraw.Draw(shadow)
-    if kind in {"sweater", "cardigan", "turtleneck"}:
-        draw.ellipse((w * 0.36, h * 0.20, w * 0.64, h * 0.86), fill=(0, 0, 0, 55))
-    elif kind == "scarf":
-        draw.ellipse((w * 0.18, h * 0.34, w * 0.82, h * 0.74), fill=(0, 0, 0, 45))
-    else:
-        draw.ellipse((w * 0.28, h * 0.26, w * 0.72, h * 0.78), fill=(0, 0, 0, 50))
-    shadow = shadow.filter(ImageFilter.GaussianBlur(36))
-
-    layer = Image.alpha_composite(shadow, garment)
-    texture = fabric_texture(size, accent_rgb, mask, seed, mode=kind)
-    layer = Image.alpha_composite(layer, texture)
+def product_layer(product: dict, size: tuple[int, int], seed: int) -> Image.Image:
+    kind = product["kind"]
+    mask = clothing_mask(kind, size)
+    layer = gradient_fill(size, product["body"][0], product["body"][1], mask)
+    layer = Image.alpha_composite(layer, knit_lines(mask, product["accent"], kind, seed))
     draw = ImageDraw.Draw(layer)
+    w, h = size
+    white = (255, 255, 255, 88)
+    dark = hex_to_rgb(product["accent"]) + (150,)
 
-    if kind == "sweater":
-        draw.line((w * 0.50, h * 0.23, w * 0.50, h * 0.80), fill=(255, 255, 255, 45), width=3)
-        draw.arc((w * 0.42, h * 0.12, w * 0.58, h * 0.31), start=200, end=-20, fill=(255, 255, 255, 110), width=4)
-        draw.line((w * 0.35, h * 0.49, w * 0.28, h * 0.54), fill=(255, 255, 255, 40), width=3)
-        draw.line((w * 0.65, h * 0.49, w * 0.72, h * 0.54), fill=(255, 255, 255, 40), width=3)
+    if kind == "crewneck":
+        draw.arc((w * 0.37, h * 0.17, w * 0.63, h * 0.34), 0, 180, fill=white, width=7)
+        draw.line((w * 0.31, h * 0.82, w * 0.69, h * 0.82), fill=white, width=4)
+    elif kind == "vneck":
+        draw.line((w * 0.40, h * 0.19, w * 0.50, h * 0.34), fill=white, width=7)
+        draw.line((w * 0.60, h * 0.19, w * 0.50, h * 0.34), fill=white, width=7)
     elif kind == "cardigan":
-        draw.line((w * 0.50, h * 0.23, w * 0.50, h * 0.81), fill=(255, 255, 255, 28), width=4)
-        for yy in (0.34, 0.43, 0.52, 0.61):
-            draw.ellipse((w * 0.487, h * yy, w * 0.513, h * (yy + 0.03)), fill=(110, 120, 112, 210))
-        draw.arc((w * 0.41, h * 0.14, w * 0.59, h * 0.30), start=205, end=-25, fill=(255, 255, 255, 90), width=4)
+        draw.line((w * 0.50, h * 0.23, w * 0.50, h * 0.83), fill=white, width=5)
+        for y in (0.35, 0.44, 0.53, 0.62, 0.71):
+            draw.ellipse((w * 0.485, h * y, w * 0.515, h * (y + 0.026)), fill=dark)
     elif kind == "turtleneck":
-        draw.rounded_rectangle((w * 0.43, h * 0.10, w * 0.57, h * 0.34), radius=34, outline=(255, 255, 255, 120), width=3)
-        draw.line((w * 0.50, h * 0.12, w * 0.50, h * 0.79), fill=(255, 255, 255, 28), width=4)
-        draw.line((w * 0.36, h * 0.44, w * 0.64, h * 0.44), fill=(255, 255, 255, 28), width=2)
+        draw.rounded_rectangle((w * 0.42, h * 0.08, w * 0.58, h * 0.32), radius=28, outline=white, width=5)
+        draw.line((w * 0.34, h * 0.84, w * 0.66, h * 0.84), fill=white, width=4)
     elif kind == "scarf":
-        draw.arc((w * 0.18, h * 0.30, w * 0.82, h * 0.64), start=10, end=182, fill=(255, 255, 255, 80), width=16)
-        draw.arc((w * 0.22, h * 0.50, w * 0.78, h * 0.84), start=190, end=356, fill=(80, 62, 52, 82), width=16)
-        draw.line((w * 0.22, h * 0.69, w * 0.17, h * 0.82), fill=tuple(accent_rgb) + (170,), width=8)
-        draw.line((w * 0.78, h * 0.71, w * 0.83, h * 0.84), fill=tuple(accent_rgb) + (170,), width=8)
-    else:
-        draw.line((w * 0.37, h * 0.24, w * 0.37, h * 0.67), fill=(255, 255, 255, 60), width=3)
-        draw.line((w * 0.63, h * 0.25, w * 0.63, h * 0.69), fill=(255, 255, 255, 60), width=3)
-        draw.rounded_rectangle((w * 0.28, h * 0.26, w * 0.49, h * 0.69), radius=58, outline=(255, 255, 255, 80), width=2)
-        draw.rounded_rectangle((w * 0.51, h * 0.28, w * 0.72, h * 0.71), radius=58, outline=(255, 255, 255, 80), width=2)
+        for x in (0.18, 0.24, 0.76, 0.82):
+            draw.line((w * x, h * 0.62, w * (x - 0.035), h * 0.86), fill=dark, width=8)
+    elif kind == "beanie":
+        draw.rounded_rectangle((w * 0.17, h * 0.42, w * 0.83, h * 0.64), radius=34, outline=white, width=5)
+    elif kind == "gloves":
+        draw.rounded_rectangle((w * 0.19, h * 0.29, w * 0.45, h * 0.80), radius=70, outline=white, width=4)
+        draw.rounded_rectangle((w * 0.55, h * 0.30, w * 0.81, h * 0.81), radius=70, outline=white, width=4)
 
     highlight = Image.new("RGBA", size, (0, 0, 0, 0))
     hdraw = ImageDraw.Draw(highlight)
-    hdraw.ellipse((w * 0.18, h * 0.06, w * 0.78, h * 0.58), fill=(255, 255, 255, 50))
-    highlight = Image.composite(highlight.filter(ImageFilter.GaussianBlur(20)), Image.new("RGBA", size, (0, 0, 0, 0)), mask)
-    layer = Image.alpha_composite(layer, highlight)
-    return layer
+    hdraw.ellipse((w * 0.10, h * 0.02, w * 0.72, h * 0.48), fill=(255, 255, 255, 48))
+    highlight.putalpha(Image.composite(highlight.getchannel("A"), Image.new("L", size, 0), mask))
+    return Image.alpha_composite(layer, highlight.filter(ImageFilter.GaussianBlur(16)))
 
 
-def compose_product(kind: str, body: tuple[str, str], accent: str, bg: tuple[str, str], seed: int, rotation: float, scale: float, shift: tuple[float, float]) -> Image.Image:
-    bg_img = gradient_background(SIZE, bg[0], bg[1], seed)
-    bg_img = add_grain(bg_img, seed, amount=8)
-    bg_rgba = bg_img.convert("RGBA")
-    bg_draw = ImageDraw.Draw(bg_rgba)
-    bg_draw.rounded_rectangle((120, 120, SIZE[0] - 120, SIZE[1] - 120), radius=46, outline=(255, 255, 255, 120), width=2)
-    bg_draw.rounded_rectangle((130, 130, SIZE[0] - 130, SIZE[1] - 130), radius=40, outline=(50, 55, 52, 20), width=1)
+def compose(product: dict, variant: dict) -> Image.Image:
+    bg = solid_studio_bg(variant["bg"], variant["seed"])
+    shadow = Image.new("RGBA", SIZE, (0, 0, 0, 0))
+    draw = ImageDraw.Draw(shadow)
+    draw.ellipse((SIZE[0] * 0.18, SIZE[1] * 0.75, SIZE[0] * 0.82, SIZE[1] * 0.88), fill=(30, 28, 25, 58))
+    bg = Image.alpha_composite(bg, shadow.filter(ImageFilter.GaussianBlur(68)))
 
-    shadow = shadow_layer(SIZE, 1280, scale=scale, blur=74, alpha=70)
-    bg_rgba = Image.alpha_composite(bg_rgba, shadow)
+    base_size = (1160, 1420)
+    if product["kind"] in {"scarf", "gift-set"}:
+        base_size = (1260, 1320)
+    if product["kind"] in {"beanie", "gloves"}:
+        base_size = (1120, 1180)
+    layer = product_layer(product, base_size, variant["seed"])
+    layer = layer.resize((int(layer.width * variant["scale"]), int(layer.height * variant["scale"])), Image.Resampling.LANCZOS)
+    layer = layer.rotate(variant["rotation"], Image.Resampling.BICUBIC, expand=True)
 
-    garment = garment_base_image(kind, body, accent, (1000, 1200), seed)
-    garment = garment.resize((int(garment.width * scale), int(garment.height * scale)), Image.Resampling.LANCZOS)
-    garment = garment.rotate(rotation, resample=Image.Resampling.BICUBIC, expand=True)
+    canvas = bg.copy()
+    x = int((SIZE[0] - layer.width) / 2 + SIZE[0] * variant["x"])
+    y = int((SIZE[1] - layer.height) / 2 - 35 + SIZE[1] * variant["y"])
+    canvas.alpha_composite(layer, (x, y))
 
-    canvas = bg_rgba.copy()
-    gx = int((SIZE[0] - garment.width) / 2 + shift[0] * SIZE[0])
-    gy = int(150 + shift[1] * SIZE[1])
-    canvas.alpha_composite(garment, (gx, gy))
-
-    accent_layer = Image.new("RGBA", SIZE, (0, 0, 0, 0))
-    adraw = ImageDraw.Draw(accent_layer)
-    adraw.ellipse((220, 220, 380, 340), fill=(255, 255, 255, 58))
-    adraw.ellipse((1180, 220, 1380, 420), fill=(255, 255, 255, 32))
-    adraw.rectangle((0, 0, SIZE[0], 58), fill=(255, 255, 255, 18))
-    canvas = Image.alpha_composite(canvas, accent_layer.filter(ImageFilter.GaussianBlur(30)))
-
+    label = Image.new("RGBA", SIZE, (0, 0, 0, 0))
+    ldraw = ImageDraw.Draw(label)
+    ldraw.rounded_rectangle((98, 98, 442, 168), radius=0, fill=(255, 255, 255, 230))
+    try:
+        font = ImageFont.truetype("arialbd.ttf", 28)
+    except OSError:
+        font = ImageFont.load_default()
+    ldraw.text((126, 121), "100% CASHMERE", fill=(26, 32, 29, 255), font=font)
+    canvas = Image.alpha_composite(canvas, label)
     return canvas.convert("RGB")
 
 
@@ -281,16 +233,7 @@ def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
     for product in PRODUCTS:
         for variant in VARIANTS:
-            image = compose_product(
-                product["kind"],
-                product["body"],
-                product["accent"],
-                variant["bg"],
-                variant["seed"],
-                variant["rotation"],
-                variant["scale"],
-                (variant["x"], variant["y"]),
-            )
+            image = compose(product, variant)
             path = OUT / f'{product["id"]}-{variant["suffix"]}.png'
             image.save(path, quality=96)
             print(path)

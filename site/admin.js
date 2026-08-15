@@ -83,6 +83,7 @@ function categoryField(value) {
     ["sweaters", "毛衣"],
     ["accessories", "配件"],
     ["scarves", "围巾"],
+    ["hats", "帽子"],
     ["gloves", "手套"],
     ["others", "其他"]
   ];
@@ -108,10 +109,10 @@ function channelField(value) {
 
 function statusField(value) {
   return selectField("状态", normalizeStatus(value), "status", [
-    ["Draft", "草稿"],
+    ["Preview Open", "预览展示"],
     ["Coming Soon", "即将上架"],
-    ["Site Exclusive", "独家上架"],
-    ["Amazon Ready", "Amazon 备货"]
+    ["Amazon Launch Soon", "Amazon 即将上线"],
+    ["Site Exclusive", "独立站展示"]
   ]);
 }
 
@@ -151,16 +152,20 @@ function normalizeStatus(value) {
   const raw = String(value || "").trim();
   const key = raw.toLowerCase();
   const map = {
-    draft: "Draft",
-    "草稿": "Draft",
+    draft: "Preview Open",
+    "草稿": "Preview Open",
+    "preview open": "Preview Open",
+    "预览展示": "Preview Open",
     "coming soon": "Coming Soon",
     "即将上架": "Coming Soon",
     "site exclusive": "Site Exclusive",
     "独家上架": "Site Exclusive",
-    "amazon ready": "Amazon Ready",
-    "amazon 备货": "Amazon Ready"
+    "amazon ready": "Amazon Launch Soon",
+    "amazon 备货": "Amazon Launch Soon",
+    "amazon launch soon": "Amazon Launch Soon",
+    "amazon 即将上线": "Amazon Launch Soon"
   };
-  return map[key] || map[raw] || "Draft";
+  return map[key] || map[raw] || "Preview Open";
 }
 
 function splitLines(value) {
@@ -176,7 +181,13 @@ function renderProducts() {
       (product, index) => `
     <article class="editor-item" data-index="${index}">
           <div class="editor-title">
-            <strong>${escapeHtml(product.name || "新产品")}</strong>
+            <div class="admin-item-title">
+              <img src="${escapeAttr(product.image || "assets/catalog-branded/100-cashmere-crewneck-sweater-01.webp")}" alt="" loading="lazy" decoding="async" />
+              <div>
+                <strong>${escapeHtml(product.name || "新产品")}</strong>
+                <span>${escapeHtml(product.sku || "JHX")} · ${escapeHtml(product.material || "100% cashmere")}</span>
+              </div>
+            </div>
             <button type="button" data-remove-product="${index}">删除</button>
           </div>
           <div class="editor-grid">
@@ -307,35 +318,35 @@ document.querySelectorAll("[data-tab]").forEach((button) => {
 document.querySelector("[data-add-product]").addEventListener("click", () => {
   products = collect("[data-product-list]", products);
     products.push({
-      name: "新羊绒产品",
-      sku: "JHX-NEW",
+      name: "New 100% Cashmere Product",
+      sku: "JHX-100-NEW",
       category: "sweaters",
       channel: "both",
-      colors: "Ivory / Taupe",
-      subtitle: "适合日常穿搭的高端羊绒单品。",
-      description: "在这里填写面料、版型、手感、适用场景和买家需要知道的信息。",
+      colors: "Ivory / Oatmeal / Charcoal",
+      subtitle: "A soft 100% cashmere piece for refined daily wear.",
+      description: "Describe the 100% cashmere material, fit, hand feel, colors, care guidance, and customer use scenario here.",
       bullets: [
-        "手感柔软，适合日常叠穿",
-        "版型干净，适合通勤和出行",
-        "方便搭配大衣、裤装和裙装"
+        "Made with 100% cashmere for soft lightweight warmth",
+        "Clean silhouette for work, travel, and daily styling",
+        "Neutral colors coordinate with sweaters and accessories"
       ],
-      material: "羊绒混纺",
+      material: "100% cashmere",
       sizeRange: "S / M / L / XL",
-      fit: "常规版型",
-      care: "冷水手洗或干洗，平铺晾干",
-      occasion: "日常 / 出行 / 送礼",
-      searchKeywords: "女装羊绒衫, 高端针织, JINHEXI",
-      seoDescription: "JINHEXI 高端女装羊绒单品。",
+      fit: "Regular fit",
+      care: "Cold hand wash or dry clean; reshape and dry flat",
+      occasion: "Office / travel / gifting",
+      searchKeywords: "100 cashmere sweater women, JINHEXI cashmere, premium knitwear",
+      seoDescription: "JINHEXI 100% cashmere product for premium women's knitwear and accessories.",
       price: "$0.00",
-      status: "Draft",
+      status: "Preview Open",
       amazonUrl: "",
-      amazonLabel: "View on Amazon",
+      amazonLabel: "Amazon Coming Soon",
       tone: "ivory",
-      image: "assets/products/cashmere-ivory.svg",
+      image: "assets/catalog-branded/100-cashmere-crewneck-sweater-01.webp",
       gallery: [
-        "assets/products/cashmere-ivory.svg",
-        "assets/products/cashmere-sage.svg",
-        "assets/products/cashmere-charcoal.svg"
+        "assets/catalog-branded/100-cashmere-crewneck-sweater-01.webp",
+        "assets/catalog-branded/100-cashmere-crewneck-sweater-02.webp",
+        "assets/catalog-branded/100-cashmere-crewneck-sweater-03.webp"
       ]
   });
   renderProducts();

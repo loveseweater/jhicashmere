@@ -1,8 +1,13 @@
 import { defaultPosts, defaultProducts } from "./_defaults.js";
 
 const encoder = new TextEncoder();
+const contentVersion = "20260815d";
 let schemaReady = false;
 let seedReady = false;
+const defaultProductById = new Map(defaultProducts.map((item) => [item.id, item]));
+const defaultPostById = new Map(defaultPosts.map((item) => [item.id, item]));
+const defaultProductIds = new Set(defaultProducts.map((item) => item.id));
+const defaultPostIds = new Set(defaultPosts.map((item) => item.id));
 
 function base64UrlEncode(input) {
   const bytes = input instanceof Uint8Array ? input : encoder.encode(String(input));
@@ -82,6 +87,10 @@ export async function requireAdmin(request, env) {
 }
 
 function rowToProduct(row) {
+  const fallback = defaultProductById.get(row.id) || {};
+  const image = isPlaceholderImage(row.image) ? fallback.image || row.image || "" : row.image || fallback.image || "";
+  const gallery = normalizeGallery(row.gallery, image);
+  const fallbackGallery = Array.isArray(fallback.gallery) ? fallback.gallery : [];
   return {
     id: row.id,
     name: row.name,
@@ -104,8 +113,8 @@ function rowToProduct(row) {
     amazonUrl: row.amazonUrl || "",
     amazonLabel: row.amazonLabel || "View on Amazon",
     tone: row.tone || "ivory",
-    image: row.image || "assets/products/cashmere-ivory.svg",
-    gallery: normalizeGallery(row.gallery, row.image || "assets/products/cashmere-ivory.svg")
+    image,
+    gallery: gallery.length && !gallery.every(isPlaceholderImage) ? gallery : (fallbackGallery.length ? fallbackGallery : gallery)
   };
 }
 
@@ -156,6 +165,7 @@ async function ensureColumn(env, table, column, definition) {
 }
 
 function rowToPost(row) {
+  const fallback = defaultPostById.get(row.id) || {};
   return {
     id: row.id,
     slug: row.slug || row.id,
@@ -165,9 +175,14 @@ function rowToPost(row) {
     content: row.content,
     seoTitle: row.seoTitle || "",
     seoDescription: row.seoDescription || "",
-    image: row.image || "assets/jni-cashmere-hero.png",
+    image: isPlaceholderImage(row.image) ? fallback.image || row.image || "assets/jni-cashmere-hero.png" : row.image || fallback.image || "assets/jni-cashmere-hero.png",
     imageAlt: row.imageAlt || row.title || ""
   };
+}
+
+function isPlaceholderImage(value) {
+  const src = String(value || "").trim();
+  return !src || src.startsWith("assets/");
 }
 
 export async function ensureSchema(env) {
@@ -195,7 +210,7 @@ export async function ensureSchema(env) {
       amazonUrl TEXT NOT NULL DEFAULT '',
       amazonLabel TEXT NOT NULL DEFAULT 'View on Amazon',
       tone TEXT NOT NULL DEFAULT 'ivory',
-      image TEXT NOT NULL DEFAULT 'assets/products/cashmere-ivory.svg',
+      image TEXT NOT NULL DEFAULT 'assets/real-cashmere-hero-jinhexi.webp',
       gallery TEXT NOT NULL DEFAULT ''
     );
     CREATE TABLE IF NOT EXISTS posts (
@@ -214,6 +229,10 @@ export async function ensureSchema(env) {
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       path TEXT NOT NULL,
       createdAt TEXT NOT NULL
+    );
+    CREATE TABLE IF NOT EXISTS meta (
+      key TEXT PRIMARY KEY,
+      value TEXT NOT NULL
     );
   `);
   await ensureColumn(env, "products", "channel", "TEXT NOT NULL DEFAULT 'both'");
@@ -241,7 +260,20 @@ export async function seedIfNeeded(env) {
   if (seedReady || !env.DB) return;
   const productCount = await env.DB.prepare("SELECT COUNT(*) AS count FROM products").first();
   const postCount = await env.DB.prepare("SELECT COUNT(*) AS count FROM posts").first();
-  if ((productCount?.count || 0) === 0) {
+  const versionRow = await env.DB.prepare("SELECT value FROM meta WHERE key = ? LIMIT 1").bind("content_version").first();
+  const productRows = await env.DB.prepare("SELECT id FROM products").all();
+  const postRows = await env.DB.prepare("SELECT id FROM posts").all();
+  const productIds = new Set((productRows.results || []).map((row) => row.id));
+  const postIds = new Set((postRows.results || []).map((row) => row.id));
+  const needsReset =
+    (versionRow?.value || "") !== contentVersion ||
+    !defaultProductIds.size ||
+    !defaultPostIds.size ||
+    !defaultProducts.every((item) => productIds.has(item.id)) ||
+    !defaultPosts.every((item) => postIds.has(item.id));
+  if (needsReset || (productCount?.count || 0) === 0) {
+    await env.DB.prepare("DELETE FROM products").run();
+    await env.DB.prepare("DELETE FROM posts").run();
     for (const product of defaultProducts) {
       await env.DB.prepare(`
         INSERT OR IGNORE INTO products
@@ -269,12 +301,10 @@ export async function seedIfNeeded(env) {
         product.amazonUrl || "",
         product.amazonLabel || "View on Amazon",
         product.tone || "ivory",
-        product.image || "assets/products/cashmere-ivory.svg",
-        JSON.stringify(normalizeGallery(product.gallery, product.image || "assets/products/cashmere-ivory.svg"))
+        product.image || "assets/real-cashmere-hero-jinhexi.webp",
+        JSON.stringify(normalizeGallery(product.gallery, product.image || "assets/real-cashmere-hero-jinhexi.webp"))
       ).run();
     }
-  }
-  if ((postCount?.count || 0) === 0) {
     for (const post of defaultPosts) {
       await env.DB.prepare(`
         INSERT OR REPLACE INTO posts
@@ -293,6 +323,27 @@ export async function seedIfNeeded(env) {
         post.imageAlt || post.title || ""
       ).run();
     }
+    await env.DB.prepare("INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)").bind("content_version", contentVersion).run();
+  } else if ((postCount?.count || 0) === 0) {
+    for (const post of defaultPosts) {
+      await env.DB.prepare(`
+        INSERT OR REPLACE INTO posts
+        (id, slug, title, date, excerpt, content, seoTitle, seoDescription, image, imageAlt)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `).bind(
+        post.id,
+        post.slug || post.id,
+        post.title,
+        post.date,
+        post.excerpt,
+        post.content,
+        post.seoTitle || "",
+        post.seoDescription || "",
+        post.image || "assets/jni-cashmere-hero.png",
+        post.imageAlt || post.title || ""
+      ).run();
+    }
+    await env.DB.prepare("INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)").bind("content_version", contentVersion).run();
   }
   seedReady = true;
 }
@@ -328,7 +379,7 @@ export async function saveProducts(env, payload) {
   const normalized = payload.map((item) => ({
     ...item,
     id: slugify(item.id || item.name),
-    gallery: normalizeGallery(item.gallery, item.image || "assets/products/cashmere-ivory.svg"),
+    gallery: normalizeGallery(item.gallery, item.image || "assets/real-cashmere-hero-jinhexi.webp"),
     bullets: normalizeLines(item.bullets)
   }));
   await env.DB.prepare("DELETE FROM products").run();
@@ -360,11 +411,12 @@ export async function saveProducts(env, payload) {
         item.amazonUrl || "",
         item.amazonLabel || "View on Amazon",
         item.tone || "ivory",
-        item.image || "assets/products/cashmere-ivory.svg",
+        item.image || "assets/real-cashmere-hero-jinhexi.webp",
         JSON.stringify(item.gallery || [])
       )
     )
   );
+  await env.DB.prepare("INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)").bind("content_version", contentVersion).run();
   return normalized;
 }
 
@@ -395,6 +447,7 @@ export async function savePosts(env, payload) {
       )
     )
   );
+  await env.DB.prepare("INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)").bind("content_version", contentVersion).run();
   return normalized;
 }
 

@@ -20,6 +20,24 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function imageVariant(url, width) {
+  const src = String(url || "").trim();
+  if (!src) return src;
+  if (!/cdn\.shopify\.com/.test(src)) return src;
+  const cleaned = src.replace(/([?&])width=\d+/g, "").replace(/([?&])$/, "");
+  return `${cleaned}${cleaned.includes("?") ? "&" : "?"}width=${width}`;
+}
+
+function imageSrcSet(url, widths) {
+  if (!/cdn\.shopify\.com/.test(String(url || ""))) return "";
+  return widths.map((width) => `${imageVariant(url, width)} ${width}w`).join(", ");
+}
+
+function srcsetAttr(url, widths, sizes) {
+  const set = imageSrcSet(url, widths);
+  return set ? ` srcset="${escapeHtml(set)}" sizes="${escapeHtml(sizes)}"` : "";
+}
+
 function lines(value) {
   if (Array.isArray(value)) return value.filter(Boolean);
   return String(value || "")
@@ -42,12 +60,14 @@ function normalizeStatus(value) {
   const raw = String(value || "").trim();
   const key = raw.toLowerCase();
   const map = {
-    draft: "Draft",
+    draft: "Preview Open",
     "coming soon": "Coming Soon",
     "site exclusive": "Site Exclusive",
-    "amazon ready": "Amazon Ready"
+    "preview open": "Preview Open",
+    "amazon ready": "Amazon Launch Soon",
+    "amazon launch soon": "Amazon Launch Soon"
   };
-  return map[key] || map[raw] || raw || "Draft";
+  return map[key] || map[raw] || raw || "Preview Open";
 }
 
 function statusLabel(value) {
@@ -61,6 +81,7 @@ function normalizeCategory(value) {
     tops: "Tops",
     accessories: "Accessories",
     scarves: "Scarves",
+    hats: "Hats",
     gloves: "Gloves",
     others: "Other"
   };
@@ -77,7 +98,7 @@ function applyLocale() {
   document.title = "JINHEXI | Product Detail";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = "JINHEXI product detail page with materials, size, care, buying paths, and Amazon-ready listing notes.";
+    meta.content = "JINHEXI product detail page with materials, size, care, fit guidance, and retained Amazon launch buttons.";
   }
   const navHome = document.querySelector("#nav-home");
   const navCatalog = document.querySelector("#nav-catalog");
@@ -94,21 +115,21 @@ function applyLocale() {
 function renderProduct(product, products = []) {
   const gallery = Array.isArray(product.gallery) && product.gallery.length
     ? product.gallery
-    : [product.image || "assets/products/cashmere-ivory.svg"];
+    : [product.image || "assets/real-cashmere-hero-jinhexi.webp"];
   const bullets = lines(product.bullets);
-  const amazonButton = product.amazonUrl
-    ? `<a class="button primary" href="${escapeHtml(product.amazonUrl)}" target="_blank" rel="noreferrer">${escapeHtml(amazonLabel(product))}</a>`
-    : `<span class="button secondary disabled">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
+  const galleryMain = imageVariant(gallery[0], 1200);
+  const gallerySet = srcsetAttr(gallery[0], [480, 720, 960, 1200, 1600], "(max-width: 860px) 92vw, 44vw");
+  const amazonButton = `<span class="button primary amazon-detail-disabled" aria-disabled="true">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
   const relatedProducts = products
     .filter((item) => item.id !== product.id)
     .slice(0, 3)
     .map((item) => `
       <article class="product-card">
         <a href="product.html?id=${encodeURIComponent(item.id || item.name || "")}" aria-label="${escapeHtml(item.name)}">
-          <img class="product-image" src="${escapeHtml(item.image || item.gallery?.[0] || "assets/products/cashmere-ivory.svg")}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" />
+          <img class="product-image" src="${escapeHtml(item.image || item.gallery?.[0] || "assets/real-cashmere-hero-jinhexi.webp")}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
         </a>
         <div class="product-thumbs">
-          ${(Array.isArray(item.gallery) ? item.gallery : []).slice(1, 5).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" />`).join("")}
+          ${(Array.isArray(item.gallery) ? item.gallery : []).slice(1, 5).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />`).join("")}
         </div>
         <div class="product-info">
           <div class="product-meta">
@@ -132,9 +153,13 @@ function renderProduct(product, products = []) {
   return `
     <section class="product-detail">
       <div class="product-gallery">
-        <img class="product-main-image" data-main-image src="${escapeHtml(gallery[0])}" alt="${escapeHtml(product.name)}" loading="eager" fetchpriority="high" decoding="async" />
+        <img class="product-main-image" data-main-image src="${escapeHtml(galleryMain)}"${gallerySet} alt="${escapeHtml(product.name)}" loading="eager" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
         <div class="product-detail-thumbs">
-          ${gallery.slice(0, 5).map((src, index) => `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(src)}" alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" /></button>`).join("")}
+          ${gallery.slice(0, 5).map((src, index) => {
+            const thumb = imageVariant(src, 360);
+            const thumbSet = srcsetAttr(src, [180, 240, 360, 480], "86px");
+            return `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(thumb)}"${thumbSet} alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" /></button>`;
+          }).join("")}
         </div>
       </div>
       <div class="product-detail-copy">
@@ -149,7 +174,7 @@ function renderProduct(product, products = []) {
           ${amazonButton}
           <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">${escapeHtml(i18n.t("whatsappInquiry"))}</a>
         </div>
-        <a class="detail-link" href="index.html#catalog">${escapeHtml(i18n.t("backToCatalog"))}</a>
+        <a class="detail-link" href="index.html#collection">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
     </section>
 
@@ -157,7 +182,7 @@ function renderProduct(product, products = []) {
       <div class="section-heading">
         <div>
           <p class="eyebrow">${escapeHtml(i18n.t("productBrief"))}</p>
-          <h2>${escapeHtml(i18n.t("productBrief"))}</h2>
+          <h2>Everything needed to choose this piece.</h2>
         </div>
         <p class="section-note">${escapeHtml(i18n.t("listingBriefNote"))}</p>
       </div>
@@ -207,7 +232,18 @@ async function init() {
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : fallback;
   const params = new URLSearchParams(location.search);
   const id = params.get("id");
-  const product = products.find((item) => String(item.id || item.name) === id) || products[0];
+  const legacyIds = {
+    "cashmere-crewneck-sweater": "100-cashmere-crewneck-sweater",
+    "cashmere-v-neck-sweater": "100-cashmere-v-neck-sweater",
+    "cashmere-cardigan": "100-cashmere-cardigan",
+    "cashmere-turtleneck-sweater": "100-cashmere-turtleneck-sweater",
+    "cashmere-wrap-scarf": "100-cashmere-wrap-scarf",
+    "cashmere-ribbed-beanie": "100-cashmere-ribbed-beanie",
+    "cashmere-knit-gloves": "100-cashmere-knit-gloves",
+    "cashmere-winter-gift-set": "100-cashmere-winter-gift-set"
+  };
+  const normalizedId = legacyIds[id] || id;
+  const product = products.find((item) => String(item.id || item.name) === normalizedId) || products[0];
   const page = document.querySelector("[data-product-page]");
   if (!page) return;
   if (!product) {
@@ -221,6 +257,13 @@ async function init() {
     button.addEventListener("click", () => {
       if (!mainImage) return;
       mainImage.src = button.dataset.thumb;
+      const nextSet = imageSrcSet(button.dataset.thumb, [480, 720, 960, 1200, 1600]);
+      if (nextSet) {
+        mainImage.srcset = nextSet;
+      } else {
+        mainImage.removeAttribute("srcset");
+        mainImage.removeAttribute("sizes");
+      }
       thumbButtons.forEach((item) => item.classList.toggle("active", item === button));
     });
   });

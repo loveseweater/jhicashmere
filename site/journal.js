@@ -129,7 +129,7 @@ function applyLocale() {
   const heading = document.querySelector("[data-journal-heading]");
   const intro = document.querySelector("[data-journal-intro]");
   if (eyebrow) eyebrow.textContent = i18n.t("journal");
-  if (heading) heading.textContent = "SEO articles for premium cashmere knitwear.";
+  if (heading) heading.textContent = "Care, styling, and wardrobe notes for cashmere.";
   if (intro) intro.textContent = i18n.t("journalIntro");
 }
 
