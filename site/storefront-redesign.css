@@ -474,8 +474,8 @@ body.storefront-home {
 
 .sales-product-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 62px 22px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 48px 18px;
 }
 
 .sales-product-card {
@@ -488,6 +488,8 @@ body.storefront-home {
   display: block;
   overflow: hidden;
   background: #f7f8f5;
+  max-height: 300px;
+  text-decoration: none;
 }
 
 .sales-product-media::after {
@@ -549,6 +551,11 @@ body.storefront-home {
 
 .sales-product-info {
   padding-top: 18px;
+}
+
+.sales-product-info h3 a {
+  color: inherit;
+  text-decoration: none;
 }
 
 .sales-product-topline {
@@ -1126,8 +1133,28 @@ body.storefront-home {
   align-self: start;
   position: sticky;
   top: 102px;
-  width: min(100%, 560px);
-  max-width: 560px;
+  width: min(100%, 420px);
+  max-width: 420px;
+}
+
+.product-detail-site .product-gallery-details {
+  display: grid;
+  gap: 10px;
+}
+
+.product-detail-site .product-gallery-details summary {
+  cursor: pointer;
+  color: var(--sf-ink);
+  font-family: Inter, "Helvetica Neue", Arial, sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  list-style: none;
+}
+
+.product-detail-site .product-gallery-details summary::-webkit-details-marker {
+  display: none;
 }
 
 .product-detail-site .product-main-image,
@@ -1141,7 +1168,7 @@ body.storefront-home {
   display: block;
   width: 100%;
   aspect-ratio: 4 / 5;
-  max-height: min(72vh, 700px);
+  max-height: min(64vh, 520px);
   height: auto;
   background: #f8f9f6;
   object-fit: cover;
@@ -1153,7 +1180,7 @@ body.storefront-home {
 
 .product-detail-site .product-detail-thumbs {
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(48px, 72px));
   gap: 10px;
 }
 
@@ -1383,21 +1410,7 @@ body.storefront-home {
 .product-detail-site .product-card .product-image {
   width: 100%;
   aspect-ratio: 4 / 5;
-  background: #f8f9f6;
-}
-
-.product-detail-site .product-card .product-thumbs {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 4px;
-  padding: 10px 12px 0;
-}
-
-.product-detail-site .product-card .product-thumbs img {
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  padding: 4px;
-  border: 1px solid var(--sf-line);
+  max-height: 260px;
   background: #f8f9f6;
 }
 
@@ -1425,6 +1438,20 @@ body.storefront-home {
   padding-top: 12px;
   margin-top: 14px;
   border-top: 1px solid var(--sf-line);
+}
+
+.collection-page .sales-hero,
+.collection-page .value-strip,
+.collection-page .material-section,
+.collection-page .service-section,
+.collection-page .editorial-break,
+.collection-page .journal-section,
+.collection-page .private-shopping {
+  display: none;
+}
+
+.collection-page .shop-section {
+  padding-top: 52px;
 }
 
 @media (max-width: 1050px) {

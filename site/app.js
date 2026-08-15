@@ -93,21 +93,21 @@ function productTemplate(product, index) {
   const imageSet = srcsetAttr(image, [360, 540, 720, 960, 1200], "(max-width: 620px) 92vw, (max-width: 1050px) 44vw, 28vw");
   const category = normalizeCategory(product.category);
   const status = String(product.status || "Limited release");
-  const inquiryUrl = `https://wa.me/8613602328348?text=${encodeURIComponent(`Hi JINHEXI, I would like availability and sizing help for ${product.name}.`)}`;
+  const productUrl = `product.html?id=${encodeURIComponent(product.id || product.name || "")}`;
   const bullets = Array.isArray(product.bullets) ? product.bullets.filter(Boolean).slice(0, 2) : [];
 
   return `
     <article class="sales-product-card reveal" style="--reveal-delay:${Math.min(index * 70, 280)}ms">
-      <div class="sales-product-media" aria-label="${escapeHtml(product.name)}">
+      <a class="sales-product-media" href="${escapeHtml(productUrl)}" aria-label="${escapeHtml(product.name)}">
         <img src="${escapeHtml(imageSrc)}"${imageSet} alt="${escapeHtml(product.name || "JINHEXI cashmere product")}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
         <span class="product-status">${escapeHtml(status)}</span>
-      </div>
+      </a>
       <div class="sales-product-info">
         <div class="sales-product-topline">
           <span>${escapeHtml(categoryLabels[category] || "Knitwear")}</span>
           <strong>${escapeHtml(product.price || "Enquire")}</strong>
         </div>
-        <h3>${escapeHtml(product.name)}</h3>
+        <h3><a href="${escapeHtml(productUrl)}">${escapeHtml(product.name)}</a></h3>
         <p>${escapeHtml(product.subtitle || product.description || "")}</p>
         <div class="product-material"><span>Material</span><strong>${escapeHtml(product.material || "100% cashmere")}</strong></div>
         <div class="product-colors"><span>Size</span><span>${escapeHtml(product.sizeRange || "Ask for current sizes")}</span></div>
@@ -115,7 +115,7 @@ function productTemplate(product, index) {
         ${bullets.length ? `<ul class="product-mini-bullets">${bullets.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}</ul>` : ""}
         <div class="product-actions">
           <span class="product-buy amazon-disabled" aria-disabled="true">${escapeHtml(amazonButtonLabel(product))}</span>
-          <a class="product-inquiry" href="${escapeHtml(inquiryUrl)}" target="_blank" rel="noreferrer">Ask availability <span aria-hidden="true">→</span></a>
+          <a class="product-inquiry" href="${escapeHtml(productUrl)}">View details <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </article>
@@ -170,6 +170,7 @@ async function renderStorefront() {
   const productCount = document.querySelector("[data-product-count]");
   const sortSelect = document.querySelector("[data-sort-select]");
   const searchInput = document.querySelector("[data-search-input]");
+  const productLimit = Number(productGrid?.dataset.productLimit || 0) || 0;
   const categories = ["all", "sweaters", "tops", "scarves", "hats", "gloves", "accessories"];
   let activeCategory = "all";
   let activeSort = "featured";
@@ -189,10 +190,11 @@ async function renderStorefront() {
 
   function renderProducts() {
     const visible = filteredProducts();
-    if (productCount) productCount.textContent = `${visible.length} piece${visible.length === 1 ? "" : "s"} in this edit`;
+    const displayProducts = productLimit > 0 ? visible.slice(0, productLimit) : visible;
+    if (productCount) productCount.textContent = `${displayProducts.length} piece${displayProducts.length === 1 ? "" : "s"} in this edit`;
     if (productGrid) {
-      productGrid.innerHTML = visible.length
-        ? visible.map(productTemplate).join("")
+      productGrid.innerHTML = displayProducts.length
+        ? displayProducts.map(productTemplate).join("")
         : '<div class="empty-state"><h3>No matching pieces</h3><p>Try another category or message us for current availability.</p></div>';
       enableRevealAnimations();
     }

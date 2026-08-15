@@ -128,9 +128,6 @@ function renderProduct(product, products = []) {
         <a href="product.html?id=${encodeURIComponent(item.id || item.name || "")}" aria-label="${escapeHtml(item.name)}">
           <img class="product-image" src="${escapeHtml(item.image || item.gallery?.[0] || "assets/real-cashmere-hero-jinhexi.webp")}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
         </a>
-        <div class="product-thumbs">
-          ${(Array.isArray(item.gallery) ? item.gallery : []).slice(1, 5).map((src) => `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />`).join("")}
-        </div>
         <div class="product-info">
           <div class="product-meta">
             <span>${escapeHtml(normalizeCategory(item.category))}</span>
@@ -154,13 +151,16 @@ function renderProduct(product, products = []) {
     <section class="product-detail">
       <div class="product-gallery">
         <img class="product-main-image" data-main-image src="${escapeHtml(galleryMain)}"${gallerySet} alt="${escapeHtml(product.name)}" loading="eager" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
-        <div class="product-detail-thumbs">
-          ${gallery.slice(0, 5).map((src, index) => {
-            const thumb = imageVariant(src, 360);
-            const thumbSet = srcsetAttr(src, [180, 240, 360, 480], "86px");
-            return `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(thumb)}"${thumbSet} alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" /></button>`;
-          }).join("")}
-        </div>
+        <details class="product-gallery-details">
+          <summary>View detail images</summary>
+          <div class="product-detail-thumbs">
+            ${gallery.slice(0, 5).map((src, index) => {
+              const thumb = imageVariant(src, 240);
+              const thumbSet = srcsetAttr(src, [120, 180, 240, 360], "72px");
+              return `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(thumb)}"${thumbSet} alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" /></button>`;
+            }).join("")}
+          </div>
+        </details>
       </div>
       <div class="product-detail-copy">
         <p class="eyebrow">${escapeHtml(product.sku || "JINHEXI")}</p>
@@ -174,7 +174,7 @@ function renderProduct(product, products = []) {
           ${amazonButton}
           <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">${escapeHtml(i18n.t("whatsappInquiry"))}</a>
         </div>
-        <a class="detail-link" href="index.html#collection">${escapeHtml(i18n.t("backToCatalog"))}</a>
+        <a class="detail-link" href="collection.html">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
     </section>
 
