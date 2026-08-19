@@ -299,6 +299,78 @@ export const defaultProducts = [
 
 export const defaultPosts = [
   {
+    "id": "cashmere-lca-2026",
+    "slug": "cashmere-lca-2026",
+    "title": "What the 2026 Cashmere LCA Says About Better Sourcing",
+    "date": "2026-08-16",
+    "excerpt": "Textile Exchange released a cashmere life cycle assessment on July 16, 2026, giving brands clearer production data to work with.",
+    "content": "Textile Exchange released its cashmere life cycle assessment on July 16, 2026. The study uses direct data from 170 herders and farmers in Mongolia and China and covers cradle-to-gate cashmere production and primary processing. For brands, the message is simple: sourcing conversations now need better traceability, clearer supplier data, and more disciplined material claims.",
+    "seoTitle": "What the 2026 Cashmere LCA Says About Better Sourcing | JINHEXI",
+    "seoDescription": "A current cashmere sourcing note based on Textile Exchange's July 2026 LCA release and what it means for brands.",
+    "image": "assets/catalog-branded/100-cashmere-crewneck-sweater-02.webp",
+    "imageAlt": "100% cashmere crewneck sweater used for sourcing and quality discussion"
+  },
+  {
+    "id": "wool-market-2026",
+    "slug": "wool-market-2026",
+    "title": "Wool in 2026: Why Tighter Supply Is Changing the Conversation",
+    "date": "2026-08-15",
+    "excerpt": "IWTO's 2026 congress coverage said early 2026 merino prices sat 25% above the five-year average.",
+    "content": "IWTO's Congress 2026 coverage points to a market inflection: early 2026 merino prices were reported 25% above the five-year average, while wool production remained restrained. That matters for knitwear planning because fiber availability, product timing, and pricing discipline now sit much closer together. A tight assortment with a clear material story is easier for customers to trust.",
+    "seoTitle": "Wool in 2026: Why Tighter Supply Is Changing the Conversation | JINHEXI",
+    "seoDescription": "A current wool market note from IWTO Congress 2026 and what tighter supply means for winter knitwear planning.",
+    "image": "assets/catalog-branded/100-cashmere-turtleneck-sweater-02.webp",
+    "imageAlt": "100% cashmere turtleneck sweater representing a focused winter knit assortment"
+  },
+  {
+    "id": "how-to-care-cashmere-wool-2026",
+    "slug": "how-to-care-cashmere-wool-2026",
+    "title": "How to Care for Cashmere and Wool Sweaters in 2026",
+    "date": "2026-08-14",
+    "excerpt": "Woolmark still recommends less washing, flat drying, and mild detergent for wool garments.",
+    "content": "Woolmark's care guidance remains steady: wash wool less often, use a mild detergent, and dry sweaters flat rather than hanging them up. Cashmere benefits from the same calm routine. Turn knits inside out when washing, avoid harsh cycles, reshape them gently, and store them folded so the shoulders and neckline keep their line.",
+    "seoTitle": "How to Care for Cashmere and Wool Sweaters in 2026 | JINHEXI",
+    "seoDescription": "Practical care guidance for cashmere and wool sweaters based on current Woolmark advice.",
+    "image": "assets/catalog-branded/100-cashmere-knit-gloves-02.webp",
+    "imageAlt": "100% cashmere knit gloves representing knitwear care and winter wear"
+  },
+  {
+    "id": "cashmere-pilling-guide",
+    "slug": "cashmere-pilling-guide",
+    "title": "Why Knitwear Pills and How to Slow It Down",
+    "date": "2026-08-13",
+    "excerpt": "Woolmark describes pilling as surface abrasion, which is why sleeves and elbows show it first.",
+    "content": "Pilling is usually a sign of friction, not a sign that the garment failed. Woolmark explains that abrasion during wear creates the fuzzy surface balls people notice on sleeves, elbows, and side seams first. The practical fix is straightforward: reduce rubbing, avoid fabric softener, wash gently, and use a de-pilling tool if a sweater starts to fuzz.",
+    "seoTitle": "Why Knitwear Pills and How to Slow It Down | JINHEXI",
+    "seoDescription": "A simple knitwear pilling guide based on Woolmark care advice and everyday wear patterns.",
+    "image": "assets/catalog-branded/100-cashmere-cardigan-01.webp",
+    "imageAlt": "100% cashmere cardigan shown as a soft knitwear surface reference"
+  },
+  {
+    "id": "cashmere-vs-wool",
+    "slug": "cashmere-vs-wool",
+    "title": "Cashmere vs Wool: Which Knit Belongs in the Wardrobe?",
+    "date": "2026-08-12",
+    "excerpt": "Cashmere is lighter and softer to the touch; wool usually brings more structure and resilience.",
+    "content": "Cashmere works well when you want softness, light warmth, and a more refined drape. Wool is often the better choice when you want extra structure, a sturdier surface, and a sweater that can take more friction in daily wear. The smartest winter wardrobe usually keeps both: cashmere for the close-to-skin layer and wool for the pieces that need to work harder.",
+    "seoTitle": "Cashmere vs Wool: Which Knit Belongs in the Wardrobe? | JINHEXI",
+    "seoDescription": "A clean comparison of cashmere and wool for winter wardrobes, fit choices, and everyday use.",
+    "image": "assets/catalog-branded/100-cashmere-cardigan-03.webp",
+    "imageAlt": "100% cashmere cardigan styled as a wardrobe comparison piece"
+  },
+  {
+    "id": "cashmere-capsule-wardrobe-2026",
+    "slug": "cashmere-capsule-wardrobe-2026",
+    "title": "Build a 2026 Cashmere Capsule with Five Pieces",
+    "date": "2026-08-11",
+    "excerpt": "A crewneck, cardigan, turtleneck, scarf, and gloves cover most cold-weather outfits without overbuying.",
+    "content": "A tighter winter wardrobe works best when each knit has a clear job. Start with one crewneck, add a cardigan and turtleneck, then finish with a scarf and gloves so the whole edit can layer together. That mix gives you enough variety for work, travel, and gift season without making the closet feel noisy.",
+    "seoTitle": "Build a 2026 Cashmere Capsule with Five Pieces | JINHEXI",
+    "seoDescription": "A compact cashmere capsule wardrobe guide built around five useful winter pieces.",
+    "image": "assets/catalog-branded/100-cashmere-winter-gift-set-02.webp",
+    "imageAlt": "100% cashmere winter gift set styled as a capsule wardrobe essential"
+  },
+  {
     "id": "cashmere-care-guide",
     "slug": "cashmere-care-guide",
     "title": "How to Care for 100% Cashmere Knitwear",
@@ -307,7 +379,7 @@ export const defaultPosts = [
     "content": "Wash cold by hand or dry clean according to the garment label. Press out excess water gently, dry flat on a clean towel, avoid hanging heavy knitwear, and store folded between wears.",
     "seoTitle": "How to Care for 100% Cashmere Knitwear | JINHEXI",
     "seoDescription": "Practical care notes for women's 100% cashmere knitwear, including washing, drying, and storage guidance.",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/catalog-branded/100-cashmere-crewneck-sweater-01.webp",
     "imageAlt": "100% cashmere crewneck sweater in a clean product setting"
   },
   {
@@ -319,7 +391,7 @@ export const defaultPosts = [
     "content": "JINHEXI focuses on 100% cashmere yarn touch, clean lines, and versatile colors. A quiet knit should feel refined close up and still be easy to wear on ordinary days.",
     "seoTitle": "Why Quiet Luxury Starts with Texture | JINHEXI Journal",
     "seoDescription": "A brand note from JINHEXI on texture, silhouette, and premium women's knitwear.",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/catalog-branded/100-cashmere-cardigan-01.webp",
     "imageAlt": "100% cashmere cardigan styled for quiet luxury dressing"
   },
   {
@@ -331,7 +403,7 @@ export const defaultPosts = [
     "content": "Choose regular-fit 100% cashmere sweaters, cardigans, and turtlenecks in neutral shades. They should sit smoothly under outerwear, travel well, and move from office looks to airport outfits with minimal styling effort.",
     "seoTitle": "How to Layer Cashmere for Work and Travel | JINHEXI",
     "seoDescription": "Styling advice for cashmere layering across office, commute, and travel wardrobes.",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/catalog-branded/100-cashmere-turtleneck-sweater-02.webp",
     "imageAlt": "100% cashmere turtleneck sweater for winter layering"
   },
   {
@@ -343,7 +415,7 @@ export const defaultPosts = [
     "content": "A crewneck sweater, V-neck, cardigan, scarf, beanie, gloves, and turtleneck can cover most cold-weather needs while keeping the wardrobe focused and easy to combine.",
     "seoTitle": "Five Cashmere Pieces for a Smaller Capsule Wardrobe | JINHEXI",
     "seoDescription": "Capsule wardrobe guidance for premium women's cashmere knitwear and accessories.",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/catalog-branded/100-cashmere-winter-gift-set-02.webp",
     "imageAlt": "100% cashmere winter gift set styled as a capsule wardrobe essential"
   },
   {
@@ -355,7 +427,7 @@ export const defaultPosts = [
     "content": "Scarves, beanies, and gloves are easy gift choices because sizing is simple. Sweaters and cardigans feel more personal when the color, fit, and care details are clear.",
     "seoTitle": "Why Cashmere Accessories Make Strong Gifts | JINHEXI",
     "seoDescription": "Gift guidance for 100% cashmere scarves, beanies, gloves, and women's knitwear.",
-    "image": "assets/jni-cashmere-hero.png",
+    "image": "assets/catalog-branded/100-cashmere-knit-gloves-02.webp",
     "imageAlt": "100% cashmere knit gloves positioned as a premium gift item"
   }
 ];

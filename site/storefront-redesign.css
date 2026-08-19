@@ -189,7 +189,7 @@ body.storefront-home {
 
 .sales-hero {
   position: relative;
-  min-height: min(790px, calc(100vh - 110px));
+  min-height: min(680px, calc(100vh - 110px));
   overflow: hidden;
   background: #daddd7;
 }
@@ -212,9 +212,9 @@ body.storefront-home {
 .sales-hero-copy {
   position: relative;
   z-index: 2;
-  width: min(570px, 42vw);
+  width: min(500px, 38vw);
   margin-left: auto;
-  padding: clamp(80px, 12vh, 150px) clamp(34px, 7vw, 120px) 110px 30px;
+  padding: clamp(64px, 10vh, 120px) clamp(28px, 6vw, 96px) 92px 28px;
 }
 
 .kicker {
@@ -235,19 +235,19 @@ body.storefront-home {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: .98;
+  line-height: 1.02;
 }
 
 .sales-hero h1 {
-  max-width: 610px;
-  font-size: clamp(58px, 6.3vw, 102px);
+  max-width: 520px;
+  font-size: clamp(40px, 4.8vw, 72px);
 }
 
 .hero-lead {
   max-width: 480px;
   margin: 28px 0 0;
   color: #3f443f;
-  font-size: clamp(16px, 1.35vw, 20px);
+  font-size: clamp(15px, 1.15vw, 18px);
   line-height: 1.65;
 }
 
@@ -368,7 +368,7 @@ body.storefront-home {
 .shop-heading h2,
 .journal-heading h2,
 .private-copy h2 {
-  font-size: clamp(48px, 5vw, 82px);
+  font-size: clamp(34px, 4vw, 60px);
 }
 
 .shop-heading > p {
@@ -577,7 +577,7 @@ body.storefront-home {
   min-height: 54px;
   margin: 10px 0 8px;
   font-family: Georgia, serif;
-  font-size: 24px;
+  font-size: 21px;
   font-weight: 400;
   line-height: 1.12;
 }
@@ -765,7 +765,7 @@ body.storefront-home {
 }
 
 .service-intro h2 {
-  font-size: clamp(50px, 6vw, 90px);
+  font-size: clamp(32px, 4vw, 58px);
 }
 
 .service-list article {
@@ -913,9 +913,9 @@ body.storefront-home {
 .sales-post-copy h3 {
   margin: 14px 0 10px;
   font-family: Georgia, serif;
-  font-size: 29px;
+  font-size: 24px;
   font-weight: 400;
-  line-height: 1.15;
+  line-height: 1.08;
 }
 
 .sales-post-copy p {
@@ -1335,7 +1335,7 @@ body.storefront-home {
   max-width: 760px;
   margin: 0;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: clamp(48px, 5.4vw, 86px);
+  font-size: clamp(34px, 4vw, 60px);
   font-weight: 400;
   line-height: 1;
 }
@@ -1802,7 +1802,7 @@ body.storefront-home {
   .shop-heading h2,
   .journal-heading h2,
   .private-copy h2 {
-    font-size: 50px;
+    font-size: 38px;
   }
 
   .storefront-home .catalog-controls {
@@ -1827,7 +1827,7 @@ body.storefront-home {
 
   .sales-product-info h3 {
     min-height: 0;
-    font-size: 23px;
+    font-size: 20px;
   }
 
   .collection-page .shop-section {
@@ -1837,7 +1837,7 @@ body.storefront-home {
   .collection-page .catalog-page-hero .shop-heading h1,
   .product-detail-site .product-detail-copy h1,
   .journal-detail-site .journal-hero h1 {
-    font-size: 38px;
+    font-size: 34px;
   }
 
   .sales-product-info .product-actions,
@@ -1865,7 +1865,7 @@ body.storefront-home {
   }
 
   .service-intro h2 {
-    font-size: 54px;
+    font-size: 40px;
   }
 
   .service-list article {

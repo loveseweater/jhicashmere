@@ -36,6 +36,29 @@ function postImage(post) {
   return post.image || "assets/jni-cashmere-hero.png";
 }
 
+function setMeta(attr, key, content) {
+  if (!content) return;
+  const selector = `meta[${attr}="${key}"]`;
+  let el = document.querySelector(selector);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function setJsonLd(id, data) {
+  let el = document.querySelector(`script[type="application/ld+json"][data-jsonld="${id}"]`);
+  if (!el) {
+    el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.dataset.jsonld = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data, null, 2);
+}
+
 function postTemplate(post, index = 0) {
   const slug = encodeURIComponent(post.slug || post.id || post.title || "");
   const leadClass = index === 0 ? " lead" : "";
@@ -109,10 +132,39 @@ function renderSinglePost(post, allPosts = []) {
   if (meta) {
     meta.content = post.seoDescription || post.excerpt || "";
   }
+  const imageUrl = new URL(postImage(post), location.origin).href;
+  const pageUrl = new URL(`journal.html?post=${encodeURIComponent(post.slug || post.id || "")}`, location.origin).href;
+  const description = post.seoDescription || post.excerpt || "";
+  setMeta("property", "og:title", post.seoTitle || `${post.title} | JINHEXI Journal`);
+  setMeta("property", "og:description", description);
+  setMeta("property", "og:type", "article");
+  setMeta("property", "og:url", pageUrl);
+  setMeta("property", "og:image", imageUrl);
+  setMeta("property", "og:image:alt", post.imageAlt || post.title);
+  setMeta("name", "twitter:card", "summary_large_image");
+  setMeta("name", "twitter:title", post.seoTitle || `${post.title} | JINHEXI Journal`);
+  setMeta("name", "twitter:description", description);
+  setMeta("name", "twitter:image", imageUrl);
   const canonical = document.querySelector('link[rel="canonical"]');
   if (canonical) {
-    canonical.href = `https://jhicashmere.com/journal.html?post=${encodeURIComponent(post.slug || post.id || "")}`;
+    canonical.href = pageUrl;
   }
+  setJsonLd("blogposting", {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description,
+    image: [imageUrl],
+    datePublished: post.date || undefined,
+    dateModified: post.updatedAt || post.date || undefined,
+    mainEntityOfPage: pageUrl,
+    author: { "@type": "Organization", name: "JINHEXI" },
+    publisher: {
+      "@type": "Organization",
+      name: "JINHEXI",
+      logo: { "@type": "ImageObject", url: "https://jhicashmere.com/assets/logo-jinhexi.svg" }
+    }
+  });
 }
 
 function applyLocale() {
@@ -150,6 +202,18 @@ async function init() {
     }
   }
   container.innerHTML = posts.map((post, index) => postTemplate(post, index)).join("");
+  setJsonLd("blog", {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: "JINHEXI Journal",
+    description: "Cashmere care, styling, gift, and wardrobe notes from JINHEXI.",
+    url: "https://jhicashmere.com/journal.html",
+    blogPost: posts.map((post) => ({
+      "@type": "BlogPosting",
+      headline: post.title,
+      url: `https://jhicashmere.com/journal.html?post=${encodeURIComponent(post.slug || post.id || "")}`
+    }))
+  });
   await trackPageview();
 }
 

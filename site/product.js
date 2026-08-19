@@ -100,11 +100,41 @@ function amazonLabel(product) {
   return label;
 }
 
+function setMeta(attr, key, content) {
+  if (!content) return;
+  const selector = `meta[${attr}="${key}"]`;
+  let el = document.querySelector(selector);
+  if (!el) {
+    el = document.createElement("meta");
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute("content", content);
+}
+
+function setJsonLd(id, data) {
+  let el = document.querySelector(`script[type="application/ld+json"][data-jsonld="${id}"]`);
+  if (!el) {
+    el = document.createElement("script");
+    el.type = "application/ld+json";
+    el.dataset.jsonld = id;
+    document.head.appendChild(el);
+  }
+  el.textContent = JSON.stringify(data, null, 2);
+}
+
+function productImageUrl(product) {
+  const src = Array.isArray(product.gallery) && product.gallery.length
+    ? product.gallery[0]
+    : product.image || "assets/real-cashmere-hero-jinhexi.webp";
+  return new URL(src, location.origin).href;
+}
+
 function applyLocale() {
-  document.title = "JINHEXI | Product Detail";
+  document.title = "JINHEXI | Cashmere Product Detail";
   const meta = document.querySelector('meta[name="description"]');
   if (meta) {
-    meta.content = "JINHEXI product detail page with materials, size, care, fit guidance, and retained Amazon launch buttons.";
+    meta.content = "Explore JINHEXI cashmere product details, materials, size guidance, care notes, and fit recommendations.";
   }
   const navHome = document.querySelector("#nav-home");
   const navCatalog = document.querySelector("#nav-catalog");
@@ -137,14 +167,10 @@ function renderProduct(product, products = []) {
         <div class="product-info">
           <div class="product-meta">
             <span>${escapeHtml(normalizeCategory(item.category))}</span>
-            <span>${escapeHtml(statusLabel(item.status || i18n.t("status")))}</span>
+            <span>${escapeHtml(item.price || statusLabel(item.status || i18n.t("status")))}</span>
           </div>
           <h3><a href="product.html?id=${encodeURIComponent(item.id || item.name || "")}">${escapeHtml(item.name)}</a></h3>
           <p>${escapeHtml(item.subtitle || item.description)}</p>
-          <div class="product-line">
-            <span>${escapeHtml(item.colors)}</span>
-            <strong>${escapeHtml(item.price)}</strong>
-          </div>
           <a class="detail-link" href="product.html?id=${encodeURIComponent(item.id || item.name || "")}">${escapeHtml(i18n.t("viewDetails"))}</a>
         </div>
       </article>
@@ -152,21 +178,44 @@ function renderProduct(product, products = []) {
     .join("");
 
   document.title = `${product.name || i18n.t("productDetail")} | JINHEXI`;
+  const pageUrl = new URL(`product.html?id=${encodeURIComponent(product.id || product.name || "")}`, location.origin).href;
+  const description = product.seoDescription || product.subtitle || product.description || "JINHEXI cashmere product detail.";
+  const imageUrl = productImageUrl(product);
+  setMeta("property", "og:title", `${product.name || "JINHEXI cashmere product"} | JINHEXI`);
+  setMeta("property", "og:description", description);
+  setMeta("property", "og:type", "product");
+  setMeta("property", "og:url", pageUrl);
+  setMeta("property", "og:image", imageUrl);
+  setMeta("property", "og:image:alt", product.name || "JINHEXI cashmere product");
+  setMeta("name", "twitter:card", "summary_large_image");
+  setMeta("name", "twitter:title", `${product.name || "JINHEXI cashmere product"} | JINHEXI`);
+  setMeta("name", "twitter:description", description);
+  setMeta("name", "twitter:image", imageUrl);
+  setMeta("name", "description", description);
+  const canonical = document.querySelector('link[rel="canonical"]');
+  if (canonical) canonical.href = pageUrl;
+  setJsonLd("product", {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description,
+    image: [imageUrl],
+    sku: product.sku || undefined,
+    brand: { "@type": "Brand", name: "JINHEXI" },
+    url: pageUrl
+  });
 
   return `
     <section class="product-detail">
       <div class="product-gallery">
         <img class="product-main-image" data-main-image src="${escapeHtml(galleryMain)}"${gallerySet} alt="${escapeHtml(product.name)}" loading="eager" fetchpriority="high" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
-        <details class="product-gallery-details">
-          <summary>View detail images</summary>
-          <div class="product-detail-thumbs">
-            ${gallery.slice(0, 5).map((src, index) => {
-              const thumb = catalogThumb(imageVariant(src, 240));
-              const thumbSet = srcsetAttr(src, [120, 180, 240, 360], "72px");
-              return `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(thumb)}"${thumbSet} alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" /></button>`;
-            }).join("")}
-          </div>
-        </details>
+        <div class="product-detail-thumbs" aria-label="Detail images">
+          ${gallery.slice(0, 5).map((src, index) => {
+            const thumb = catalogThumb(imageVariant(src, 240));
+            const thumbSet = srcsetAttr(src, [120, 180, 240, 360], "72px");
+            return `<button type="button" class="thumb-button${index === 0 ? " active" : ""}" data-thumb="${escapeHtml(src)}"><img src="${escapeHtml(thumb)}"${thumbSet} alt="${escapeHtml(product.name)}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" /></button>`;
+          }).join("")}
+        </div>
       </div>
       <div class="product-detail-copy">
         <p class="eyebrow">${escapeHtml(product.sku || "JINHEXI")}</p>

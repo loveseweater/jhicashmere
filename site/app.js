@@ -40,6 +40,25 @@ function escapeHtml(value) {
     .replaceAll("'", "&#039;");
 }
 
+function absoluteUrl(url) {
+  try {
+    return new URL(String(url || ""), location.origin).href;
+  } catch {
+    return String(url || "");
+  }
+}
+
+function setJsonLd(id, data) {
+  let script = document.querySelector(`script[type="application/ld+json"][data-jsonld="${id}"]`);
+  if (!script) {
+    script = document.createElement("script");
+    script.type = "application/ld+json";
+    script.dataset.jsonld = id;
+    document.head.appendChild(script);
+  }
+  script.textContent = JSON.stringify(data, null, 2);
+}
+
 function imageVariant(url, width) {
   const src = String(url || "").trim();
   if (!src) return src;
@@ -114,9 +133,6 @@ function productTemplate(product, index) {
         </div>
         <h3><a href="${escapeHtml(productUrl)}">${escapeHtml(product.name)}</a></h3>
         <p>${escapeHtml(product.subtitle || product.description || "")}</p>
-        <div class="product-material"><span>Material</span><strong>${escapeHtml(product.material || "100% cashmere")}</strong></div>
-        <div class="product-colors"><span>Size</span><span>${escapeHtml(product.sizeRange || "Ask for current sizes")}</span></div>
-        <div class="product-colors"><span>Colors</span><span>${escapeHtml(product.colors || "Ask for current colors")}</span></div>
         <div class="product-actions">
           <span class="product-buy amazon-disabled" aria-disabled="true">${escapeHtml(amazonButtonLabel(product))}</span>
           <a class="product-inquiry" href="${escapeHtml(productUrl)}">View details <span aria-hidden="true">→</span></a>
@@ -231,6 +247,20 @@ async function renderStorefront() {
 
   renderProducts();
   if (postGrid) postGrid.innerHTML = posts.slice(0, 3).map(postTemplate).join("");
+
+  if (document.body.classList.contains("collection-page")) {
+    setJsonLd("itemlist", {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "JINHEXI cashmere collection",
+      itemListElement: products.map((product, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        url: absoluteUrl(`product.html?id=${encodeURIComponent(product.id || product.name || "")}`),
+        name: product.name
+      }))
+    });
+  }
 
   const leadForm = document.querySelector("[data-lead-form]");
   leadForm?.addEventListener("submit", (event) => {

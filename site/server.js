@@ -60,6 +60,20 @@ function writeJson(name, data) {
   fs.writeFileSync(file, `${JSON.stringify(data, null, 2)}\n`, "utf8");
 }
 
+function buildSitemap() {
+  const base = "https://jhicashmere.com";
+  const products = readJson("products");
+  const posts = readJson("posts");
+  const urls = [
+    `${base}/`,
+    `${base}/collection.html`,
+    `${base}/journal.html`,
+    ...products.map((product) => `${base}/product.html?id=${encodeURIComponent(product.id || product.name || "")}`),
+    ...posts.map((post) => `${base}/journal.html?post=${encodeURIComponent(post.slug || post.id || "")}`)
+  ];
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.map((url) => `  <url>\n    <loc>${url}</loc>\n  </url>`).join("\n")}\n</urlset>\n`;
+}
+
 function slugify(value) {
   return String(value || "")
     .trim()
@@ -154,10 +168,19 @@ async function handleApi(req, res, pathname) {
   json(res, 405, { error: "不允许的请求方法" });
 }
 
+function handleSpecial(req, res, pathname) {
+  if (pathname === "/sitemap.xml") {
+    send(res, 200, buildSitemap(), "application/xml; charset=utf-8");
+    return true;
+  }
+  return false;
+}
+
 function serveStatic(req, res, pathname) {
   const cleanPath = pathname === "/" ? "/index.html" : decodeURIComponent(pathname);
   const target = path.resolve(root, `.${cleanPath}`);
-  if (!target.startsWith(root)) {
+  const relativeTarget = path.relative(root, target);
+  if (relativeTarget.startsWith("..") || path.isAbsolute(relativeTarget)) {
     send(res, 403, "Forbidden", "text/plain; charset=utf-8");
     return;
   }
@@ -174,6 +197,9 @@ function serveStatic(req, res, pathname) {
 const server = http.createServer(async (req, res) => {
   try {
     const url = new URL(req.url, `http://${req.headers.host}`);
+    if (handleSpecial(req, res, url.pathname)) {
+      return;
+    }
     if (url.pathname.startsWith("/api/")) {
       await handleApi(req, res, url.pathname);
       return;
