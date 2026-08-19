@@ -480,6 +480,10 @@
   .mobile-conversion-bar a:last-child {
     background: var(--refresh-rust);
   }
+  /* keep the fixed bottom bar from covering footer/page content */
+  .storefront-footer {
+    padding-bottom: 104px;
+  }
 }
 
 /* ---------- 8b. Card typography & contrast polish ---------- */
@@ -589,4 +593,95 @@ select:focus-visible {
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ---------- 12. Legal / policy pages ---------- */
+.legal-page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: clamp(48px, 8vw, 90px) clamp(20px, 4vw, 32px) 120px;
+  color: var(--refresh-ink);
+}
+.legal-page .legal-overline {
+  margin: 0 0 14px;
+  color: var(--refresh-rust);
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: .13em;
+  text-transform: uppercase;
+}
+.legal-page h1 {
+  margin: 0 0 10px;
+  font-family: Georgia, serif;
+  font-size: clamp(28px, 4vw, 40px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+.legal-page .legal-updated {
+  margin: 0 0 34px;
+  color: var(--refresh-muted);
+  font-size: 12px;
+}
+.legal-page h2 {
+  margin: 36px 0 10px;
+  font-family: Georgia, serif;
+  font-size: 21px;
+  font-weight: 400;
+}
+.legal-page h3 {
+  margin: 22px 0 8px;
+  font-size: 14px;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.legal-page p,
+.legal-page li {
+  color: #3d4a46;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.legal-page ul {
+  padding-left: 22px;
+  margin: 10px 0;
+}
+.legal-page a {
+  color: var(--refresh-rust);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.legal-page .legal-callout {
+  margin: 26px 0;
+  padding: 18px 20px;
+  border-left: 3px solid var(--refresh-rust);
+  background: rgba(167, 91, 71, .06);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #3d4a46;
+}
+@media (max-width: 860px) {
+  .legal-page {
+    padding-bottom: 150px;
+  }
+}
+
+/* ---------- 13. Footer legal links ---------- */
+.storefront-footer .footer-bottom {
+  flex-wrap: wrap;
+  align-items: center;
+}
+.storefront-footer .footer-legal-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+}
+.storefront-footer .footer-legal-links a {
+  color: rgba(255, 255, 255, .6);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.storefront-footer .footer-legal-links a:hover {
+  color: var(--refresh-lime);
 }

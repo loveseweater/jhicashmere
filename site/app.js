@@ -155,7 +155,6 @@ function productTemplate(product, index) {
           <strong>${escapeHtml(product.price || "Enquire")}</strong>
         </div>
         <h3><a href="${escapeHtml(productUrl)}">${escapeHtml(product.name)}</a></h3>
-        <div class="product-rating"><span class="stars" aria-hidden="true">★★★★★</span><span class="count">4.9 · 28 reviews</span></div>
         <p>${escapeHtml(product.subtitle || product.description || "")}</p>
         ${swatches ? `<div class="product-color-swatches" aria-label="Colours: ${escapeHtml(product.colors)}">${swatches}</div>` : ""}
         <div class="product-actions">

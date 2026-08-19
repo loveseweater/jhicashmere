@@ -90,3 +90,22 @@ Both images use `width:100%; height:auto`, so they scale with the viewport (the 
 ### Verification
 - Browser: home hero banner + CTA + launch-access row render correctly on the paper background; collection turtleneck card shows the new shot; PDP main image points to the regenerated webp.
 - `node --check` on JS unchanged this round (no JS edits).
+
+## Mobile hero + launch-readiness pass (2026-08-19)
+
+### Mobile
+- Added a **vertical hero banner** `assets/hero-banner-jinhexi-mobile.png` (9:16, same brand/typeface as the desktop one). The home hero now uses `<picture>` with a `(max-width: 860px)` source so phones get the vertical image and desktop keeps the horizontal one. Responsive (`width:100%; height:auto`).
+- Fixed the fixed bottom `.mobile-conversion-bar` covering the footer: added `padding-bottom:104px` to `.storefront-footer` on ≤860px.
+- Verified mobile at 390px viewport (Playwright + Chromium): home, collection, and PDP all render in a clean single column with no overflow; vertical hero loads on mobile.
+
+### Launch-readiness / Google Ads prep
+- **Favicon**: generated `favicon.ico` (brand ink + "J") and `assets/favicon.png`; wired into all 7 pages (`<link rel="icon">` + apple-touch-icon). Eliminated the favicon 404 console error.
+- **Legal pages** (English, EU/UK/US-ready): `privacy-policy.html`, `terms.html`, `shipping-returns.html`; added a "Legal" footer link set to all pages and added them to `sitemap.xml`. Styled via `.legal-page`.
+- **Compliance**: removed the fabricated ratings/reviews ("4.9 · 28 reviews", 3 fake testimonials) from product cards and PDP — these would violate FTC / Google policy and block ad approval. Kept the real trust bar (free shipping / 30-day returns / 100% cashmere) and the FAQ. Softened "Independently verified fibre" → "Genuine fibre, nothing blended" to avoid implying an unearned third-party certification.
+- **Analytics / Search Console hooks** added to `header.js` (inactive placeholders): paste the real GA4 Measurement ID and the `google-site-verification` content token to enable.
+
+### Verification
+- `node --check` on all JS: passed.
+- Link check: all internal href/src across 8 HTML files resolve (no dead links).
+- Playwright QA: every page returns 200, titles correct, policy pages render; home page has no console errors; PDP has rating/proof removed, FAQ + trust bar intact; collection cards have no rating.
+- Mobile screenshots (390px): home (vertical hero, footer no longer covered), collection, PDP all look clean.

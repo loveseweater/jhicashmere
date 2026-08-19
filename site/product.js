@@ -245,7 +245,6 @@ function renderProduct(product, products = []) {
         <p class="eyebrow">${escapeHtml(product.sku || "JINHEXI")}</p>
         <h1>${escapeHtml(product.name)}</h1>
         <p class="product-subtitle">${escapeHtml(product.subtitle || product.description)}</p>
-        <div class="product-rating-pdp"><span class="stars" aria-hidden="true">★★★★★</span><span class="count">4.9 · 28 verified reviews</span><a href="#pdp-proof">Read reviews</a></div>
         <div class="product-price-row">
           <strong>${escapeHtml(product.price)}</strong>
           <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
@@ -272,7 +271,7 @@ function renderProduct(product, products = []) {
         <div class="buyer-trust-bar">
           <div><strong>Free shipping</strong><small>On every order, worldwide</small></div>
           <div><strong>30-day returns</strong><small>Easy, no-quibble exchanges</small></div>
-          <div><strong>100% cashmere</strong><small>Independently verified fibre</small></div>
+          <div><strong>100% cashmere</strong><small>Genuine fibre, nothing blended</small></div>
         </div>
         <a class="detail-link" href="collection.html">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
@@ -307,33 +306,6 @@ function renderProduct(product, products = []) {
           <h3>${escapeHtml(i18n.t("productIntro"))}</h3>
           <p>${escapeHtml(product.description)}</p>
         </article>
-      </div>
-    </section>
-
-    <section class="section pdp-proof-section" id="pdp-proof">
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">Verified reviews</p>
-          <h2>What customers are saying.</h2>
-        </div>
-        <p class="section-note">Early reviews from our launch preview panel, all verified against confirmed orders.</p>
-      </div>
-      <div class="pdp-proof">
-        <figure>
-          <div class="stars" aria-hidden="true">★★★★★</div>
-          <blockquote>"The softest cashmere I have felt at this price. Light but noticeably warm."</blockquote>
-          <figcaption><strong>Megan R.</strong> · Verified buyer</figcaption>
-        </figure>
-        <figure>
-          <div class="stars" aria-hidden="true">★★★★★</div>
-          <blockquote>"Fit is true to size and it layers beautifully under coats."</blockquote>
-          <figcaption><strong>Sarah T.</strong> · Verified buyer</figcaption>
-        </figure>
-        <figure>
-          <div class="stars" aria-hidden="true">★★★★★</div>
-          <blockquote>"Colour exactly as pictured. This will be my go-to winter knit."</blockquote>
-          <figcaption><strong>Emily W.</strong> · Verified buyer</figcaption>
-        </figure>
       </div>
     </section>
 

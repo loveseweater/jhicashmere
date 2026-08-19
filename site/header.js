@@ -59,3 +59,28 @@
 
   syncMenu();
 })();
+
+/* ============ GOOGLE ANALYTICS 4 (replace with your real Measurement ID) ============ */
+(function () {
+  var GA_ID = "G-XXXXXXXXXX"; /* TODO: paste your GA4 Measurement ID, e.g. G-ABC123XYZ */
+  if (!GA_ID || GA_ID.indexOf("XXXX") !== -1) return; /* inactive until a real ID is set */
+  var s = document.createElement("script");
+  s.async = true;
+  s.src = "https://www.googletagmanager.com/gtag/js?id=" + GA_ID;
+  document.head.appendChild(s);
+  window.dataLayer = window.dataLayer || [];
+  function gtag() { dataLayer.push(arguments); }
+  window.gtag = gtag;
+  gtag("js", new Date());
+  gtag("config", GA_ID, { send_page_view: true });
+})();
+
+/* ============ GOOGLE SEARCH CONSOLE verification (replace with your token) ============ */
+(function () {
+  var TOKEN = ""; /* TODO: paste your google-site-verification content value, e.g. abc123... */
+  if (!TOKEN) return; /* inactive until a real token is set */
+  var m = document.createElement("meta");
+  m.name = "google-site-verification";
+  m.content = TOKEN;
+  document.head.appendChild(m);
+})();
