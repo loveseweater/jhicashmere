@@ -109,3 +109,32 @@ Both images use `width:100%; height:auto`, so they scale with the viewport (the 
 - Link check: all internal href/src across 8 HTML files resolve (no dead links).
 - Playwright QA: every page returns 200, titles correct, policy pages render; home page has no console errors; PDP has rating/proof removed, FAQ + trust bar intact; collection cards have no rating.
 - Mobile screenshots (390px): home (vertical hero, footer no longer covered), collection, PDP all look clean.
+
+## Admin backend + D1 + analytics (2026-08-19)
+
+Deployed a full admin backend on Cloudflare Pages so the owner can update products, posts, page content, and see visit stats from anywhere.
+
+### Architecture (Cloudflare)
+- **Pages Functions** (`site/functions/api/`): `/api/login`, `/api/products`, `/api/posts`, `/api/settings`, `/api/stats`, `/api/track`.
+- **D1 database** `jhicashmere` (id `3ae7ec47-d1be-4004-8011-e35d6652692c`), tables: `products`, `posts`, `settings`, `views`. Products/posts stored as JSON blobs for flexible editing. Schema in `schema.sql`.
+- **D1 binding** `DB` is persisted on the `jhicashmere` Pages project (survives GitHub auto-deploys).
+- **Admin password** stored as encrypted secret `JINHEXI_ADMIN_PASSWORD` (wrangler pages secret). Login issues a stateless HMAC-signed token (7-day expiry) via Web Crypto in `functions/api/_lib.js`.
+- **Frontend** reads products/posts/settings from the API first, with fallback to the static `data/*.json` (so pages never break). Pageviews tracked via `/api/track` on every page.
+- **Editable page content** via `settings` + `data-setting` / `data-setting-mailto` / `data-setting-wa` attributes (announcement, footer tagline, contact email, WhatsApp number). Admin has a new "站点设置" tab.
+
+### Deploy commands (token redacted)
+- `wrangler d1 create jhicashmere` → created db
+- `wrangler d1 execute jhicashmere --remote --file=schema.sql` → tables
+- `wrangler d1 execute jhicashmere --remote --file=seed.sql` → products(8) + posts(11)
+- `wrangler d1 execute jhicashmere --remote --file=settings_seed.sql` → default settings
+- `printf '<pw>' | wrangler pages secret put JINHEXI_ADMIN_PASSWORD --project-name jhicashmere`
+- `wrangler pages deploy . --project-name jhicashmere --branch main`
+
+### Verification (live)
+- `/api/login` returns token; `/api/products` returns 8 products; `/api/posts` 11 posts; `/api/settings` returns editable settings; `/api/stats` shows totalViews/today/topPages.
+- All API + homepage + admin login HTTP 200 on jhicashmere.com after deploy.
+- D1 binding persisted on project; admin password secret set.
+
+### Remaining (owner action)
+- **GA4**: paste Measurement ID into `site/header.js` (`G-XXXXXXXXXX`) if you also want Google Analytics deep data.
+- **Web Analytics**: enable in Cloudflare Dashboard → Analytics → Web Analytics → add jhicashmere.com (free, real-time). Built-in `/api/stats` already works.
