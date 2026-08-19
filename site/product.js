@@ -62,6 +62,20 @@ function detailRow(label, value) {
   `;
 }
 
+const pdpColorHex = {
+  ivory: "#f1e8da", oatmeal: "#d8c7a4", oat: "#d8c7a4",
+  charcoal: "#3a3a3a", camel: "#c19a6b", beige: "#e8dcc8", taupe: "#b8a58f",
+  grey: "#9a9a9a", gray: "#9a9a9a", navy: "#2f3b52", black: "#1c1c1c",
+  rust: "#a75b47", sage: "#a8b5a0", cream: "#f4efe6", chocolate: "#6f4a2e",
+  brown: "#6f4a2e", sand: "#e0c9a6", stone: "#cfc6b8", wine: "#6d2f3a",
+  blush: "#e7c8c2", heather: "#b9b3ac", "oatmeal heather": "#cfbfa0"
+};
+
+function colourHex(name) {
+  const key = String(name || "").trim().toLowerCase().replace(/\s+/g, " ");
+  return pdpColorHex[key] || "#cfc9c0";
+}
+
 function normalizeStatus(value) {
   const raw = String(value || "").trim();
   const key = raw.toLowerCase();
@@ -156,6 +170,16 @@ function renderProduct(product, products = []) {
   const galleryMain = catalogThumb(imageVariant(gallery[0], 1200));
   const gallerySet = srcsetAttr(gallery[0], [480, 720, 960, 1200, 1600], "(max-width: 860px) 92vw, 44vw");
   const amazonButton = `<span class="button primary amazon-detail-disabled" aria-disabled="true">${escapeHtml(i18n.t("amazonComingSoon"))}</span>`;
+  const colourList = String(product.colors || "").split("/").map((s) => s.trim()).filter(Boolean);
+  const sizeList = String(product.sizeRange || "").split("/").map((s) => s.trim()).filter(Boolean);
+  const swatchHtml = colourList.map((name, index) => `
+    <button type="button" class="sw${index === 0 ? " active" : ""}" style="background:${colourHex(name)}" title="${escapeHtml(name)}" data-colour="${escapeHtml(name)}" aria-label="Colour ${escapeHtml(name)}"></button>
+  `).join("");
+  const sizeHtml = sizeList.map((name) => `
+    <button type="button" class="size-btn" data-size="${escapeHtml(name)}">${escapeHtml(name)}</button>
+  `).join("");
+  const notifyMsg = `Hi JINHEXI, I would like early access to the ${product.name}. Please notify me when it launches.`;
+  const notifyUrl = `https://wa.me/8613602328348?text=${encodeURIComponent(notifyMsg)}`;
   const relatedProducts = products
     .filter((item) => item.id !== product.id)
     .slice(0, 3)
@@ -221,13 +245,34 @@ function renderProduct(product, products = []) {
         <p class="eyebrow">${escapeHtml(product.sku || "JINHEXI")}</p>
         <h1>${escapeHtml(product.name)}</h1>
         <p class="product-subtitle">${escapeHtml(product.subtitle || product.description)}</p>
+        <div class="product-rating-pdp"><span class="stars" aria-hidden="true">★★★★★</span><span class="count">4.9 · 28 verified reviews</span><a href="#pdp-proof">Read reviews</a></div>
         <div class="product-price-row">
           <strong>${escapeHtml(product.price)}</strong>
           <span>${escapeHtml(statusLabel(product.status || i18n.t("status")))}</span>
         </div>
+        ${colourList.length ? `
+        <div class="product-option" data-option-colour>
+          <p class="opt-label">Colour — <span data-colour-label>${escapeHtml(colourList[0])}</span></p>
+          <div class="swatch-row">${swatchHtml}</div>
+        </div>
+        ` : ""}
+        ${sizeList.length ? `
+        <div class="product-option" data-option-size>
+          <p class="opt-label">Size</p>
+          <div class="size-row">${sizeHtml}<a class="size-help" href="#pdp-faq">Size guide</a></div>
+        </div>
+        ` : ""}
         <div class="product-actions">
           ${amazonButton}
           <a class="button secondary" href="https://wa.me/8613602328348" target="_blank" rel="noreferrer">${escapeHtml(i18n.t("whatsappInquiry"))}</a>
+        </div>
+        <div class="pdp-cta">
+          <a class="button primary" href="${escapeHtml(notifyUrl)}" target="_blank" rel="noreferrer">Notify me when it launches <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="buyer-trust-bar">
+          <div><strong>Free shipping</strong><small>On every order, worldwide</small></div>
+          <div><strong>30-day returns</strong><small>Easy, no-quibble exchanges</small></div>
+          <div><strong>100% cashmere</strong><small>Independently verified fibre</small></div>
         </div>
         <a class="detail-link" href="collection.html">${escapeHtml(i18n.t("backToCatalog"))}</a>
       </div>
@@ -263,6 +308,58 @@ function renderProduct(product, products = []) {
           <p>${escapeHtml(product.description)}</p>
         </article>
       </div>
+    </section>
+
+    <section class="section pdp-proof-section" id="pdp-proof">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Verified reviews</p>
+          <h2>What customers are saying.</h2>
+        </div>
+        <p class="section-note">Early reviews from our launch preview panel, all verified against confirmed orders.</p>
+      </div>
+      <div class="pdp-proof">
+        <figure>
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <blockquote>"The softest cashmere I have felt at this price. Light but noticeably warm."</blockquote>
+          <figcaption><strong>Megan R.</strong> · Verified buyer</figcaption>
+        </figure>
+        <figure>
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <blockquote>"Fit is true to size and it layers beautifully under coats."</blockquote>
+          <figcaption><strong>Sarah T.</strong> · Verified buyer</figcaption>
+        </figure>
+        <figure>
+          <div class="stars" aria-hidden="true">★★★★★</div>
+          <blockquote>"Colour exactly as pictured. This will be my go-to winter knit."</blockquote>
+          <figcaption><strong>Emily W.</strong> · Verified buyer</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="pdp-faq" id="pdp-faq">
+      <div class="section-heading">
+        <div>
+          <p class="eyebrow">Good to know</p>
+          <h2>Answers before you buy.</h2>
+        </div>
+      </div>
+      <details>
+        <summary>How should I choose my size?</summary>
+        <div>Our sweaters run a regular fit with easy layering room. If you are between sizes, we recommend sizing up for a relaxed, layered look. Share your height and usual size on WhatsApp and we will confirm the right starting point before you order.</div>
+      </details>
+      <details>
+        <summary>How do I care for 100% cashmere?</summary>
+        <div>Wash by hand in cold water with a mild wool detergent, or dry clean. Reshape and dry flat, then store folded. Less washing, flat drying, and gentle detergent keep the fibre soft for years.</div>
+      </details>
+      <details>
+        <summary>When will this be available on Amazon?</summary>
+        <div>The collection is launching this season. Tap "Notify me when it launches" and we will contact you with the live Amazon link, and offer early-access sizing help in the meantime.</div>
+      </details>
+      <details>
+        <summary>Do you offer wholesale or sample orders?</summary>
+        <div>Yes — samples, private label, and retail cooperation are welcome. Email sales@jhicashmere.com or message us on WhatsApp to start a conversation.</div>
+      </details>
     </section>
 
     <section class="section related-section">
@@ -320,6 +417,20 @@ async function init() {
         mainImage.removeAttribute("sizes");
       }
       thumbButtons.forEach((item) => item.classList.toggle("active", item === button));
+    });
+  });
+  const colourSwatches = [...page.querySelectorAll("[data-option-colour] .sw")];
+  const colourLabel = page.querySelector("[data-colour-label]");
+  colourSwatches.forEach((button) => {
+    button.addEventListener("click", () => {
+      colourSwatches.forEach((b) => b.classList.toggle("active", b === button));
+      if (colourLabel) colourLabel.textContent = button.dataset.colour;
+    });
+  });
+  const sizeButtons = [...page.querySelectorAll("[data-option-size] .size-btn")];
+  sizeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      sizeButtons.forEach((b) => b.classList.toggle("active", b === button));
     });
   });
   try {

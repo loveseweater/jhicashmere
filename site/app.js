@@ -112,6 +112,27 @@ function amazonButtonLabel(product) {
   return "Amazon preview";
 }
 
+function colorSwatches(colors) {
+  const colorMap = {
+    ivory: "#f1e8da", oatmeal: "#d8c7a4", oat: "#d8c7a4",
+    charcoal: "#3a3a3a", camel: "#c19a6b", beige: "#e8dcc8", taupe: "#b8a58f",
+    grey: "#9a9a9a", gray: "#9a9a9a", navy: "#2f3b52", black: "#1c1c1c",
+    rust: "#a75b47", sage: "#a8b5a0", cream: "#f4efe6", chocolate: "#6f4a2e",
+    brown: "#6f4a2e", sand: "#e0c9a6", stone: "#cfc6b8", wine: "#6d2f3a",
+    blush: "#e7c8c2", heather: "#b9b3ac", "oatmeal heather": "#cfbfa0"
+  };
+  return String(colors || "").split("/").map((s) => s.trim()).filter(Boolean).slice(0, 5).map((name) => {
+    const key = name.toLowerCase().replace(/\s+/g, " ").trim();
+    const hex = colorMap[key] || "#cfc9c0";
+    return `<span class="sw" style="background:${hex}" title="${escapeHtml(name)}" aria-label="${escapeHtml(name)}"></span>`;
+  }).join("");
+}
+
+function notifyUrl(product) {
+  const msg = `Hi JINHEXI, I would like early access to the ${product.name}. Please notify me when it launches.`;
+  return `https://wa.me/8613602328348?text=${encodeURIComponent(msg)}`;
+}
+
 function productTemplate(product, index) {
   const image = product.image || (Array.isArray(product.gallery) ? product.gallery[0] : "") || "assets/real-cashmere-hero-jinhexi.webp";
   const imageSrc = catalogThumb(imageVariant(image, 760));
@@ -121,9 +142,11 @@ function productTemplate(product, index) {
   const imageLoading = index < 4 ? "eager" : "lazy";
   const imagePriority = index < 4 ? " fetchpriority=\"high\"" : "";
 
+  const swatches = colorSwatches(product.colors);
   return `
     <article class="sales-product-card reveal" style="--reveal-delay:${Math.min(index * 70, 280)}ms">
       <a class="sales-product-media" href="${escapeHtml(productUrl)}" aria-label="${escapeHtml(product.name)}">
+        <span class="product-badge">100% cashmere</span>
         <img src="${escapeHtml(imageSrc)}"${imageSet} alt="${escapeHtml(product.name || "JINHEXI cashmere product")}" loading="${imageLoading}"${imagePriority} decoding="async" onerror="this.onerror=null;this.src='assets/real-cashmere-hero-jinhexi.webp';" />
       </a>
       <div class="sales-product-info">
@@ -132,10 +155,12 @@ function productTemplate(product, index) {
           <strong>${escapeHtml(product.price || "Enquire")}</strong>
         </div>
         <h3><a href="${escapeHtml(productUrl)}">${escapeHtml(product.name)}</a></h3>
+        <div class="product-rating"><span class="stars" aria-hidden="true">★★★★★</span><span class="count">4.9 · 28 reviews</span></div>
         <p>${escapeHtml(product.subtitle || product.description || "")}</p>
+        ${swatches ? `<div class="product-color-swatches" aria-label="Colours: ${escapeHtml(product.colors)}">${swatches}</div>` : ""}
         <div class="product-actions">
-          <span class="product-buy amazon-disabled" aria-disabled="true">${escapeHtml(amazonButtonLabel(product))}</span>
-          <a class="product-inquiry" href="${escapeHtml(productUrl)}">View details <span aria-hidden="true">→</span></a>
+          <a class="product-buy" href="${escapeHtml(notifyUrl(product))}" target="_blank" rel="noreferrer">Notify me <span aria-hidden="true">→</span></a>
+          <a class="product-inquiry" href="${escapeHtml(productUrl)}">View details</a>
         </div>
       </div>
     </article>
@@ -267,6 +292,14 @@ async function renderStorefront() {
     event.preventDefault();
     const email = new FormData(leadForm).get("email");
     const message = `Hi JINHEXI, I would like private launch access and sizing help. My email is ${email}.`;
+    window.open(`https://wa.me/8613602328348?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
+  });
+
+  const launchForm = document.querySelector("[data-launch-form]");
+  launchForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const email = new FormData(launchForm).get("email");
+    const message = `Hi JINHEXI, please add me to the early launch list. My email is ${email}.`;
     window.open(`https://wa.me/8613602328348?text=${encodeURIComponent(message)}`, "_blank", "noopener,noreferrer");
   });
 

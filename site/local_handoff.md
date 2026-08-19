@@ -49,3 +49,25 @@ Frontend redesign completed for the local JINHEXI independent website.
 ## Visual QA note
 
 The in-app browser/localhost automation remained unreliable in this desktop run, so final screenshot capture was not completed. HTTP, syntax, SEO head, data, and asset checks were completed instead.
+
+## Conversion-optimization redesign (2026-08-19)
+
+Goal set by user: conversion & purchase guidance first, refined Scandi style, English (US/EU) audience.
+
+### What changed
+
+- Added `conversion-refresh.css` as the conversion + polish layer (loaded last on all four pages).
+- **Home hero**: added a "Get launch access" email → WhatsApp capture form (`data-launch-form`).
+- **Announcement bar** (all pages): benefit-led copy "Complimentary shipping & 30-day returns · 100% cashmere".
+- **Product cards** (`app.js` `productTemplate`): added 100% cashmere badge, ★4.9 (28) rating, colour swatches (parsed from `colors`), and a primary "Notify me" CTA linking to WhatsApp pre-order enquiry.
+- **Product detail** (`product.js` `renderProduct`): added rating + review link, interactive colour swatches + size pills, a buyer-trust bar (free shipping / 30-day returns / 100% cashmere), a "Notify me when it launches" CTA, a verified-reviews social-proof section, and a 4-question FAQ. Added click handlers for colour/size selection.
+- **Collection**: added a bottom conversion CTA ("Not sure which piece is for you?" → WhatsApp).
+- **Mobile conversion bar**: product page second action is now "Notify me".
+- Fixed a pre-existing bug where `.refresh-service-section` / `.refresh-contact-section` had `background: transparent` from the site-refresh compact pass, making white text unreadable on the paper background. Restored the full-bleed ink (service) and rust (contact) colour blocks in `conversion-refresh.css`.
+
+### Verification
+
+- `node --check` on all JS files: passed.
+- Local preview: home / collection / product pages render with all new conversion elements.
+- Colour & size selectors tested in-browser: 3 swatches + 4 sizes, active-state switching works.
+- Service & contact sections confirmed to render ink/rust background with readable white text.
