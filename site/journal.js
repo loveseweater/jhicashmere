@@ -80,7 +80,6 @@ function postTemplate(post, index = 0) {
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <div class="post-body">${renderBody(post.content)}</div>
       </div>
       <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
