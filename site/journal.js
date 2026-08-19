@@ -36,6 +36,15 @@ function postImage(post) {
   return post.image || "assets/jni-cashmere-hero.png";
 }
 
+function renderBody(content) {
+  return String(content || "")
+    .split(/\n\s*\n+/)
+    .map((p) => p.trim())
+    .filter(Boolean)
+    .map((p) => `<p>${escapeHtml(p)}</p>`)
+    .join("");
+}
+
 function setMeta(attr, key, content) {
   if (!content) return;
   const selector = `meta[${attr}="${key}"]`;
@@ -71,7 +80,7 @@ function postTemplate(post, index = 0) {
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <p class="post-body">${escapeHtml(post.content)}</p>
+        <div class="post-body">${renderBody(post.content)}</div>
       </div>
       <a class="post-link" href="journal.html?post=${slug}">${escapeHtml(i18n.t("readMore"))}</a>
     </article>
@@ -110,7 +119,7 @@ function renderSinglePost(post, allPosts = []) {
         <time datetime="${escapeHtml(post.date)}">${escapeHtml(post.date)}</time>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.excerpt)}</p>
-        <p class="post-body">${escapeHtml(post.content)}</p>
+        <div class="post-body">${renderBody(post.content)}</div>
       </div>
       <a class="post-link" href="journal.html">${escapeHtml(i18n.t("backToPosts"))}</a>
     </article>
