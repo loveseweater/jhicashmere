@@ -71,3 +71,22 @@ Goal set by user: conversion & purchase guidance first, refined Scandi style, En
 - Local preview: home / collection / product pages render with all new conversion elements.
 - Colour & size selectors tested in-browser: 3 swatches + 4 sizes, active-state switching works.
 - Service & contact sections confirmed to render ink/rust background with readable white text.
+
+## Regenerated brand images (2026-08-19)
+
+User reported that two large images didn't scale with the window and wanted them replaced with newly generated, on-brand images (with embedded text). Regenerated via image-gen and wired into the site.
+
+### New assets (site/assets/)
+- `hero-banner-jinhexi.png` — 16:9 home hero banner, model in ivory cashmere + rust scarf, embedded "Cashmere for everyday winter." / "100% cashmere · JINHEXI" serif text.
+- `product-turtleneck-jinhexi.png` — 3:4 product shot of a deep-navy oversized turtleneck with embedded "100% cashmere / Oversized turtleneck" text.
+
+### Where they are used
+- **Home hero**: `.refresh-hero` is now a full-width responsive banner (`.refresh-hero-banner img { width:100%; height:auto }`) with the Shop-collection / Why-cashmere CTA row and the Get-launch-access capture below. `h1` moved to `.sr-only` for SEO/a11y. The hero copy/waitlist colours were re-mapped to ink on the paper background. Layout overrides live at the end of `conversion-refresh.css`.
+- **Collection / detail (turtleneck sweater)**: regenerated images were rendered to webp and written over `assets/catalog-branded/100-cashmere-turtleneck-sweater-02.webp` (1200px main) and `assets/catalog-thumbs/100-cashmere-turtleneck-sweater-02.webp` (760px thumb), so both the collection card and the PDP main image now use the new shot. No data file change needed (products.json already pointed at these files).
+
+### Responsiveness
+Both images use `width:100%; height:auto`, so they scale with the viewport (the original complaint). Verified in the browser that banner width tracks the container (1180px at the test viewport).
+
+### Verification
+- Browser: home hero banner + CTA + launch-access row render correctly on the paper background; collection turtleneck card shows the new shot; PDP main image points to the regenerated webp.
+- `node --check` on JS unchanged this round (no JS edits).

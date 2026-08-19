@@ -522,3 +522,71 @@ select:focus-visible {
     transition: none;
   }
 }
+
+/* ---------- 11. Hero banner layout (banner + conversion row) ---------- */
+.refresh-hero {
+  display: block;
+  min-height: 0;
+  padding: clamp(16px, 3vw, 40px) clamp(12px, 3vw, 36px);
+  background: var(--refresh-paper);
+}
+.refresh-hero-banner {
+  max-width: 1240px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.refresh-hero-banner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+.refresh-hero-copy {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px 36px;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 26px 0 4px;
+  color: var(--refresh-ink);
+}
+.refresh-hero-copy .refresh-link-light {
+  color: var(--refresh-ink);
+  border-bottom-color: rgba(19, 33, 42, .5);
+}
+/* waitlist now sits on the paper background */
+.refresh-hero-waitlist {
+  flex: 1 1 360px;
+  min-width: 280px;
+  max-width: 560px;
+  margin-top: 0;
+  padding-top: 0;
+  border-top: 0;
+}
+.refresh-hero-waitlist .wl-label {
+  color: var(--refresh-muted);
+}
+.refresh-hero-waitlist input[type="email"] {
+  border-bottom-color: rgba(19, 33, 42, .5);
+  color: var(--refresh-ink);
+}
+.refresh-hero-waitlist input[type="email"]::placeholder {
+  color: rgba(19, 33, 42, .4);
+}
+.refresh-hero-waitlist .wl-note {
+  color: var(--refresh-muted);
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
