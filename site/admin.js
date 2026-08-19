@@ -1,6 +1,7 @@
 let token = "";
 let products = [];
 let posts = [];
+let settings = {};
 
 const loginPanel = document.querySelector("[data-login-panel]");
 const workspace = document.querySelector("[data-admin-workspace]");
@@ -220,6 +221,15 @@ function renderProducts() {
     .join("");
 }
 
+function renderSettings() {
+  document.querySelector("[data-settings-form]").innerHTML = [
+    textarea("公告栏文案", settings.announcement || "", "announcement"),
+    textarea("页脚标语", settings.footerTagline || "", "footerTagline"),
+    field("联系邮箱", settings.contactEmail || "", "contactEmail"),
+    field("WhatsApp 号码（含国家码，如 8613602328348）", settings.whatsappNumber || "", "whatsappNumber"),
+  ].join("");
+}
+
 function renderPosts() {
   document.querySelector("[data-post-list]").innerHTML = posts
     .map(
@@ -269,8 +279,10 @@ function collect(listSelector, source) {
 async function loadAdminData() {
   products = await requestJson("/api/products");
   posts = await requestJson("/api/posts");
+  settings = await requestJson("/api/settings");
   renderProducts();
   renderPosts();
+  renderSettings();
   await loadStats();
 }
 
@@ -402,6 +414,23 @@ document.querySelector("[data-save-posts]").addEventListener("click", async () =
     });
     renderPosts();
     setStatus("博文已保存。");
+  } catch (error) {
+    setStatus(error.message);
+  }
+});
+
+document.querySelector("[data-save-settings]").addEventListener("click", async () => {
+  try {
+    const next = {};
+    document.querySelectorAll("[data-settings-form] [data-key]").forEach((input) => {
+      next[input.dataset.key] = input.value.trim();
+    });
+    settings = await requestJson("/api/settings", {
+      method: "PUT",
+      body: JSON.stringify(next)
+    });
+    renderSettings();
+    setStatus("站点设置已保存，前台已更新。");
   } catch (error) {
     setStatus(error.message);
   }

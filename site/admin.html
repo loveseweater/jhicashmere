@@ -41,6 +41,7 @@
         <div class="admin-tabs" role="tablist" aria-label="后台分区">
           <button class="tab active" type="button" data-tab="products">产品</button>
           <button class="tab" type="button" data-tab="posts">博文</button>
+          <button class="tab" type="button" data-tab="settings">站点设置</button>
           <button class="tab" type="button" data-tab="analytics">数据</button>
         </div>
 
@@ -104,6 +105,15 @@
             </div>
           </div>
           <div class="analytics-list" data-analytics-list></div>
+        </section>
+
+        <section class="admin-panel" data-panel="settings">
+          <div class="panel-heading">
+            <h3>站点设置</h3>
+            <p class="admin-note">修改公告栏、页脚标语、联系邮箱和 WhatsApp，保存后前台自动更新。</p>
+          </div>
+          <div class="editor-list" data-settings-form></div>
+          <button class="button primary save-button" type="button" data-save-settings>保存设置</button>
         </section>
 
         <p class="admin-status" data-status></p>

@@ -1,0 +1,13 @@
+# JINHEXI Cloudflare Pages + D1 configuration
+name = "jhicashmere"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "."
+
+# D1 database binding (database_id filled in after creation)
+[[d1_databases]]
+binding = "DB"
+database_name = "jhicashmere"
+database_id = "3ae7ec47-d1be-4004-8011-e35d6652692c"
+
+# Note: JINHEXI_ADMIN_PASSWORD is set as an encrypted secret via wrangler,
+# never stored in this file or in the repository.

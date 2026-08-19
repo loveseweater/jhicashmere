@@ -84,3 +84,33 @@
   m.content = TOKEN;
   document.head.appendChild(m);
 })();
+
+/* ============ APPLY SITE SETTINGS (editable page content) ============ */
+(function () {
+  async function applySettings() {
+    try {
+      const r = await fetch("/api/settings", { cache: "no-store" });
+      if (!r.ok) return;
+      const s = await r.json();
+      document.querySelectorAll("[data-setting]").forEach((el) => {
+        const v = s[el.getAttribute("data-setting")];
+        if (v) el.textContent = v;
+      });
+      document.querySelectorAll("[data-setting-mailto]").forEach((a) => {
+        const v = s[a.getAttribute("data-setting-mailto")];
+        if (v) a.href = "mailto:" + v;
+      });
+      document.querySelectorAll("[data-setting-wa]").forEach((a) => {
+        const v = s[a.getAttribute("data-setting-wa")];
+        if (v) a.href = "https://wa.me/" + v;
+      });
+    } catch (e) {
+      /* fall back to the static HTML defaults */
+    }
+  }
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", applySettings);
+  } else {
+    applySettings();
+  }
+})();

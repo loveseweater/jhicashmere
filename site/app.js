@@ -206,7 +206,9 @@ async function renderStorefront() {
   const localProducts = await loadJson(`${dataPrefix}data/products.json`, fallbackProducts);
   const apiProducts = await loadJson("/api/products", localProducts);
   const products = Array.isArray(apiProducts) && apiProducts.length ? apiProducts : localProducts;
-  const posts = await loadJson(`${dataPrefix}data/posts.json`, fallbackPosts);
+  const localPosts = await loadJson(`${dataPrefix}data/posts.json`, fallbackPosts);
+  const apiPosts = await loadJson("/api/posts", localPosts);
+  const posts = Array.isArray(apiPosts) && apiPosts.length ? apiPosts : localPosts;
 
   const productGrid = document.querySelector("[data-products]");
   const postGrid = document.querySelector("[data-posts]");

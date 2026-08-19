@@ -5,5 +5,8 @@
   "description": "JINHEXI independent website with a local admin panel.",
   "scripts": {
     "start": "node server.js"
+  },
+  "devDependencies": {
+    "wrangler": "^4.124.0"
   }
 }

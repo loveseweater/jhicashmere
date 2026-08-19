@@ -1,18 +1,20 @@
-import { ensureSchema, json, readJson, readProducts, requireAdmin, saveProducts } from "../_lib.js";
+import { json, readBody, requireAuth, loadCollection, replaceCollection, slugify } from "./_lib.js";
 
-export async function onRequestGet({ env }) {
-  await ensureSchema(env);
-  return json(await readProducts(env));
+export async function onRequestGet(context) {
+  const list = await loadCollection(context.env.DB, "products");
+  return json(200, list);
 }
 
-export async function onRequestPut({ request, env }) {
-  const admin = await requireAdmin(request, env);
-  if (!admin) {
-    return json({ error: "需要管理员登录" }, { status: 401 });
-  }
-  const body = await readJson(request);
-  if (!Array.isArray(body)) {
-    return json({ error: "需要数组格式" }, { status: 400 });
-  }
-  return json(await saveProducts(env, body));
+export async function onRequestPut(context) {
+  if (!(await requireAuth(context))) return json(401, { error: "需要管理员登录" });
+  const payload = await readBody(context.request);
+  if (!Array.isArray(payload)) return json(400, { error: "需要数组格式" });
+
+  const normalized = payload.map((item, index) => {
+    const id = slugify(item.id || item.name || item.title || `product-${index + 1}`);
+    return { ...item, id: id || `product-${index + 1}` };
+  });
+
+  await replaceCollection(context.env.DB, "products", normalized, (item) => item.id);
+  return json(200, normalized);
 }
