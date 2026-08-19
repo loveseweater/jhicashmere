@@ -694,9 +694,11 @@ select:focus-visible {
 /* ---------- 15. Real-photo hero with HTML text overlay ---------- */
 .refresh-hero-banner {
   position: relative;
-  min-height: 380px;
+  height: clamp(400px, 42vw, 540px);
+  min-height: 360px;
   display: flex;
   align-items: flex-end;
+  overflow: hidden;
 }
 .refresh-hero-banner > picture,
 .refresh-hero-banner > picture img {
