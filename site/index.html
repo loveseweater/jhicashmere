@@ -56,29 +56,29 @@
 
     <main id="main-content">
       <section class="refresh-hero" id="top" aria-labelledby="hero-title">
-        <div class="refresh-hero-banner">
-          <picture>
-            <source media="(max-width: 860px)" srcset="assets/hero-cardigan.webp" />
-            <img src="assets/hero-cardigan.webp" alt="JINHEXI 100% cashmere cardigan worn on a model" fetchpriority="high" decoding="async" />
-          </picture>
-          <div class="refresh-hero-overlay">
+        <div class="refresh-hero-grid">
+          <div class="refresh-hero-text">
             <p class="refresh-overline">JINHEXI / 100% cashmere</p>
             <h1 id="hero-title">Cashmere for <em>everyday winter.</em></h1>
             <p class="refresh-hero-lead">Sweaters, layers, and accessories in 100% cashmere, built for repeat wear and calmer dressing.</p>
+            <div class="refresh-hero-actions">
+              <a class="refresh-button refresh-button-light" href="collection.html">Shop the collection <span aria-hidden="true">↗</span></a>
+              <a class="refresh-link refresh-link-light" href="#material-story">Why cashmere <span aria-hidden="true">↓</span></a>
+            </div>
+            <div class="refresh-hero-waitlist">
+              <form data-launch-form>
+                <label class="wl-label" for="hero-email">Get launch access</label>
+                <input id="hero-email" name="email" type="email" autocomplete="email" placeholder="Email for launch access" required />
+                <button type="submit">Notify me <span aria-hidden="true">↗</span></button>
+                <small class="wl-note">Launching this season on Amazon. No spam — just early access &amp; sizing help.</small>
+              </form>
+            </div>
           </div>
-        </div>
-        <div class="refresh-hero-copy">
-          <div class="refresh-hero-actions">
-            <a class="refresh-button refresh-button-light" href="collection.html">Shop the collection <span aria-hidden="true">↗</span></a>
-            <a class="refresh-link refresh-link-light" href="#material-story">Why cashmere <span aria-hidden="true">↓</span></a>
-          </div>
-          <div class="refresh-hero-waitlist">
-            <form data-launch-form>
-              <label class="wl-label" for="hero-email">Get launch access</label>
-              <input id="hero-email" name="email" type="email" autocomplete="email" placeholder="Email for launch access" required />
-              <button type="submit">Notify me <span aria-hidden="true">↗</span></button>
-              <small class="wl-note">Launching this season on Amazon. No spam — just early access &amp; sizing help.</small>
-            </form>
+          <div class="refresh-hero-media">
+            <picture>
+              <source media="(max-width: 860px)" srcset="assets/hero-cardigan-portrait.webp" />
+              <img src="assets/hero-cardigan-portrait.webp" alt="JINHEXI 100% cashmere cardigan styled on a model" fetchpriority="high" decoding="async" />
+            </picture>
           </div>
         </div>
       </section>

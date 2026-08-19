@@ -737,3 +737,130 @@ select:focus-visible {
   font-size: 15px;
   line-height: 1.7;
 }
+
+/* ---------- 16. Split hero: text left, image right (EU/NA fashion standard) ---------- */
+.refresh-hero {
+  display: block;
+  padding: 0;
+  background: var(--refresh-paper);
+}
+.refresh-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  align-items: center;
+  max-width: 1500px;
+  margin: 0 auto;
+  min-height: clamp(520px, 78vh, 840px);
+}
+.refresh-hero-text {
+  max-width: 640px;
+  justify-self: start;
+  padding: clamp(36px, 5vw, 72px) clamp(24px, 4vw, 64px);
+  color: var(--refresh-ink);
+}
+.refresh-hero-text .refresh-overline {
+  margin: 0 0 18px;
+  color: var(--refresh-rust);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: 13px;
+  font-weight: 600;
+}
+.refresh-hero-text h1 {
+  margin: 0 0 22px;
+  font-size: clamp(34px, 4.4vw, 62px);
+  line-height: 1.02;
+  letter-spacing: -.01em;
+  font-weight: 500;
+}
+.refresh-hero-text h1 em {
+  color: var(--refresh-rust);
+  font-style: normal;
+}
+.refresh-hero-text .refresh-hero-lead {
+  margin: 0 0 34px;
+  max-width: 460px;
+  color: rgba(19, 33, 42, .78);
+  font-size: 16px;
+  line-height: 1.75;
+}
+.refresh-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px 28px;
+  margin-bottom: 38px;
+}
+.refresh-hero-actions .refresh-link-light {
+  color: var(--refresh-ink);
+  border-bottom-color: rgba(19, 33, 42, .5);
+}
+.refresh-hero-text .refresh-hero-waitlist {
+  flex: none;
+  min-width: 0;
+  max-width: 460px;
+  margin-top: 0;
+  padding-top: 24px;
+  border-top: 1px solid rgba(19, 33, 42, .12);
+}
+.refresh-hero-media {
+  position: relative;
+  height: 100%;
+  min-height: 440px;
+  overflow: hidden;
+  background: transparent;
+}
+.refresh-hero-media > picture,
+.refresh-hero-media > picture img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  padding: 0;
+  background: transparent;
+}
+/* Mobile / tablet: stack image first (visual-first), text below */
+@media (max-width: 860px) {
+  .refresh-hero-grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+  }
+  .refresh-hero-text {
+    max-width: none;
+    padding: 42px 24px 34px;
+  }
+  .refresh-hero-media {
+    order: -1;
+    min-height: 0;
+    height: auto;
+    aspect-ratio: 4 / 5;
+  }
+  .refresh-hero-media > picture,
+  .refresh-hero-media > picture img {
+    position: static;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    padding: 0;
+  }
+}
+
+/* Override legacy homepage rule that hid the hero media image */
+.refresh-home .refresh-hero-media {
+  display: block;
+}
+
+/* Fix mobile menu: ensure it is collapsed by default (overrides later-displayed flex rule) */
+@media (max-width: 860px) {
+  .storefront-header .site-menu {
+    display: none;
+  }
+  .storefront-header .site-menu.is-open {
+    display: flex;
+  }
+  .storefront-header .site-menu[hidden] {
+    display: none;
+  }
+}
