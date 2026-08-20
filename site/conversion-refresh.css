@@ -895,3 +895,16 @@ select:focus-visible {
   fill: currentColor;
   display: block;
 }
+
+/* ---------- 18. Fix invisible text in service list (white-on-white) ---------- */
+.refresh-service-list article h3,
+.refresh-service-list h3 {
+  color: var(--refresh-ink);
+}
+.refresh-service-list p {
+  color: rgba(19, 33, 42, .72);
+}
+.refresh-service-list article > span,
+.refresh-service-list article > a {
+  color: var(--refresh-rust);
+}
